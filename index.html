@@ -734,6 +734,20 @@
     const q = new URLSearchParams(location.search);
     const cp = (q.get('cupom') || '').trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '').slice(0, 30);
     if (cp) { cupom = cp; gravar(CHAVE_CUPOM, cp); }
+    // filtros por link: ?categoria=Blusas  ?tamanho=M  ?q=floral  (podem ser combinados)
+    const qc = norm(q.get('categoria') || ''), qt = norm(q.get('tamanho') || ''), qb = (q.get('q') || '').trim().slice(0, 60);
+    if (qc || qt || qb) {
+      if (qc) {
+        const cat = Array.from(new Set(familias.map(f => f.categoria).filter(Boolean))).find(c => norm(c) === qc);
+        if (cat) catAtiva = cat; else toast('Categoria não encontrada');
+      }
+      if (qt) {
+        const tam = Array.from(new Set(produtos.filter(p => p.saldo > 0 && p.tamanho).map(p => p.tamanho))).find(t => norm(t) === qt);
+        if (tam) tamAtivo = tam; else toast('Tamanho indisponível no momento');
+      }
+      if (qb) { termo = qb; $('busca').value = qb; }
+      desenharFiltros(); desenharGrade();
+    }
     const fid = (q.get('familia') || '').trim().toUpperCase().replace(/\s+/g, '');
     if (fid) {
       const f = familias.find(x => x.id.toUpperCase() === fid) || (function() { const it = produtos.find(p => p.id.toUpperCase() === fid); return it ? familias.find(x => x.id === it.familia) : null; })();

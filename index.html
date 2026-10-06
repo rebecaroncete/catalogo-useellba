@@ -272,6 +272,7 @@
   function montarFamilias() {
     const mapa = {};
     produtos.forEach(p => {
+      if (String(p.familia).toUpperCase() === 'FAM001') return; // FAM001 = escondida do catálogo
       const f = mapa[p.familia] || (mapa[p.familia] = { id: p.familia, descricao: '', categoria: p.categoria, itens: [], cores: {}, ordem: 0, saldo: 0 });
       f.itens.push(p);
       if (!f.descricao && p.descricao) f.descricao = p.descricao;

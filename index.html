@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>USE ELLBA | Catálogo</title>
 <meta name="description" content="Catálogo USE ELLBA: moda feminina. Escolha suas peças e finalize pelo WhatsApp.">
+<link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+<link rel="preconnect" href="https://script.google.com" crossorigin>
+<link rel="dns-prefetch" href="https://script.googleusercontent.com">
 <meta name="theme-color" content="#4a151b">
 <link rel="icon" type="image/png" href="icon-180.png">
 <link rel="apple-touch-icon" href="icon-180.png">
@@ -129,6 +132,37 @@
   table.medidas { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; }
   table.medidas th, table.medidas td { padding:10px 8px; text-align:center; border-bottom:1px solid var(--linha); font-size:.9rem; }
   table.medidas th { background:var(--bordo); color:var(--dourado); }
+
+  .bloco { background:#fff; border-radius:14px; margin:10px 14px; padding:14px; box-shadow:var(--sombra); }
+  .bloco h3 { margin:0 0 4px; font-size:1rem; color:var(--bordo); }
+  .bloco .sub { color:var(--muted); font-size:.85rem; margin-bottom:10px; }
+  .duas { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .escolha { padding:12px 10px; border-radius:12px; border:1.5px solid var(--linha); background:#fff; font-weight:700; color:var(--bordo); text-align:center; }
+  .escolha.sel { background:var(--bordo); color:var(--dourado); border-color:var(--bordo); }
+  .opcao-ent { display:block; width:100%; text-align:left; padding:12px 14px; border-radius:12px; border:1.5px solid var(--linha); background:#fff; margin-top:8px; }
+  .opcao-ent.sel { border-color:var(--bordo); background:#fbf3ef; }
+  .opcao-ent .t { font-weight:700; color:var(--bordo); display:flex; justify-content:space-between; gap:8px; }
+  .opcao-ent .d { font-size:.85rem; color:var(--muted); margin-top:3px; }
+  .opcao-ent[disabled] { opacity:.5; }
+  .campo { margin-top:10px; }
+  .campo label { display:block; font-size:.75rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:5px; }
+  .campo input, .campo textarea { width:100%; padding:12px 13px; border:1.5px solid var(--linha); border-radius:12px; font-size:16px; font-family:inherit; background:#fff; outline:none; }
+  .campo input:focus, .campo textarea:focus { border-color:var(--bordo); }
+  .linha-campos { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .convite { background:linear-gradient(160deg,#fff8e6,#fff1d6); border:1px solid var(--dourado); border-radius:14px; padding:14px; margin-top:10px; }
+  .convite b { color:var(--bordo); }
+  .convite ul { margin:8px 0 0 18px; padding:0; color:#5a4310; font-size:.9rem; }
+  .btn-sec { display:inline-flex; align-items:center; justify-content:center; width:100%; padding:13px; border-radius:12px; font-weight:700; margin-top:10px; background:var(--bordo); color:var(--dourado); }
+  .btn-sec.claro { background:#fff; color:var(--bordo); border:1.5px solid var(--linha); }
+  .msg-ok { background:#e8f6ee; color:#116b3a; border-radius:12px; padding:10px 12px; margin-top:10px; font-size:.9rem; }
+  .msg-no { background:#fdeceb; color:#8a1f17; border-radius:12px; padding:10px 12px; margin-top:10px; font-size:.9rem; }
+  .msg-info { background:#f3eee9; color:#5b4a4d; border-radius:12px; padding:10px 12px; margin-top:10px; font-size:.88rem; }
+  .resumo { padding:4px 0; }
+  .resumo .l { display:flex; justify-content:space-between; font-size:.92rem; padding:3px 0; color:var(--ink); }
+  .resumo .l.d { color:#116b3a; }
+  .sucesso { text-align:center; padding:30px 20px; }
+  .sucesso .ok { width:68px; height:68px; border-radius:50%; background:var(--bordo); color:var(--dourado); display:inline-flex; align-items:center; justify-content:center; font-size:2rem; }
+  a.btn-zap { text-decoration:none; }
   footer { text-align:center; color:var(--muted); font-size:.78rem; padding:6px 20px 26px; }
   svg.i { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
 </style>
@@ -191,7 +225,7 @@
 <script>
 (function() {
   'use strict';
-  const CHAVE_SACOLA = 'ellba_sacola_v1', CHAVE_CUPOM = 'ellba_cupom_v1', CHAVE_DADOS = 'ellba_dados_v1';
+  const CHAVE_SACOLA = 'ellba_sacola_v1', CHAVE_CUPOM = 'ellba_cupom_v1', CHAVE_DADOS = 'ellba_dados_v1', CHAVE_IDENT = 'ellba_ident_v1';
   const ORDEM_TAM = ['PP','P','M','G','GG','XG','XGG','EG','EGG','UNICO','UNICA','U'];
   let produtos = [], familias = [], porId = {};
   let catAtiva = 'Todas', tamAtivo = '', termo = '';
@@ -199,6 +233,7 @@
   let cupom = '';
   let pecaAtual = null;       // {fam, cor, itemId, qtd}
   let ultimaCarga = 0;
+  let cfg = { cashbackPercentual: 0.05, cashbackDias: 40, primeiraCompraPercentual: 0.05, reservaHoras: 24, lojas: {}, cidadeUber: 'Rio de Janeiro', freteCorreios: false };
 
   // ---------- util ----------
   const $ = id => document.getElementById(id);
@@ -207,6 +242,8 @@
   const esc = t => (t == null ? '' : String(t)).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
   function ler(chave, padrao) { try { const v = localStorage.getItem(chave); return v ? JSON.parse(v) : padrao; } catch (e) { return padrao; } }
   function gravar(chave, v) { try { localStorage.setItem(chave, JSON.stringify(v)); } catch (e) {} }
+  function thumb(u) { return (u && u.indexOf('res.cloudinary.com') > -1) ? u.replace('/upload/q_auto,w_700/', '/upload/q_auto,f_auto,w_420/').replace('/upload/q_auto,', '/upload/q_auto,f_auto,') : u; }
+  function grande(u) { return (u && u.indexOf('res.cloudinary.com') > -1 && u.indexOf('f_auto') === -1) ? u.replace('/upload/q_auto,', '/upload/q_auto,f_auto,') : u; }
   function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('mostra'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('mostra'), 2600); }
   const PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="300" height="400"><rect width="100%" height="100%" fill="#efe6e0"/><text x="50%" y="50%" fill="#b9a99f" font-family="Georgia" font-size="22" text-anchor="middle">USE ELLBA</text></svg>');
   const CORES = { branco:'#ffffff', branca:'#ffffff', off:'#f4efe6', offwhite:'#f4efe6', creme:'#f2e8d0', bege:'#d9c3a0', nude:'#e0b9a2', preto:'#1b1b1b', preta:'#1b1b1b', cinza:'#9a9a9a', chumbo:'#4d4f53', prata:'#c0c0c0', vermelho:'#c0272d', vermelha:'#c0272d', vinho:'#6d1a2b', bordo:'#4a151b', marsala:'#7a2a35', rosa:'#e8a0b4', pink:'#e0408a', fucsia:'#c2185b', rose:'#d9a0a0', laranja:'#ef8a2c', coral:'#f2735f', terracota:'#b9573a', amarelo:'#f2d03b', mostarda:'#c9a227', dourado:'#d4af37', verde:'#2e7d4f', oliva:'#6b7a3a', militar:'#4b5320', menta:'#a8dcc0', turquesa:'#2bb8b0', azul:'#2f5fb3', marinho:'#16254d', royal:'#2849b8', jeans:'#4a6fa5', celeste:'#8ec3ee', lilas:'#b79bd6', roxo:'#6b3fa0', uva:'#5a2a6e', marrom:'#6b4429', caramelo:'#b8793a', camel:'#b8895a', estampado:'#d9a0b4', estampada:'#d9a0b4', floral:'#d9a0b4', listrado:'#8aa4c8', listrada:'#8aa4c8' };
@@ -228,6 +265,7 @@
     const j = await r.json();
     if (!j || j.ok === false) throw new Error((j && j.erro) || 'Erro ao carregar');
     const d = j.data !== undefined ? j.data : j;
+    if (d.config) cfg = d.config;
     return d.produtos || [];
   }
 
@@ -252,23 +290,35 @@
       const precos = f.itens.filter(i => i.saldo > 0).map(i => i.preco).filter(x => x > 0);
       f.preco = precos.length ? Math.min.apply(null, precos) : 0;
       f.capa = (f.listaCores.find(c => c.foto && c.tams.some(t => t.saldo > 0)) || f.listaCores.find(c => c.foto) || {}).foto || '';
+      f.itens.forEach(i => { if (!i.foto) i.foto = (f.cores[norm(i.cor) || 'unica'] || {}).foto || f.capa; });
       return f;
     }).sort((a, b) => b.ordem - a.ordem);
     porId = {}; produtos.forEach(p => porId[p.id] = p);
   }
 
+  const CHAVE_CACHE = 'ellba_cat_v1';
+  function aplicar(lista) {
+    produtos = lista;
+    montarFamilias();
+    revalidarSacola(true);
+    desenharFiltros();
+    desenharGrade();
+    atualizarBarra();
+    abrirPorLink();
+  }
   async function carregarCatalogo(forcar) {
     $('msg-erro').classList.add('oculto');
+    let usouCache = false;
+    if (!produtos.length && !forcar) {
+      const c = ler(CHAVE_CACHE, null);
+      if (c && c.produtos && c.produtos.length) { if (c.config) cfg = c.config; try { aplicar(c.produtos); usouCache = true; } catch (e) { produtos = []; } }
+    }
     if (!produtos.length) { $('grade').innerHTML = '<div class="esqueleto"></div>'.repeat(6); }
     try {
-      produtos = await pegarCatalogo(forcar);
+      const novos = await pegarCatalogo(forcar);
       ultimaCarga = Date.now();
-      montarFamilias();
-      revalidarSacola(true);
-      desenharFiltros();
-      desenharGrade();
-      atualizarBarra();
-      abrirPorLink();
+      gravar(CHAVE_CACHE, { produtos: novos, config: cfg });
+      aplicar(novos);
     } catch (e) {
       if (!produtos.length) { $('grade').innerHTML = ''; $('msg-erro').classList.remove('oculto'); }
     }
@@ -311,7 +361,7 @@
       const bol = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).slice(0, 6);
       const mais = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).length - bol.length;
       const poucas = f.saldo > 0 && f.saldo <= 2;
-      return '<button class="cartao" data-f="' + esc(f.id) + '"><div class="foto"><img loading="lazy" decoding="async" src="' + esc(f.capa || PLACEHOLDER) + '" alt="' + esc(f.descricao) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'">' + (poucas ? '<span class="selo">Últimas unidades</span>' : '') + '</div><div class="info"><div class="nome">' + esc(f.descricao || 'Peça') + '</div><div class="preco">' + (f.preco ? brl(f.preco) : 'Consulte') + '</div><div class="bolinhas">' + bol.map(c => '<span class="bolinha" title="' + esc(c.cor) + '" style="background:' + corCss(c.cor) + '"></span>').join('') + (mais > 0 ? '<small>+' + mais + '</small>' : '') + '</div></div></button>';
+      return '<button class="cartao" data-f="' + esc(f.id) + '"><div class="foto"><img loading="lazy" decoding="async" src="' + esc(thumb(f.capa) || PLACEHOLDER) + '" alt="' + esc(f.descricao) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'">' + (poucas ? '<span class="selo">Últimas unidades</span>' : '') + '</div><div class="info"><div class="nome">' + esc(f.descricao || 'Peça') + '</div><div class="preco">' + (f.preco ? brl(f.preco) : 'Consulte') + '</div><div class="bolinhas">' + bol.map(c => '<span class="bolinha" title="' + esc(c.cor) + '" style="background:' + corCss(c.cor) + '"></span>').join('') + (mais > 0 ? '<small>+' + mais + '</small>' : '') + '</div></div></button>';
     }).join('');
   }
   $('grade').addEventListener('click', e => { const b = e.target.closest('.cartao'); if (b) abrirPeca(b.dataset.f); });
@@ -343,7 +393,7 @@
     const fotos = coresDisp.filter(c => c.foto);
     let html = '';
     if (refazerFotos || !$('p-faixa')) {
-      html += '<div class="carrossel"><div class="faixa" id="p-faixa">' + (fotos.length ? fotos.map(c => '<div class="slide" data-cor="' + esc(norm(c.cor)) + '"><img src="' + esc(c.foto) + '" alt="' + esc(fam.descricao + ' ' + c.cor) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'"></div>').join('') : '<div class="slide"><img src="' + PLACEHOLDER + '" alt=""></div>') + '</div>' +
+      html += '<div class="carrossel"><div class="faixa" id="p-faixa">' + (fotos.length ? fotos.map(c => '<div class="slide" data-cor="' + esc(norm(c.cor)) + '"><img src="' + esc(grande(c.foto)) + '" alt="' + esc(fam.descricao + ' ' + c.cor) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'"></div>').join('') : '<div class="slide"><img src="' + PLACEHOLDER + '" alt=""></div>') + '</div>' +
         (fotos.length > 1 ? '<button class="seta e" onclick="rolarFoto(-1)" aria-label="Foto anterior">&#8249;</button><button class="seta d" onclick="rolarFoto(1)" aria-label="Próxima foto">&#8250;</button><div class="pontos" id="p-pontos">' + fotos.map((_, i) => '<span class="ponto' + (i === 0 ? ' ativo' : '') + '"></span>').join('') + '</div>' : '') + '</div><div class="prod-info" id="p-info"></div>';
       $('p-corpo').innerHTML = html;
       const faixa = $('p-faixa');
@@ -400,6 +450,32 @@
   };
 
   // ---------- sacola ----------
+  const LOJAS = ['Loja Penha', 'Loja Recreio'];
+  const saldoLoja = (p, n) => n === 'Loja Penha' ? (p.saldoPenha || 0) : (p.saldoRecreio || 0);
+  let ident = ler(CHAVE_IDENT, { modo: '', nome: '', telefone: '', primeiraCompra: false, aniversario: false });
+  let ent = { tipo: '', loja: '', cep: '', endereco: '', cidade: '', numero: '', compl: '', opcoes: [], freteSel: null, calculando: false, erroCep: '', erroFrete: '' };
+  let cadAberto = false, enviando = false;
+
+  const postApi = async (action, dados) => { const r = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: action, chave: '', dados: dados }) }); const j = await r.json(); if (!j || j.ok === false) throw new Error((j && j.erro) || 'Erro'); return j.data; };
+  const getApi = async (params) => { const r = await fetch(API_URL + '?' + new URLSearchParams(params).toString()); const j = await r.json(); if (!j || j.ok === false) throw new Error((j && j.erro) || 'Erro'); return j.data; };
+  const maskTel = v => { let d = v.replace(/\D/g, '').slice(0, 11); d = d.replace(/^(\d{2})(\d)/, '($1) $2'); return d.replace(/(\d)(\d{4})$/, '$1-$2'); };
+  const maskData = v => { let d = v.replace(/\D/g, '').slice(0, 8); d = d.replace(/(\d{2})(\d)/, '$1/$2'); return d.replace(/(\d{2})(\d)/, '$1/$2'); };
+  const maskCep = v => { const d = v.replace(/\D/g, '').slice(0, 8); return d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d; };
+  const qtdTotal = () => sacola.reduce((t, s) => t + s.qtd, 0);
+
+  function planejarLojas() {
+    const itens = sacola.map(s => ({ s, p: porId[s.id] })).filter(x => x.p);
+    const completas = LOJAS.filter(n => itens.every(x => saldoLoja(x.p, n) >= x.s.qtd));
+    const cont = {};
+    itens.forEach(x => { const n = completas.length ? completas[0] : (saldoLoja(x.p, 'Loja Penha') >= saldoLoja(x.p, 'Loja Recreio') ? 'Loja Penha' : 'Loja Recreio'); cont[n] = (cont[n] || 0) + x.s.qtd; });
+    const principal = Object.keys(cont).sort((a, b) => cont[b] - cont[a])[0] || LOJAS[0];
+    const lojasUsadas = new Set();
+    itens.forEach(x => { if (saldoLoja(x.p, 'Loja Penha') >= x.s.qtd) lojasUsadas.add('Loja Penha'); else if (saldoLoja(x.p, 'Loja Recreio') >= x.s.qtd) lojasUsadas.add('Loja Recreio'); else lojasUsadas.add('misto'); });
+    return { completas, principal, misto: completas.length === 0 };
+  }
+  const lojaOrigem = () => { const pl = planejarLojas(); return (ent.tipo === 'retirada' && ent.loja) ? ent.loja : pl.principal; };
+  const enderecoLoja = n => (cfg.lojas && cfg.lojas[n] && cfg.lojas[n].endereco) || '';
+
   function revalidarSacola(silencioso) {
     let mudou = false; const avisos = [];
     sacola = sacola.filter(s => {
@@ -408,7 +484,7 @@
       if (s.qtd > p.saldo) { s.qtd = p.saldo; avisos.push('Ajustamos a quantidade de "' + p.descricao + '" ao estoque disponível.'); mudou = true; }
       return s.qtd > 0;
     });
-    if (mudou) { gravar(CHAVE_SACOLA, sacola); if (avisos.length) toast(avisos[0]); }
+    if (mudou) { gravar(CHAVE_SACOLA, sacola); if (avisos.length && !silencioso) toast(avisos[0]); }
     return avisos;
   }
   function totalSacola() { return sacola.reduce((t, s) => t + (porId[s.id] ? porId[s.id].preco * s.qtd : 0), 0); }
@@ -419,47 +495,238 @@
   }
   window.abrirSacola = async () => {
     abrirFolha('folha-sacola'); desenharSacola();
+    reconferirIdent();
     try { if (Date.now() - ultimaCarga > 15000) { produtos = await pegarCatalogo(true); ultimaCarga = Date.now(); montarFamilias(); const av = revalidarSacola(); atualizarBarra(); desenharSacola(); if (av.length) toast(av[0]); } } catch (e) {}
   };
+  async function reconferirIdent() {
+    if (ident.modo !== 'cadastrada' || !ident.telefone) return;
+    try { const r = await getApi({ action: 'consultarClienteCatalogo', telefone: ident.telefone }); if (r.encontrada) { ident.primeiraCompra = r.primeiraCompra; ident.aniversario = r.aniversario; ident.nome = r.primeiroNome || ident.nome; gravar(CHAVE_IDENT, ident); desenharResumo(); } } catch (e) {}
+  }
+
   function desenharSacola() {
     if (!sacola.length) {
       $('s-corpo').innerHTML = '<div class="vazio">Sua sacola está vazia.<br><br><button class="btn-bordo" onclick="fecharTudo()">Ver peças</button></div>'; $('s-rodape').innerHTML = ''; return;
     }
-    const dados = ler(CHAVE_DADOS, { nome: '', obs: '' });
-    $('s-corpo').innerHTML = sacola.map(s => { const p = porId[s.id]; if (!p) return '';
-      return '<div class="item"><div class="mini"><img src="' + esc(p.foto || PLACEHOLDER) + '" alt="" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'"></div><div class="dados"><div class="n">' + esc(p.descricao) + '</div><div class="d">' + esc([p.cor && 'Cor: ' + p.cor, p.tamanho && 'Tam.: ' + p.tamanho].filter(Boolean).join(' · ')) + '</div><div class="linha-b"><div class="qtd-box"><button data-q="-1" data-id="' + esc(s.id) + '" aria-label="Menos">&minus;</button><span>' + s.qtd + '</span><button data-q="1" data-id="' + esc(s.id) + '" aria-label="Mais">+</button></div><div class="p">' + brl(p.preco * s.qtd) + '</div></div><button class="remover" data-rm="' + esc(s.id) + '">Remover</button></div></div>'; }).join('') +
-      '<div class="form-sacola"><label for="s-nome">Seu nome</label><input id="s-nome" type="text" autocomplete="name" placeholder="Como podemos te chamar?" value="' + esc(dados.nome) + '"><label for="s-obs">Observações (opcional)</label><textarea id="s-obs" rows="2" placeholder="Alguma dúvida ou pedido especial?">' + esc(dados.obs) + '</textarea></div>' +
-      '<div class="aviso-box">Entrega ou retirada na loja? A vendedora combina com você no WhatsApp, junto com o pagamento.</div>';
-    $('s-rodape').innerHTML = '<div class="total-linha"><span>Total das peças</span><span class="v">' + brl(totalSacola()) + '</span></div><button class="btn-zap" onclick="enviarPedido()"><svg viewBox="0 0 24 24" width="24" height="24" fill="#fff"><path d="' + ZAP + '"/></svg> Enviar pedido pelo WhatsApp</button><div class="nota">Você não paga nada agora. A vendedora confirma a disponibilidade e combina tudo com você.</div>';
-    const salvar = () => gravar(CHAVE_DADOS, { nome: $('s-nome').value, obs: $('s-obs').value });
-    $('s-nome').addEventListener('input', salvar); $('s-obs').addEventListener('input', salvar);
+    $('s-corpo').innerHTML = '<div id="s-itens"></div><div id="s-ident"></div><div id="s-entrega"></div><div id="s-obs-box"></div>';
+    desenharItens(); desenharIdent(); desenharEntrega(); desenharObs(); desenharResumo();
+  }
+  function desenharItens() {
+    $('s-itens').innerHTML = sacola.map(s => { const p = porId[s.id]; if (!p) return '';
+      return '<div class="item"><div class="mini"><img loading="lazy" src="' + esc(thumb(p.foto) || PLACEHOLDER) + '" alt="" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'"></div><div class="dados"><div class="n">' + esc(p.descricao) + '</div><div class="d">' + esc([p.cor && 'Cor: ' + p.cor, p.tamanho && 'Tam.: ' + p.tamanho].filter(Boolean).join(' · ')) + '</div><div class="linha-b"><div class="qtd-box"><button data-q="-1" data-id="' + esc(s.id) + '" aria-label="Menos">&minus;</button><span>' + s.qtd + '</span><button data-q="1" data-id="' + esc(s.id) + '" aria-label="Mais">+</button></div><div class="p">' + brl(p.preco * s.qtd) + '</div></div><button class="remover" data-rm="' + esc(s.id) + '">Remover</button></div></div>'; }).join('');
+  }
+
+  // ----- 1) Cadastro -----
+  function desenharIdent() {
+    const el = $('s-ident'); let h = '<div class="bloco"><h3>Você já tem cadastro na USE ELLBA?</h3>';
+    const pct = Math.round((cfg.primeiraCompraPercentual || 0.05) * 100), cb = Math.round((cfg.cashbackPercentual || 0.05) * 100), dias = cfg.cashbackDias || 40;
+    if (ident.modo === 'cadastrada' && ident.telefone) {
+      h += '<div class="msg-ok">Cadastro confirmado' + (ident.nome ? ': <b>' + esc(ident.nome) + '</b>' : '') + '.' + (ident.primeiraCompra && !ident.aniversario ? ' Você tem <b>' + pct + '% de desconto</b> na primeira compra!' : '') + '</div><button class="btn-sec claro" data-ident="trocar">Usar outro cadastro</button>';
+    } else if (ident.modo === 'sem') {
+      h += '<div class="msg-info">Tudo bem! Você segue sem cadastro, mas fica sem o desconto de primeira compra e sem o cashback.</div><div class="campo"><label for="i-nome">Como podemos te chamar?</label><input id="i-nome" type="text" autocomplete="name" value="' + esc(ident.nome) + '" placeholder="Seu nome"></div><button class="btn-sec claro" data-ident="trocar">Prefiro me cadastrar</button>';
+    } else if (cadAberto) {
+      h += '<div class="sub">Rapidinho: leva 1 minuto.</div><form id="f-cad" autocomplete="on"><div class="campo"><label>Nome completo *</label><input id="c-nome" type="text" required maxlength="80" autocomplete="name"></div><div class="campo"><label>WhatsApp *</label><input id="c-tel" type="tel" required placeholder="(00) 00000-0000" autocomplete="tel"></div><div class="campo"><label>Data de nascimento *</label><input id="c-nasc" type="text" inputmode="numeric" required placeholder="DD/MM/AAAA"></div><div class="campo"><label>E-mail (opcional)</label><input id="c-email" type="email" autocomplete="email"></div><input id="c-site" type="text" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;width:0" aria-hidden="true"><div id="c-msg"></div><button type="submit" class="btn-sec" id="c-btn">Fazer meu cadastro</button><button type="button" class="btn-sec claro" data-ident="voltar">Voltar</button></form>';
+    } else if (ident.modo === 'nao') {
+      h += '<div class="convite"><b>Cadastre-se e ganhe vantagens:</b><ul><li><b>' + pct + '% de desconto</b> na sua primeira compra</li><li><b>' + cb + '% de cashback</b> em todas as compras, para usar nas próximas (cada cashback vale por ' + dias + ' dias)</li><li>Novidades e promoções em primeira mão</li></ul></div><button class="btn-sec" data-ident="cadastrar">Quero me cadastrar agora</button><button class="btn-sec claro" data-ident="sem">Continuar sem cadastro</button><button class="btn-sec claro" data-ident="sim" style="margin-top:6px">Na verdade, eu já tenho cadastro</button>';
+    } else if (ident.modo === 'sim') {
+      h += '<div class="campo"><label for="i-tel">Telefone do seu cadastro</label><input id="i-tel" type="tel" inputmode="tel" placeholder="(00) 00000-0000" value="' + esc(ident.telefone) + '" autocomplete="tel"></div><div id="i-msg"></div><button class="btn-sec" data-ident="conferir">Conferir cadastro</button><button class="btn-sec claro" data-ident="nao">Ainda não tenho cadastro</button>';
+    } else {
+      h += '<div class="duas" style="margin-top:8px"><button class="escolha" data-ident="sim">Já tenho</button><button class="escolha" data-ident="nao">Ainda não</button></div>';
+    }
+    el.innerHTML = h + '</div>';
+    const t = $('i-tel'); if (t) t.addEventListener('input', () => { t.value = maskTel(t.value); });
+    const n = $('i-nome'); if (n) n.addEventListener('input', () => { ident.nome = n.value; gravar(CHAVE_IDENT, ident); });
+    const f = $('f-cad'); if (f) { $('c-tel').addEventListener('input', e => { e.target.value = maskTel(e.target.value); }); $('c-nasc').addEventListener('input', e => { e.target.value = maskData(e.target.value); }); f.addEventListener('submit', enviarCadastro); }
+  }
+  $('s-corpo').addEventListener('click', async e => {
+    const bt = e.target.closest('[data-ident]'); if (!bt) return;
+    const acao = bt.dataset.ident;
+    if (acao === 'sim' || acao === 'nao' || acao === 'sem') { ident.modo = acao; cadAberto = false; gravar(CHAVE_IDENT, ident); desenharIdent(); desenharResumo(); }
+    else if (acao === 'trocar') { ident = { modo: '', nome: '', telefone: '', primeiraCompra: false, aniversario: false }; gravar(CHAVE_IDENT, ident); desenharIdent(); desenharResumo(); }
+    else if (acao === 'cadastrar') { cadAberto = true; desenharIdent(); }
+    else if (acao === 'voltar') { cadAberto = false; desenharIdent(); }
+    else if (acao === 'conferir') {
+      const tel = ($('i-tel').value || ''); const msg = $('i-msg');
+      if (tel.replace(/\D/g, '').length < 10) { msg.innerHTML = '<div class="msg-no">Digite o telefone com DDD.</div>'; return; }
+      bt.disabled = true; msg.innerHTML = '<div class="msg-info">Conferindo...</div>';
+      try {
+        const r = await getApi({ action: 'consultarClienteCatalogo', telefone: tel });
+        if (r.encontrada) { ident = { modo: 'cadastrada', nome: r.primeiroNome, telefone: tel, primeiraCompra: r.primeiraCompra, aniversario: r.aniversario }; gravar(CHAVE_IDENT, ident); desenharIdent(); desenharResumo(); }
+        else { ident.telefone = tel; msg.innerHTML = '<div class="msg-no">Não encontramos esse telefone no cadastro. Confira o número ou faça seu cadastro agora e ganhe ' + Math.round((cfg.primeiraCompraPercentual || 0.05) * 100) + '% na primeira compra.</div><button class="btn-sec" data-ident="cadastrar">Quero me cadastrar agora</button><button class="btn-sec claro" data-ident="sem">Continuar sem cadastro</button>'; bt.disabled = false; }
+      } catch (err) { msg.innerHTML = '<div class="msg-no">Não consegui conferir agora. Tente de novo.</div>'; bt.disabled = false; }
+    }
+  });
+  async function enviarCadastro(ev) {
+    ev.preventDefault();
+    const msg = $('c-msg'), nasc = $('c-nasc').value, tel = $('c-tel').value;
+    const m = nasc.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!m || +m[2] < 1 || +m[2] > 12 || +m[1] < 1 || +m[1] > 31 || +m[3] < 1920 || +m[3] > new Date().getFullYear() - 10) { msg.innerHTML = '<div class="msg-no">Confira a data de nascimento (DD/MM/AAAA).</div>'; return; }
+    if (tel.replace(/\D/g, '').length < 10) { msg.innerHTML = '<div class="msg-no">Confira o WhatsApp (com DDD).</div>'; return; }
+    $('c-btn').disabled = true; msg.innerHTML = '<div class="msg-info">Salvando...</div>';
+    try {
+      const nome = $('c-nome').value.trim();
+      const r = await postApi('cadastrarClientePublico', { nome: nome, telefone: tel, nascimento: nasc, email: $('c-email').value, conheceu: '', site: $('c-site').value, usuaria: 'Catálogo' });
+      ident = { modo: 'cadastrada', nome: nome.split(/\s+/)[0], telefone: tel, primeiraCompra: !r.jaCadastrada, aniversario: false }; gravar(CHAVE_IDENT, ident); cadAberto = false;
+      desenharIdent(); desenharResumo(); toast(r.jaCadastrada ? 'Você já tinha cadastro. Tudo certo!' : 'Cadastro feito! Desconto garantido.');
+      if (r.jaCadastrada) reconferirIdent();
+    } catch (err) { msg.innerHTML = '<div class="msg-no">' + esc(err.message || 'Não consegui cadastrar agora.') + '</div>'; $('c-btn').disabled = false; }
+  }
+
+  // ----- 2) Entrega -----
+  function desenharEntrega() {
+    const el = $('s-entrega'); const pl = planejarLojas();
+    let h = '<div class="bloco"><h3>Como você quer receber?</h3><div class="sub">Escolha uma opção. A vendedora confirma tudo com você no WhatsApp.</div>';
+    h += '<button class="opcao-ent' + (ent.tipo === 'retirada' ? ' sel' : '') + '" data-ent="retirada"><div class="t"><span>Retirar na loja</span><span>Grátis</span></div><div class="d">Retire a sua peça na loja onde ela está.</div></button>';
+    if (cfg.freteCorreios) h += '<button class="opcao-ent' + (ent.tipo === 'correios' ? ' sel' : '') + '" data-ent="correios"><div class="t"><span>Envio pelos Correios</span><span>Calcular frete</span></div><div class="d">PAC ou SEDEX, calculado pelo seu CEP.</div></button>';
+    h += '<button class="opcao-ent' + (ent.tipo === 'uber' ? ' sel' : '') + '" data-ent="uber"><div class="t"><span>Uber Entrega</span><span>Você chama o Uber</span></div><div class="d">Para quem mora na cidade do Rio de Janeiro.</div></button>';
+    if (ent.tipo === 'retirada') {
+      if (pl.misto) h += '<div class="msg-info">Suas peças estão em lojas diferentes (' + LOJAS.join(' e ') + '). A vendedora combina com você a melhor forma de retirada.</div>';
+      else {
+        if (!ent.loja || pl.completas.indexOf(ent.loja) === -1) ent.loja = pl.completas[0];
+        h += pl.completas.length > 1 ? '<div class="duas" style="margin-top:10px">' + pl.completas.map(n => '<button class="escolha' + (ent.loja === n ? ' sel' : '') + '" data-loja="' + esc(n) + '">' + esc(n) + '</button>').join('') + '</div>' : '';
+        h += '<div class="msg-info"><b>Retirada na ' + esc(ent.loja) + '</b>' + (enderecoLoja(ent.loja) ? '<br>' + esc(enderecoLoja(ent.loja)) : '') + '</div>';
+      }
+    }
+    if (ent.tipo === 'correios' || ent.tipo === 'uber') {
+      h += '<div class="campo"><label for="e-cep">Seu CEP</label><input id="e-cep" type="text" inputmode="numeric" placeholder="00000-000" value="' + esc(maskCep(ent.cep)) + '" autocomplete="postal-code"></div><div id="e-end"></div>';
+    }
+    el.innerHTML = h + '</div>';
+    const cepIn = $('e-cep');
+    if (cepIn) { cepIn.addEventListener('input', () => { cepIn.value = maskCep(cepIn.value); const novo = cepIn.value.replace(/\D/g, ''); if (novo.length === 8 && novo !== ent.cep) { ent.cep = novo; buscarEndereco(); } else if (novo.length < 8) { ent.cep = novo; ent.endereco = ''; ent.cidade = ''; ent.opcoes = []; ent.freteSel = null; ent.erroCep = ''; $('e-end').innerHTML = ''; desenharResumo(); } }); if (ent.cep.length === 8) desenharEndereco(); }
+  }
+  $('s-corpo').addEventListener('click', e => {
+    const t = e.target.closest('[data-ent]'); const l = e.target.closest('[data-loja]');
+    if (t) { ent.tipo = t.dataset.ent; ent.freteSel = null; ent.opcoes = []; ent.erroFrete = ''; if (ent.tipo !== 'retirada') ent.loja = ''; desenharEntrega(); desenharResumo(); if ((ent.tipo === 'correios' || ent.tipo === 'uber') && ent.cep.length === 8) buscarEndereco(); }
+    else if (l) { ent.loja = l.dataset.loja; desenharEntrega(); desenharResumo(); }
+  });
+  async function buscarEndereco() {
+    ent.erroCep = ''; ent.endereco = ''; ent.cidade = ''; ent.freteSel = null; ent.opcoes = []; ent.erroFrete = '';
+    const box = $('e-end'); if (box) box.innerHTML = '<div class="msg-info">Buscando endereço...</div>';
+    try {
+      const r = await fetch('https://viacep.com.br/ws/' + ent.cep + '/json/'); const j = await r.json();
+      if (j.erro) { ent.erroCep = 'CEP não encontrado. Confira os números.'; desenharEndereco(); return; }
+      ent.endereco = [j.logradouro, j.bairro, j.localidade + '/' + j.uf].filter(Boolean).join(', '); ent.cidade = j.localidade || ''; ent.uf = j.uf || '';
+    } catch (err) { ent.erroCep = 'Não consegui consultar o CEP agora. Tente de novo.'; desenharEndereco(); return; }
+    desenharEndereco();
+    if (ent.tipo === 'correios') calcularFrete();
+    desenharResumo();
+  }
+  function desenharEndereco() {
+    const box = $('e-end'); if (!box) return;
+    if (ent.erroCep) { box.innerHTML = '<div class="msg-no">' + esc(ent.erroCep) + '</div>'; desenharResumo(); return; }
+    if (!ent.endereco) { box.innerHTML = ''; return; }
+    let h = '<div class="msg-info">' + esc(ent.endereco) + '</div>';
+    if (ent.tipo === 'correios') {
+      h += '<div class="linha-campos"><div class="campo"><label for="e-num">Número</label><input id="e-num" type="text" value="' + esc(ent.numero) + '"></div><div class="campo"><label for="e-comp">Complemento</label><input id="e-comp" type="text" value="' + esc(ent.compl) + '"></div></div>';
+      h += '<div id="e-frete"></div>';
+    } else {
+      const ok = norm(ent.cidade) === norm(cfg.cidadeUber || 'Rio de Janeiro');
+      if (!ok) h += '<div class="msg-no">O Uber Entrega vale só para a cidade do ' + esc(cfg.cidadeUber || 'Rio de Janeiro') + '. Escolha retirada ou, se disponível, Correios.</div>';
+      else { const lj = lojaOrigem(); h += '<div class="msg-info"><b>Como funciona:</b> a vendedora combina com você um horário em que estará na ' + esc(lj) + ' (' + esc(enderecoLoja(lj) || 'endereço da loja') + '). Na hora combinada, <b>você mesma pede o Uber</b> para buscar a mercadoria na loja.</div>'; }
+    }
+    box.innerHTML = h;
+    const num = $('e-num'); if (num) num.addEventListener('input', () => { ent.numero = num.value; });
+    const cp = $('e-comp'); if (cp) cp.addEventListener('input', () => { ent.compl = cp.value; });
+    desenharFrete(); desenharResumo();
+  }
+  async function calcularFrete() {
+    ent.calculando = true; ent.erroFrete = ''; desenharFrete();
+    try {
+      const r = await getApi({ action: 'calcularFreteCatalogo', cep: ent.cep, loja: lojaOrigem(), qtd: qtdTotal(), valor: totalSacola() });
+      ent.opcoes = r.opcoes || []; if (!ent.opcoes.length) ent.erroFrete = 'Nenhuma opção dos Correios para esse CEP. Fale com a gente pelo WhatsApp.';
+      else ent.freteSel = ent.opcoes[0];
+    } catch (err) { ent.erroFrete = 'Não consegui calcular o frete agora. Tente de novo em instantes.'; }
+    ent.calculando = false; desenharFrete(); desenharResumo();
+  }
+  function desenharFrete() {
+    const box = $('e-frete'); if (!box) return;
+    if (ent.calculando) { box.innerHTML = '<div class="msg-info">Calculando frete...</div>'; return; }
+    if (ent.erroFrete) { box.innerHTML = '<div class="msg-no">' + esc(ent.erroFrete) + '</div><button class="btn-sec claro" id="e-tentar">Tentar de novo</button>'; $('e-tentar').onclick = calcularFrete; return; }
+    box.innerHTML = ent.opcoes.map(o => '<button class="opcao-ent' + (ent.freteSel && ent.freteSel.id === o.id ? ' sel' : '') + '" data-fr="' + o.id + '"><div class="t"><span>' + esc(o.nome) + '</span><span>' + brl(o.preco) + '</span></div><div class="d">Prazo estimado: ' + (o.prazo ? o.prazo + (o.prazo === 1 ? ' dia útil' : ' dias úteis') : 'a confirmar') + ' (após o envio)</div></button>').join('');
+  }
+  $('s-corpo').addEventListener('click', e => { const f = e.target.closest('[data-fr]'); if (!f) return; ent.freteSel = ent.opcoes.find(o => String(o.id) === f.dataset.fr) || null; desenharFrete(); desenharResumo(); });
+
+  function desenharObs() { const d = ler(CHAVE_DADOS, { obs: '' }); $('s-obs-box').innerHTML = '<div class="bloco"><div class="campo" style="margin-top:0"><label for="s-obs">Observações (opcional)</label><textarea id="s-obs" rows="2" placeholder="Alguma dúvida ou pedido especial?">' + esc(d.obs) + '</textarea></div></div>'; $('s-obs').addEventListener('input', () => gravar(CHAVE_DADOS, { obs: $('s-obs').value })); }
+
+  // ----- 3) Resumo e envio -----
+  const descontoPrimeira = () => (ident.modo === 'cadastrada' && ident.primeiraCompra && !ident.aniversario) ? Math.round(totalSacola() * (cfg.primeiraCompraPercentual || 0.05) * 100) / 100 : 0;
+  const freteAtual = () => (ent.tipo === 'correios' && ent.freteSel) ? ent.freteSel.preco : 0;
+  function faltaAlgo() {
+    if (!sacola.length) return 'Sua sacola está vazia.';
+    if (!ident.modo || ident.modo === 'sim' || ident.modo === 'nao') return 'Responda se você já tem cadastro (ou escolha continuar sem cadastro).';
+    if (ident.modo === 'sem' && !(ident.nome || '').trim()) return 'Diga como podemos te chamar.';
+    if (!ent.tipo) return 'Escolha como você quer receber.';
+    if (ent.tipo === 'correios' && (ent.cep.length !== 8 || !ent.endereco || !(ent.numero || '').trim() || !ent.freteSel)) return 'Preencha o CEP, o número e escolha o frete.';
+    if (ent.tipo === 'uber' && (ent.cep.length !== 8 || norm(ent.cidade) !== norm(cfg.cidadeUber || 'Rio de Janeiro'))) return 'Informe um CEP da cidade do Rio de Janeiro para o Uber Entrega.';
+    return '';
+  }
+  function desenharResumo() {
+    if (!sacola.length) return;
+    const total = totalSacola(), desc = descontoPrimeira(), frete = freteAtual();
+    const falta = faltaAlgo();
+    $('s-rodape').innerHTML = '<div class="resumo"><div class="l"><span>Peças</span><span>' + brl(total) + '</span></div>' +
+      (desc > 0 ? '<div class="l d"><span>Desconto 1ª compra (' + Math.round((cfg.primeiraCompraPercentual || 0.05) * 100) + '%)</span><span>- ' + brl(desc) + '</span></div>' : '') +
+      (ent.tipo === 'correios' ? '<div class="l"><span>Frete</span><span>' + (ent.freteSel ? brl(frete) : 'a calcular') + '</span></div>' : '') +
+      '<div class="total-linha" style="margin-top:6px"><span>Total estimado</span><span class="v">' + brl(total - desc + frete) + '</span></div></div>' +
+      '<button class="btn-zap" id="btn-enviar-pedido"' + (enviando ? ' disabled' : '') + '><svg viewBox="0 0 24 24" width="24" height="24" fill="#fff"><path d="' + ZAP + '"/></svg> ' + (enviando ? 'Enviando...' : 'Fazer pedido no WhatsApp') + '</button>' +
+      (falta ? '<div class="nota" style="color:#a35a00">' + esc(falta) + '</div>' : '<div class="nota">Suas peças ficam reservadas por ' + (cfg.reservaHoras || 24) + ' horas. Você não paga nada agora: a vendedora confirma tudo e combina o pagamento no WhatsApp.</div>');
+    $('btn-enviar-pedido').onclick = enviarPedido;
   }
   $('s-corpo').addEventListener('click', e => {
     const q = e.target.closest('[data-q]'); const rm = e.target.closest('[data-rm]');
-    if (q) { const s = sacola.find(x => x.id === q.dataset.id); const p = porId[q.dataset.id]; if (!s || !p) return; const n = s.qtd + parseInt(q.dataset.q, 10); if (n < 1) return; if (n > p.saldo) { toast('Só temos ' + p.saldo + ' em estoque'); return; } s.qtd = n; }
+    if (q) { const s = sacola.find(x => x.id === q.dataset.id); const p = porId[q.dataset.id]; if (!s || !p) return; const n = s.qtd + parseInt(q.dataset.q, 10); if (n < 1) return; if (n > p.saldo) { toast('Só temos ' + p.saldo + ' disponível'); return; } s.qtd = n; }
     else if (rm) { sacola = sacola.filter(x => x.id !== rm.dataset.rm); }
     else return;
-    gravar(CHAVE_SACOLA, sacola); atualizarBarra(); const sc = $('s-corpo').scrollTop; desenharSacola(); $('s-corpo').scrollTop = sc;
-    if (!sacola.length) {}
+    gravar(CHAVE_SACOLA, sacola); atualizarBarra();
+    if (!sacola.length) { desenharSacola(); return; }
+    desenharItens(); desenharEntrega(); desenharResumo();
+    if (ent.tipo === 'correios' && ent.endereco) { ent.freteSel = null; calcularFrete(); }
   });
   const ZAP = 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z';
 
-  window.enviarPedido = () => {
+  async function enviarPedido() {
+    if (enviando) return;
+    const falta = faltaAlgo(); if (falta) { toast(falta); return; }
     const av = revalidarSacola(); atualizarBarra();
-    if (!sacola.length) { desenharSacola(); toast('Sua sacola ficou vazia'); return; }
-    const nome = ($('s-nome').value || '').trim(); const obs = ($('s-obs').value || '').trim();
-    let msg = 'Olá! Quero fazer um pedido pelo catálogo da USE ELLBA 💛\n';
-    if (nome) msg += '\n*Nome:* ' + nome + '\n';
+    if (av.length) { desenharSacola(); return; }
+    enviando = true; desenharResumo();
+    const obs = ($('s-obs') || {}).value || '';
+    const lojaPref = lojaOrigem();
+    const endereco = ent.tipo === 'correios' ? ent.endereco + ' | Nº ' + ent.numero + (ent.compl ? ' ' + ent.compl : '') : (ent.tipo === 'uber' ? ent.endereco : '');
+    try {
+      const r = await postApi('registrarPedidoCatalogo', {
+        itens: sacola.map(s => ({ id: s.id, qtd: s.qtd, loja: lojaPref })), loja: lojaPref,
+        telefone: ident.modo === 'cadastrada' ? ident.telefone : '', nome: ident.nome || '', entrega: ent.tipo,
+        cep: ent.cep, endereco: endereco, servico: ent.freteSel ? ent.freteSel.nome : '', frete: freteAtual(), prazo: ent.freteSel ? ent.freteSel.prazo : '',
+        cupom: cupom, obs: obs
+      });
+      mostrarSucesso(r, obs);
+      sacola = []; gravar(CHAVE_SACOLA, sacola); atualizarBarra();
+      carregarCatalogo(true);
+    } catch (err) {
+      enviando = false; desenharResumo();
+      toast(err.message || 'Não consegui enviar o pedido.');
+      if (/dispon|esgot|estoque|sacola/i.test(err.message || '')) { try { produtos = await pegarCatalogo(true); montarFamilias(); revalidarSacola(); atualizarBarra(); desenharSacola(); } catch (e) {} }
+    }
+    enviando = false;
+  }
+  function mostrarSucesso(r, obs) {
+    const ehCad = ident.modo === 'cadastrada';
+    let msg = 'Olá! Acabei de fazer o pedido *' + r.pedidoId + '* pelo catálogo da USE ELLBA 💛\n';
+    msg += '\n*Cliente:* ' + (r.cliente ? r.cliente.nome : (ident.nome || 'sem nome')) + (ehCad ? ' (cadastrada)' : ' (sem cadastro)') + '\n';
     msg += '\n*Peças:*\n';
-    sacola.forEach((s, i) => { const p = porId[s.id]; msg += (i + 1) + ') ' + p.descricao + ' | ' + [p.cor && 'Cor ' + p.cor, p.tamanho && 'Tam. ' + p.tamanho].filter(Boolean).join(' | ') + ' | ' + s.qtd + 'x ' + brl(p.preco) + ' (cód. ' + p.id + ')\n'; });
-    msg += '\n*Total das peças:* ' + brl(totalSacola()) + '\n';
-    if (obs) msg += '\n*Observações:* ' + obs + '\n';
+    r.itens.forEach((p, i) => { msg += (i + 1) + ') ' + p.descricao + ' | ' + [p.cor && 'Cor ' + p.cor, p.tamanho && 'Tam. ' + p.tamanho].filter(Boolean).join(' | ') + ' | ' + p.qtd + 'x ' + brl(p.preco) + ' (cód. ' + p.id + ')\n'; });
+    msg += '\n*Total das peças:* ' + brl(r.total) + '\n';
+    if (ehCad && ident.primeiraCompra && !ident.aniversario) msg += '*Tenho direito ao desconto de 1ª compra* (' + Math.round((cfg.primeiraCompraPercentual || 0.05) * 100) + '%)\n';
+    if (ent.tipo === 'retirada') msg += '\n*Entrega:* Retirar na ' + r.loja + '\n';
+    else if (ent.tipo === 'uber') msg += '\n*Entrega:* Uber Entrega (eu mesma peço o Uber), buscando na ' + r.loja + '\n*CEP:* ' + maskCep(ent.cep) + ' (' + ent.endereco + ')\n';
+    else if (ent.tipo === 'correios') msg += '\n*Entrega:* Correios (' + (ent.freteSel ? ent.freteSel.nome + ' ' + brl(ent.freteSel.preco) + (ent.freteSel.prazo ? ', ' + ent.freteSel.prazo + ' dias úteis' : '') : '') + ')\n*Endereço:* ' + ent.endereco + ', nº ' + ent.numero + (ent.compl ? ' ' + ent.compl : '') + ' - CEP ' + maskCep(ent.cep) + '\n';
+    if (r.mistoLojas) msg += '_(peças em lojas diferentes)_\n';
+    if (obs.trim()) msg += '\n*Observações:* ' + obs.trim() + '\n';
     if (cupom) msg += '\n*Origem/cupom:* ' + cupom + '\n';
-    msg += '\nVamos combinar entrega ou retirada e o pagamento?';
     const url = 'https://wa.me/' + WHATSAPP_LOJA + '?text=' + encodeURIComponent(msg);
-    window.open(url, '_blank', 'noopener');
-    if (av.length) toast(av[0]);
-  };
+    $('s-rodape').innerHTML = '';
+    $('s-corpo').innerHTML = '<div class="sucesso"><div class="ok">&#10003;</div><h2 style="color:var(--bordo);margin:14px 0 6px">Pedido ' + esc(r.pedidoId) + ' registrado!</h2><p style="color:var(--muted);margin:0 0 4px">Suas peças ficam reservadas por <b>' + r.reservaHoras + ' horas</b>.</p><p style="color:var(--muted);margin:0 0 18px">Falta só um passo: toque no botão abaixo para enviar o pedido para a vendedora no WhatsApp e combinar o pagamento.</p><a class="btn-zap" href="' + esc(url) + '" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="24" height="24" fill="#fff"><path d="' + ZAP + '"/></svg> Continuar no WhatsApp</a><button class="btn-sec claro" onclick="fecharTudo()" style="margin-top:14px">Voltar ao catálogo</button></div>';
+  }
 
   // ---------- link direto ----------
   function abrirPorLink() {
@@ -467,6 +734,11 @@
     const q = new URLSearchParams(location.search);
     const cp = (q.get('cupom') || '').trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '').slice(0, 30);
     if (cp) { cupom = cp; gravar(CHAVE_CUPOM, cp); }
+    const fid = (q.get('familia') || '').trim().toUpperCase().replace(/\s+/g, '');
+    if (fid) {
+      const f = familias.find(x => x.id.toUpperCase() === fid) || (function() { const it = produtos.find(p => p.id.toUpperCase() === fid); return it ? familias.find(x => x.id === it.familia) : null; })();
+      if (f) abrirPeca(f.id); else toast('Essa peça não está mais disponível');
+    }
     const pid = (q.get('produto') || '').trim().toUpperCase().replace(/\s+/g, '');
     if (pid) {
       const it = porId[pid] || produtos.find(p => p.id.toUpperCase() === pid);

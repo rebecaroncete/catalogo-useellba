@@ -223,6 +223,10 @@
 
 <script src="config.js"></script>
 <script>
+  // começa a buscar a lista já na abertura da página (não espera o resto carregar)
+  try { if (!/[?&]t=/.test(location.search)) window.__catPre = fetch(API_URL + '?action=buscarCatalogo').catch(() => null); } catch (e) {}
+</script>
+<script>
 (function() {
   'use strict';
   const CHAVE_SACOLA = 'ellba_sacola_v1', CHAVE_CUPOM = 'ellba_cupom_v1', CHAVE_DADOS = 'ellba_dados_v1', CHAVE_IDENT = 'ellba_ident_v1';
@@ -242,7 +246,7 @@
   const esc = t => (t == null ? '' : String(t)).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
   function ler(chave, padrao) { try { const v = localStorage.getItem(chave); return v ? JSON.parse(v) : padrao; } catch (e) { return padrao; } }
   function gravar(chave, v) { try { localStorage.setItem(chave, JSON.stringify(v)); } catch (e) {} }
-  function thumb(u) { return (u && u.indexOf('res.cloudinary.com') > -1) ? u.replace('/upload/q_auto,w_700/', '/upload/q_auto,f_auto,w_420/').replace('/upload/q_auto,', '/upload/q_auto,f_auto,') : u; }
+  function thumb(u) { if (u && u.indexOf('drive.google.com/thumbnail') > -1) return u.replace(/sz=w\d+/, 'sz=w400'); return (u && u.indexOf('res.cloudinary.com') > -1) ? u.replace('/upload/q_auto,w_700/', '/upload/q_auto:eco,f_auto,w_360/').replace('/upload/q_auto,', '/upload/q_auto:eco,f_auto,') : u; }
   function grande(u) { return (u && u.indexOf('res.cloudinary.com') > -1 && u.indexOf('f_auto') === -1) ? u.replace('/upload/q_auto,', '/upload/q_auto,f_auto,') : u; }
   function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('mostra'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('mostra'), 2600); }
   const PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="300" height="400"><rect width="100%" height="100%" fill="#efe6e0"/><text x="50%" y="50%" fill="#b9a99f" font-family="Georgia" font-size="22" text-anchor="middle">USE ELLBA</text></svg>');
@@ -261,12 +265,20 @@
   // ---------- dados ----------
   async function pegarCatalogo(forcar) {
     const url = API_URL + '?action=buscarCatalogo' + (forcar ? '&t=' + Date.now() : '');
-    const r = await fetch(url);
-    const j = await r.json();
-    if (!j || j.ok === false) throw new Error((j && j.erro) || 'Erro ao carregar');
-    const d = j.data !== undefined ? j.data : j;
-    if (d.config) cfg = d.config;
-    return d.produtos || [];
+    let ultimo;
+    for (let t = 0; t < 3; t++) { // até 3 tentativas, 20s cada (evita ficar carregando para sempre)
+      const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 20000);
+      try {
+        const r = (t === 0 && !forcar && window.__catPre) ? await window.__catPre : await fetch(url, { signal: ctl.signal });
+        const j = await r.json();
+        if (!j || j.ok === false) throw new Error((j && j.erro) || 'Erro ao carregar');
+        const d = j.data !== undefined ? j.data : j;
+        if (d.config) cfg = d.config;
+        clearTimeout(to);
+        return d.produtos || [];
+      } catch (e) { ultimo = e; clearTimeout(to); window.__catPre = null; }
+    }
+    throw ultimo;
   }
 
   function montarFamilias() {
@@ -358,11 +370,11 @@
     });
     $('contagem').textContent = lista.length + (lista.length === 1 ? ' peça' : ' peças');
     $('msg-vazio').classList.toggle('oculto', lista.length > 0);
-    $('grade').innerHTML = lista.map(f => {
+    $('grade').innerHTML = lista.map((f, n) => {
       const bol = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).slice(0, 6);
       const mais = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).length - bol.length;
       const poucas = f.saldo > 0 && f.saldo <= 2;
-      return '<button class="cartao" data-f="' + esc(f.id) + '"><div class="foto"><img loading="lazy" decoding="async" src="' + esc(thumb(f.capa) || PLACEHOLDER) + '" alt="' + esc(f.descricao) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'">' + (poucas ? '<span class="selo">Últimas unidades</span>' : '') + '</div><div class="info"><div class="nome">' + esc(f.descricao || 'Peça') + '</div><div class="preco">' + (f.preco ? brl(f.preco) : 'Consulte') + '</div><div class="bolinhas">' + bol.map(c => '<span class="bolinha" title="' + esc(c.cor) + '" style="background:' + corCss(c.cor) + '"></span>').join('') + (mais > 0 ? '<small>+' + mais + '</small>' : '') + '</div></div></button>';
+      return '<button class="cartao" data-f="' + esc(f.id) + '"><div class="foto"><img ' + (n < 6 ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async" src="' + esc(thumb(f.capa) || PLACEHOLDER) + '" alt="' + esc(f.descricao) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'">' + (poucas ? '<span class="selo">Últimas unidades</span>' : '') + '</div><div class="info"><div class="nome">' + esc(f.descricao || 'Peça') + '</div><div class="preco">' + (f.preco ? brl(f.preco) : 'Consulte') + '</div><div class="bolinhas">' + bol.map(c => '<span class="bolinha" title="' + esc(c.cor) + '" style="background:' + corCss(c.cor) + '"></span>').join('') + (mais > 0 ? '<small>+' + mais + '</small>' : '') + '</div></div></button>';
     }).join('');
   }
   $('grade').addEventListener('click', e => { const b = e.target.closest('.cartao'); if (b) abrirPeca(b.dataset.f); });
@@ -770,6 +782,7 @@
   document.addEventListener('visibilitychange', () => { if (!document.hidden && Date.now() - ultimaCarga > 120000) carregarCatalogo(true); });
   window.carregarCatalogo = carregarCatalogo;
   carregarCatalogo(false);
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
 })();
 </script>
 </body>

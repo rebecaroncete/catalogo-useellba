@@ -222,6 +222,7 @@
 <div class="toast" id="toast"></div>
 
 <script src="config.js"></script>
+<script src="monitor-erros.js" data-app="Use Ellba – Catálogo"></script>
 <script>
   // começa a buscar a lista já na abertura da página (não espera o resto carregar)
   try { if (!/[?&]t=/.test(location.search)) window.__catPre = fetch(API_URL + '?action=buscarCatalogo').catch(() => null); } catch (e) {}

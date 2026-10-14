@@ -222,7 +222,6 @@
 <div class="toast" id="toast"></div>
 
 <script src="config.js"></script>
-<script src="monitor-erros.js" data-app="Use Ellba – Catálogo"></script>
 <script>
   // começa a buscar a lista já na abertura da página (não espera o resto carregar)
   try { if (!/[?&]t=/.test(location.search)) window.__catPre = fetch(API_URL + '?action=buscarCatalogo').catch(() => null); } catch (e) {}
@@ -264,6 +263,15 @@
   }
 
   // ---------- dados ----------
+  // lançamentos programados: o servidor avisa quando a próxima peça será liberada
+  let proxLib = 0, offsetSrv = 0, tLib;
+  function agendarLiberacao() {
+    clearTimeout(tLib);
+    if (!proxLib) return;
+    const espera = proxLib - (Date.now() + offsetSrv) + 1500;
+    if (espera > 2000000000) return;
+    tLib = setTimeout(() => carregarCatalogo(true), espera > 0 ? espera : 5000);
+  }
   async function pegarCatalogo(forcar) {
     const url = API_URL + '?action=buscarCatalogo' + (forcar ? '&t=' + Date.now() : '');
     let ultimo;
@@ -275,6 +283,7 @@
         if (!j || j.ok === false) throw new Error((j && j.erro) || 'Erro ao carregar');
         const d = j.data !== undefined ? j.data : j;
         if (d.config) cfg = d.config;
+        proxLib = d.proximaLiberacao || 0; if (d.agora) offsetSrv = d.agora - Date.now();
         clearTimeout(to);
         return d.produtos || [];
       } catch (e) { ultimo = e; clearTimeout(to); window.__catPre = null; }
@@ -333,6 +342,7 @@
       ultimaCarga = Date.now();
       gravar(CHAVE_CACHE, { produtos: novos, config: cfg });
       aplicar(novos);
+      agendarLiberacao();
     } catch (e) {
       if (!produtos.length) { $('grade').innerHTML = ''; $('msg-erro').classList.remove('oculto'); }
     }
@@ -780,7 +790,7 @@
   cupom = ler(CHAVE_CUPOM, '') || '';
   (function() { const q = new URLSearchParams(location.search); const cp = (q.get('cupom') || '').trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '').slice(0, 30); if (cp) { cupom = cp; gravar(CHAVE_CUPOM, cp); } })();
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { if ($('folha-medidas').classList.contains('aberta')) fecharMedidas(); else fecharTudo(); } });
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && Date.now() - ultimaCarga > 120000) carregarCatalogo(true); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && (Date.now() - ultimaCarga > 120000 || (proxLib && Date.now() + offsetSrv >= proxLib))) carregarCatalogo(true); });
   window.carregarCatalogo = carregarCatalogo;
   carregarCatalogo(false);
   if ('serviceWorker' in navigator) window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });

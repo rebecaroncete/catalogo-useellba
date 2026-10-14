@@ -339,6 +339,7 @@
     if (!produtos.length) { $('grade').innerHTML = '<div class="esqueleto"></div>'.repeat(6); }
     try {
       const novos = await pegarCatalogo(forcar);
+      if (!novos.length) throw new Error('lista vazia'); // lista vazia = problema temporário: mantém o que já está na tela
       ultimaCarga = Date.now();
       gravar(CHAVE_CACHE, { produtos: novos, config: cfg });
       aplicar(novos);

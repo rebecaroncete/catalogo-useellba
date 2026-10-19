@@ -291,6 +291,9 @@
     throw ultimo;
   }
 
+  // acessórios vão para o fim da vitrine
+  function ehAcessorio(cat) { return /acess|len[cç]o|bolsa|cinto|brinco|colar|pulseira|bijou|echarpe|cachecol|anel|relogio|relógio/i.test(String(cat || '')) ? 1 : 0; }
+
   function montarFamilias() {
     const mapa = {};
     produtos.forEach(p => {
@@ -315,7 +318,7 @@
       f.capa = (f.listaCores.find(c => c.foto && c.tams.some(t => t.saldo > 0)) || f.listaCores.find(c => c.foto) || {}).foto || '';
       f.itens.forEach(i => { if (!i.foto) i.foto = (f.cores[norm(i.cor) || 'unica'] || {}).foto || f.capa; });
       return f;
-    }).sort((a, b) => b.ordem - a.ordem);
+    }).sort((a, b) => (ehAcessorio(a.categoria) - ehAcessorio(b.categoria)) || (b.ordem - a.ordem));
     porId = {}; produtos.forEach(p => porId[p.id] = p);
   }
 
@@ -351,7 +354,8 @@
 
   // ---------- filtros / grade ----------
   function desenharFiltros() {
-    const cats = ['Todas'].concat(Array.from(new Set(familias.map(f => f.categoria).filter(Boolean))).sort((a, b) => a.localeCompare(b)));
+    const qtd = {}; familias.forEach(f => { if (f.categoria) qtd[f.categoria] = (qtd[f.categoria] || 0) + 1; });
+    const cats = ['Todas'].concat(Object.keys(qtd).sort((a, b) => (qtd[b] - qtd[a]) || a.localeCompare(b)));
     $('pil-cat').innerHTML = cats.map(c => '<button class="pilula' + (c === catAtiva ? ' ativa' : '') + '" data-c="' + esc(c) + '">' + esc(c) + '</button>').join('');
     const tams = Array.from(new Set(produtos.filter(p => p.saldo > 0 && p.tamanho).map(p => p.tamanho))).sort(ordenarTam);
     const mostrar = tams.length > 1;

@@ -232,7 +232,7 @@
   const CHAVE_SACOLA = 'ellba_sacola_v1', CHAVE_CUPOM = 'ellba_cupom_v1', CHAVE_DADOS = 'ellba_dados_v1', CHAVE_IDENT = 'ellba_ident_v1';
   const ORDEM_TAM = ['PP','P','M','G','GG','XG','XGG','EG','EGG','UNICO','UNICA','U'];
   let produtos = [], familias = [], porId = {};
-  let catAtiva = 'Todas', tamAtivo = '', termo = '';
+  let catAtiva = 'Todas', tamAtivo = '', termo = '', corLink = '';
   let sacola = [];            // [{id, qtd}]
   let cupom = '';
   let pecaAtual = null;       // {fam, cor, itemId, qtd}
@@ -382,6 +382,7 @@
       if (catAtiva !== 'Todas' && f.categoria !== catAtiva) return false;
       if (tamAtivo && !f.itens.some(i => i.saldo > 0 && i.tamanho === tamAtivo)) return false;
       if (tokens.length && !casaBusca(f, tokens)) return false;
+      if (corLink && !f.listaCores.some(c => norm(c.cor) === corLink && c.tams.some(t => t.saldo > 0))) return false;
       return true;
     });
     $('contagem').textContent = lista.length + (lista.length === 1 ? ' peça' : ' peças');
@@ -764,8 +765,8 @@
     const cp = (q.get('cupom') || '').trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '').slice(0, 30);
     if (cp) { cupom = cp; gravar(CHAVE_CUPOM, cp); }
     // filtros por link: ?categoria=Blusas  ?tamanho=M  ?q=floral  (podem ser combinados)
-    const qc = norm(q.get('categoria') || ''), qt = norm(q.get('tamanho') || ''), qb = (q.get('q') || '').trim().slice(0, 60);
-    if (qc || qt || qb) {
+    const qc = norm(q.get('categoria') || ''), qt = norm(q.get('tamanho') || ''), qb = (q.get('q') || '').trim().slice(0, 60), qcor = norm(q.get('cor') || '');
+    if (qc || qt || qb || qcor) {
       if (qc) {
         const cat = Array.from(new Set(familias.map(f => f.categoria).filter(Boolean))).find(c => norm(c) === qc);
         if (cat) catAtiva = cat; else toast('Categoria não encontrada');
@@ -775,7 +776,15 @@
         if (tam) tamAtivo = tam; else toast('Tamanho indisponível no momento');
       }
       if (qb) { termo = qb; $('busca').value = qb; }
+      if (qcor) corLink = qcor;
       desenharFiltros(); desenharGrade();
+      // ?cor=Rosa junto de ?q=...: se sobrou uma única peça, abre ela já na cor pedida
+      if (qcor) {
+        const tk = norm(termo).split(' ').filter(Boolean);
+        const achadas = familias.filter(f => (catAtiva === 'Todas' || f.categoria === catAtiva) && (!tamAtivo || f.itens.some(i => i.saldo > 0 && i.tamanho === tamAtivo)) && (!tk.length || casaBusca(f, tk)) && f.listaCores.some(c => norm(c.cor) === corLink && c.tams.some(t => t.saldo > 0)));
+        if (achadas.length === 1) abrirPeca(achadas[0].id, achadas[0].listaCores.find(c => norm(c.cor) === corLink));
+        else if (!achadas.length) toast('Cor indisponível no momento');
+      }
     }
     const fid = (q.get('familia') || '').trim().toUpperCase().replace(/\s+/g, '');
     if (fid) {

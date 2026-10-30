@@ -8,7 +8,9 @@
 <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
 <link rel="preconnect" href="https://gfxlvsyondbnmpdfwplp.supabase.co" crossorigin>
 <link rel="dns-prefetch" href="https://script.googleusercontent.com">
-<meta name="theme-color" content="#4a151b">
+<meta name="theme-color" content="#faf7f4">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="icon-180.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <style>
@@ -165,6 +167,54 @@
   a.btn-zap { text-decoration:none; }
   footer { text-align:center; color:var(--muted); font-size:.78rem; padding:6px 20px 26px; }
   svg.i { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+
+  /* ===== Visual novo (limpo e moderno, mesmas cores da marca) ===== */
+  :root { --bg:#faf7f4; --suave:#f4ede7; --sombra:0 1px 2px rgba(74,21,27,.04),0 6px 20px rgba(74,21,27,.05); }
+  body { font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; letter-spacing:-.005em; }
+  header.topo { background:rgba(250,247,244,.92); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); box-shadow:none; border-bottom:1px solid var(--linha); }
+  .topo-linha img { width:32px; height:32px; }
+  .marca { font-family:'Cormorant Garamond',Georgia,serif; color:var(--bordo); font-weight:600; font-size:1.35rem; letter-spacing:4px; }
+  .campo-busca input { background:var(--suave); border-color:transparent; border-radius:999px; }
+  .campo-busca input:focus { background:#fff; border-color:var(--dourado2); box-shadow:0 0 0 4px rgba(220,184,129,.25); }
+  .pilula { border-width:1px; font-weight:600; font-size:.86rem; color:var(--ink); }
+  .pilula.ativa { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .pilula.colecao { background:rgba(220,184,129,.22); border-color:transparent; color:var(--bordo); }
+  .pilula.colecao.ativa { background:var(--bordo); color:var(--dourado); }
+  .cartao { box-shadow:none; border:1px solid var(--linha); border-radius:18px; }
+  .cartao .foto { aspect-ratio:3/4; }
+  .cartao .nome { font-weight:500; font-size:.9rem; }
+  .cartao .preco { font-weight:700; font-size:1rem; color:var(--ink); }
+  .selo { background:rgba(255,255,255,.92); color:var(--bordo); font-weight:700; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
+  .selo.novo { background:var(--bordo); color:var(--dourado); }
+  .selo + .selo { top:36px; }
+  .barra-sacola button { border-radius:999px; }
+  .btn-add, .btn-zap, .btn-sec { border-radius:999px; }
+  .item, .bloco { box-shadow:none; border:1px solid var(--linha); }
+  .op { border-width:1px; }
+  .op.sel { background:var(--ink); border-color:var(--ink); color:#fff; }
+  .prod-info h1 { font-size:1.3rem; font-weight:700; letter-spacing:-.02em; }
+  .prod-preco { color:var(--ink); }
+  .detalhe-txt { color:#4d3d40; line-height:1.55; font-size:.95rem; white-space:pre-line; }
+  .tecido { display:inline-flex; gap:6px; align-items:center; background:var(--suave); border-radius:999px; padding:6px 12px; font-size:.85rem; color:var(--ink); }
+  /* Vitrine */
+  .vitrine { max-width:1100px; margin:12px auto 0; padding:0 14px; }
+  .banners { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:10px; scrollbar-width:none; border-radius:20px; }
+  .banners::-webkit-scrollbar { display:none; }
+  .banner { flex:none; width:100%; scroll-snap-align:center; position:relative; border-radius:20px; overflow:hidden; aspect-ratio:16/8; background:var(--suave); text-align:left; }
+  @media (min-width:800px) { .banner { aspect-ratio:16/5; } }
+  .banner img { width:100%; height:100%; object-fit:cover; }
+  .banner .txt { position:absolute; left:0; right:0; bottom:0; padding:18px 18px 16px; background:linear-gradient(0deg,rgba(30,10,12,.65),rgba(30,10,12,0)); color:#fff; }
+  .banner b { display:block; font-family:'Cormorant Garamond',Georgia,serif; font-size:1.6rem; font-weight:600; line-height:1.1; }
+  .banner small { opacity:.9; }
+  .linha-destaques { margin-top:16px; }
+  .linha-destaques h3 { font-size:1rem; margin:0 0 8px 4px; color:var(--ink); }
+  .destaques { display:flex; gap:10px; overflow-x:auto; scrollbar-width:none; padding-bottom:4px; }
+  .destaques::-webkit-scrollbar { display:none; }
+  .destaques .cartao { flex:none; width:150px; }
+  /* Ajuda no WhatsApp */
+  .ajuda-zap { position:fixed; right:14px; bottom:calc(86px + env(safe-area-inset-bottom)); z-index:45; display:flex; align-items:center; gap:8px; background:#fff; color:var(--ink); border:1px solid var(--linha); border-radius:999px; padding:9px 14px 9px 10px; font-weight:600; font-size:.85rem; box-shadow:0 8px 24px rgba(0,0,0,.12); text-decoration:none; }
+  .ajuda-zap span.ic { width:28px; height:28px; border-radius:50%; background:var(--verde); display:flex; align-items:center; justify-content:center; }
+  body.sem-sacola .ajuda-zap { bottom:calc(18px + env(safe-area-inset-bottom)); }
 </style>
 </head>
 <body>
@@ -179,6 +229,7 @@
     <input id="busca" type="search" placeholder="Buscar peça (ex.: vestido, azul)" autocomplete="off" aria-label="Buscar peça">
   </div>
 </div>
+<section class="vitrine" id="vitrine"></section>
 <nav class="pilulas" id="pil-cat" aria-label="Categorias"></nav>
 <div class="rotulo-linha oculto" id="rot-tam">Tamanho</div>
 <nav class="pilulas oculto" id="pil-tam" aria-label="Tamanhos" style="padding-top:6px"></nav>
@@ -196,6 +247,8 @@
     <span id="sac-total">R$ 0,00</span>
   </button>
 </div>
+
+<a class="ajuda-zap" id="ajuda-zap" target="_blank" rel="noopener" aria-label="Precisa de ajuda? Fale no WhatsApp"><span class="ic"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path id="zap-path"/></svg></span>Precisa de ajuda?</a>
 
 <div class="fundo" id="fundo" onclick="fecharTudo()"></div>
 
@@ -232,6 +285,7 @@
   const CHAVE_SACOLA = 'ellba_sacola_v1', CHAVE_CUPOM = 'ellba_cupom_v1', CHAVE_DADOS = 'ellba_dados_v1', CHAVE_IDENT = 'ellba_ident_v1';
   const ORDEM_TAM = ['PP','P','M','G','GG','XG','XGG','EG','EGG','UNICO','UNICA','U'];
   let produtos = [], familias = [], porId = {};
+  let detFam = {}, vitrine = { banners: [], destaques: [], ordemCategorias: [], colecoes: [] }, colAtiva = '';
   let catAtiva = 'Todas', tamAtivo = '', termo = '', corLink = '';
   let sacola = [];            // [{id, qtd}]
   let cupom = '';
@@ -283,6 +337,7 @@
         if (!j || j.ok === false) throw new Error((j && j.erro) || 'Erro ao carregar');
         const d = j.data !== undefined ? j.data : j;
         if (d.config) cfg = d.config;
+        if (d.familias) detFam = d.familias; if (d.vitrine) vitrine = d.vitrine;
         proxLib = d.proximaLiberacao || 0; if (d.agora) offsetSrv = d.agora - Date.now();
         clearTimeout(to);
         return d.produtos || [];
@@ -303,6 +358,7 @@
       if (!f.descricao && p.descricao) f.descricao = p.descricao;
       f.ordem = Math.max(f.ordem, p.ordem || 0);
       f.saldo += p.saldo;
+      if (p.novo && p.saldo > 0) f.novo = true;
       const chaveCor = norm(p.cor) || 'unica';
       const c = f.cores[chaveCor] || (f.cores[chaveCor] = { cor: p.cor || 'Única', foto: '', tams: [] });
       if (!c.foto && p.foto) c.foto = p.foto;
@@ -317,6 +373,8 @@
       f.preco = precos.length ? Math.min.apply(null, precos) : 0;
       f.capa = (f.listaCores.find(c => c.foto && c.tams.some(t => t.saldo > 0)) || f.listaCores.find(c => c.foto) || {}).foto || '';
       f.itens.forEach(i => { if (!i.foto) i.foto = (f.cores[norm(i.cor) || 'unica'] || {}).foto || f.capa; });
+      f.det = detFam[f.id] || null; f.colecoes = (f.det && f.det.colecoes) || [];
+      if (!f.capa && f.det && f.det.fotos && f.det.fotos.length) f.capa = f.det.fotos[0];
       return f;
     }).sort((a, b) => (ehAcessorio(a.categoria) - ehAcessorio(b.categoria)) || (b.ordem - a.ordem));
     porId = {}; produtos.forEach(p => porId[p.id] = p);
@@ -327,6 +385,7 @@
     produtos = lista;
     montarFamilias();
     revalidarSacola(true);
+    desenharVitrine();
     desenharFiltros();
     desenharGrade();
     atualizarBarra();
@@ -337,14 +396,14 @@
     let usouCache = false;
     if (!produtos.length && !forcar) {
       const c = ler(CHAVE_CACHE, null);
-      if (c && c.produtos && c.produtos.length) { if (c.config) cfg = c.config; try { aplicar(c.produtos); usouCache = true; } catch (e) { produtos = []; } }
+      if (c && c.produtos && c.produtos.length) { if (c.config) cfg = c.config; if (c.familias) detFam = c.familias; if (c.vitrine) vitrine = c.vitrine; try { aplicar(c.produtos); usouCache = true; } catch (e) { produtos = []; } }
     }
     if (!produtos.length) { $('grade').innerHTML = '<div class="esqueleto"></div>'.repeat(6); }
     try {
       const novos = await pegarCatalogo(forcar);
       if (!novos.length) throw new Error('lista vazia'); // lista vazia = problema temporário: mantém o que já está na tela
       ultimaCarga = Date.now();
-      gravar(CHAVE_CACHE, { produtos: novos, config: cfg });
+      gravar(CHAVE_CACHE, { produtos: novos, config: cfg, familias: detFam, vitrine: vitrine });
       aplicar(novos);
       agendarLiberacao();
     } catch (e) {
@@ -355,14 +414,18 @@
   // ---------- filtros / grade ----------
   function desenharFiltros() {
     const qtd = {}; familias.forEach(f => { if (f.categoria) qtd[f.categoria] = (qtd[f.categoria] || 0) + 1; });
-    const cats = ['Todas'].concat(Object.keys(qtd).sort((a, b) => (qtd[b] - qtd[a]) || a.localeCompare(b)));
-    $('pil-cat').innerHTML = cats.map(c => '<button class="pilula' + (c === catAtiva ? ' ativa' : '') + '" data-c="' + esc(c) + '">' + esc(c) + '</button>').join('');
+    const ordem = (vitrine.ordemCategorias || []).map(norm);
+    const pos = c => { const i = ordem.indexOf(norm(c)); return i === -1 ? 999 : i; };
+    const cats = ['Todas'].concat(familias.some(f => f.novo) ? ['Novidades'] : []).concat(Object.keys(qtd).sort((a, b) => (pos(a) - pos(b)) || (qtd[b] - qtd[a]) || a.localeCompare(b)));
+    const cols = (vitrine.colecoes || []).filter(c => familias.some(f => f.colecoes.indexOf(c.id) > -1));
+    $('pil-cat').innerHTML = cols.map(c => '<button class="pilula colecao' + (colAtiva === c.id ? ' ativa' : '') + '" data-col="' + esc(c.id) + '">' + esc(c.nome) + '</button>').join('') +
+      cats.map(c => '<button class="pilula' + (c === catAtiva && !colAtiva ? ' ativa' : '') + '" data-c="' + esc(c) + '">' + esc(c) + '</button>').join('');
     const tams = Array.from(new Set(produtos.filter(p => p.saldo > 0 && p.tamanho).map(p => p.tamanho))).sort(ordenarTam);
     const mostrar = tams.length > 1;
     $('pil-tam').classList.toggle('oculto', !mostrar); $('rot-tam').classList.toggle('oculto', !mostrar);
     $('pil-tam').innerHTML = ['Todos'].concat(tams).map(t => '<button class="pilula' + ((t === 'Todos' ? '' : t) === tamAtivo ? ' ativa' : '') + '" data-t="' + esc(t === 'Todos' ? '' : t) + '">' + esc(t) + '</button>').join('');
   }
-  $('pil-cat').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; catAtiva = b.dataset.c; desenharFiltros(); desenharGrade(); });
+  $('pil-cat').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.col) { colAtiva = colAtiva === b.dataset.col ? '' : b.dataset.col; catAtiva = 'Todas'; } else { catAtiva = b.dataset.c; colAtiva = ''; } desenharFiltros(); desenharGrade(); });
   $('pil-tam').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; tamAtivo = b.dataset.t; desenharFiltros(); desenharGrade(); });
   let tBusca; $('busca').addEventListener('input', e => { clearTimeout(tBusca); tBusca = setTimeout(() => { termo = e.target.value; desenharGrade(); }, 150); });
 
@@ -379,7 +442,9 @@
   function desenharGrade() {
     const tokens = norm(termo).split(' ').filter(Boolean);
     const lista = familias.filter(f => {
-      if (catAtiva !== 'Todas' && f.categoria !== catAtiva) return false;
+      if (colAtiva && f.colecoes.indexOf(colAtiva) === -1) return false;
+      if (catAtiva === 'Novidades') { if (!f.novo) return false; }
+      else if (catAtiva !== 'Todas' && f.categoria !== catAtiva) return false;
       if (tamAtivo && !f.itens.some(i => i.saldo > 0 && i.tamanho === tamAtivo)) return false;
       if (tokens.length && !casaBusca(f, tokens)) return false;
       if (corLink && !f.listaCores.some(c => norm(c.cor) === corLink && c.tams.some(t => t.saldo > 0))) return false;
@@ -387,13 +452,37 @@
     });
     $('contagem').textContent = lista.length + (lista.length === 1 ? ' peça' : ' peças');
     $('msg-vazio').classList.toggle('oculto', lista.length > 0);
-    $('grade').innerHTML = lista.map((f, n) => {
-      const bol = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).slice(0, 6);
-      const mais = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).length - bol.length;
-      const poucas = f.saldo > 0 && f.saldo <= 2;
-      return '<button class="cartao" data-f="' + esc(f.id) + '"><div class="foto"><img ' + (n < 6 ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async" src="' + esc(thumb(f.capa) || PLACEHOLDER) + '" alt="' + esc(f.descricao) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'">' + (poucas ? '<span class="selo">Últimas unidades</span>' : '') + '</div><div class="info"><div class="nome">' + esc(f.descricao || 'Peça') + '</div><div class="preco">' + (f.preco ? brl(f.preco) : 'Consulte') + '</div><div class="bolinhas">' + bol.map(c => '<span class="bolinha" title="' + esc(c.cor) + '" style="background:' + corCss(c.cor) + '"></span>').join('') + (mais > 0 ? '<small>+' + mais + '</small>' : '') + '</div></div></button>';
-    }).join('');
+    $('grade').innerHTML = lista.map(cartaoHtml).join('');
   }
+  function cartaoHtml(f, n) {
+    const bol = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).slice(0, 6);
+    const mais = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).length - bol.length;
+    const poucas = f.saldo > 0 && f.saldo <= 2;
+    return '<button class="cartao" data-f="' + esc(f.id) + '"><div class="foto"><img ' + (n < 6 ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async" src="' + esc(thumb(f.capa) || PLACEHOLDER) + '" alt="' + esc(f.descricao) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'">' + (f.novo ? '<span class="selo novo">Novidade</span>' : '') + (poucas ? '<span class="selo">Últimas unidades</span>' : '') + '</div><div class="info"><div class="nome">' + esc(f.descricao || 'Peça') + '</div><div class="preco">' + (f.preco ? brl(f.preco) : 'Consulte') + '</div><div class="bolinhas">' + bol.map(c => '<span class="bolinha" title="' + esc(c.cor) + '" style="background:' + corCss(c.cor) + '"></span>').join('') + (mais > 0 ? '<small>+' + mais + '</small>' : '') + '</div></div></button>';
+  }
+  // ---------- vitrine: banners e destaques ----------
+  function desenharVitrine() {
+    let h = '';
+    const bs = vitrine.banners || [];
+    if (bs.length) h += '<div class="banners" id="banners">' + bs.map(b => '<button class="banner" data-link="' + esc(b.link || '') + '"><img src="' + esc(grande(b.imagem)) + '" alt="' + esc(b.titulo || '') + '">' + (b.titulo || b.subtitulo ? '<div class="txt">' + (b.titulo ? '<b>' + esc(b.titulo) + '</b>' : '') + (b.subtitulo ? '<small>' + esc(b.subtitulo) + '</small>' : '') + '</div>' : '') + '</button>').join('') + '</div>';
+    const dest = (vitrine.destaques || []).map(id => familias.find(f => f.id === id)).filter(Boolean);
+    if (dest.length) h += '<div class="linha-destaques"><h3>Destaques</h3><div class="destaques">' + dest.map((f, i) => cartaoHtml(f, i)).join('') + '</div></div>';
+    $('vitrine').innerHTML = h;
+    clearInterval(desenharVitrine._t);
+    if (bs.length > 1) desenharVitrine._t = setInterval(() => { const el = $('banners'); if (!el || document.hidden) return; const i = Math.round(el.scrollLeft / el.clientWidth); el.scrollTo({ left: ((i + 1) % bs.length) * el.clientWidth, behavior: 'smooth' }); }, 5000);
+  }
+  $('vitrine').addEventListener('click', e => {
+    const c = e.target.closest('.cartao'); if (c) { abrirPeca(c.dataset.f); return; }
+    const b = e.target.closest('.banner'); if (!b || !b.dataset.link) return;
+    const l = b.dataset.link; // link do banner: FAM..., PRD..., uma coleção, uma categoria ou um endereço
+    if (/^https?:\/\//i.test(l)) { window.open(l, '_blank', 'noopener'); return; }
+    const f = familias.find(x => x.id.toUpperCase() === l.toUpperCase()) || (porId[l.toUpperCase()] && familias.find(x => x.id === porId[l.toUpperCase()].familia));
+    if (f) { abrirPeca(f.id); return; }
+    const col = (vitrine.colecoes || []).find(x => x.id === l || norm(x.nome) === norm(l));
+    if (col) { colAtiva = col.id; catAtiva = 'Todas'; }
+    else { const cat = familias.map(x => x.categoria).find(x => norm(x) === norm(l)); if (cat) { catAtiva = cat; colAtiva = ''; } else if (norm(l) === 'novidades') { catAtiva = 'Novidades'; colAtiva = ''; } }
+    desenharFiltros(); desenharGrade(); $('pil-cat').scrollIntoView({ behavior: 'smooth' });
+  });
   $('grade').addEventListener('click', e => { const b = e.target.closest('.cartao'); if (b) abrirPeca(b.dataset.f); });
 
   // ---------- folha da peça ----------
@@ -420,16 +509,19 @@
     const item = pecaAtual.itemId ? porId[pecaAtual.itemId] : null;
     const preco = item ? item.preco : fam.preco;
     const coresDisp = fam.listaCores;
-    const fotos = coresDisp.filter(c => c.foto);
+    const det = fam.det || {};
+    const fotos = coresDisp.filter(c => c.foto).concat((det.fotos || []).map(u => ({ foto: u, cor: '' })));
     let html = '';
     if (refazerFotos || !$('p-faixa')) {
-      html += '<div class="carrossel"><div class="faixa" id="p-faixa">' + (fotos.length ? fotos.map(c => '<div class="slide" data-cor="' + esc(norm(c.cor)) + '"><img src="' + esc(grande(c.foto)) + '" alt="' + esc(fam.descricao + ' ' + c.cor) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'"></div>').join('') : '<div class="slide"><img src="' + PLACEHOLDER + '" alt=""></div>') + '</div>' +
+      html += '<div class="carrossel"><div class="faixa" id="p-faixa">' + (fotos.length ? fotos.map(c => '<div class="slide"' + (c.cor ? ' data-cor="' + esc(norm(c.cor)) + '"' : '') + '><img src="' + esc(grande(c.foto)) + '" alt="' + esc(fam.descricao + ' ' + c.cor) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'"></div>').join('') : '<div class="slide"><img src="' + PLACEHOLDER + '" alt=""></div>') + '</div>' +
         (fotos.length > 1 ? '<button class="seta e" onclick="rolarFoto(-1)" aria-label="Foto anterior">&#8249;</button><button class="seta d" onclick="rolarFoto(1)" aria-label="Próxima foto">&#8250;</button><div class="pontos" id="p-pontos">' + fotos.map((_, i) => '<span class="ponto' + (i === 0 ? ' ativo' : '') + '"></span>').join('') + '</div>' : '') + '</div><div class="prod-info" id="p-info"></div>';
       $('p-corpo').innerHTML = html;
       const faixa = $('p-faixa');
       faixa.addEventListener('scroll', () => { const i = Math.round(faixa.scrollLeft / faixa.clientWidth); document.querySelectorAll('#p-pontos .ponto').forEach((p, k) => p.classList.toggle('ativo', k === i)); const s = faixa.children[i]; if (s && s.dataset.cor && pecaAtual) { const nova = pecaAtual.fam.listaCores.find(c => norm(c.cor) === s.dataset.cor); if (nova && nova !== pecaAtual.cor) { pecaAtual.cor = nova; pecaAtual.itemId = ''; const un = nova.tams.filter(t => t.saldo > 0); if (un.length === 1) pecaAtual.itemId = un[0].id; pecaAtual.qtd = 1; desenharPeca(false); } } }, { passive: true });
     }
-    const temMedidas = Array.isArray(GUIA_MEDIDAS) && GUIA_MEDIDAS.length > 0;
+    const medidasFam = (det.medidas && det.medidas.length) ? det.medidas : GUIA_MEDIDAS;
+    const temMedidas = Array.isArray(medidasFam) && medidasFam.length > 0;
+    pecaAtual.medidas = medidasFam;
     const saldoItem = item ? item.saldo : 0;
     const jaNaSacola = item ? (sacola.find(s => s.id === item.id) || { qtd: 0 }).qtd : 0;
     const maxMais = Math.max(0, saldoItem - jaNaSacola);
@@ -440,7 +532,10 @@
       '<div class="sec"><div class="sec-t"><span>Tamanho</span>' + (temMedidas ? '<button class="lnk" onclick="abrirMedidas()">Guia de medidas</button>' : '') + '</div><div class="opcoes">' + cor.tams.map(t => '<button class="op' + (t.id === pecaAtual.itemId ? ' sel' : '') + (t.saldo > 0 ? '' : ' esgotado') + '" data-item="' + esc(t.id) + '" ' + (t.saldo > 0 ? '' : 'disabled aria-label="' + esc(t.tamanho) + ' esgotado"') + '>' + esc(t.tamanho || 'Único') + '</button>').join('') + '</div>' +
         (item && item.saldo > 0 && item.saldo <= 2 ? '<div class="aviso-estoque">Últimas ' + item.saldo + (item.saldo === 1 ? ' unidade' : ' unidades') + ' neste tamanho.</div>' : '') + '</div>' +
       '<div class="sec"><div class="sec-t"><span>Quantidade</span></div><div class="qtd-box"><button onclick="mudarQtdPeca(-1)" aria-label="Menos">&minus;</button><span id="p-qtd">' + pecaAtual.qtd + '</span><button onclick="mudarQtdPeca(1)" aria-label="Mais">+</button></div>' +
-        (item && jaNaSacola > 0 ? '<div class="aviso-estoque" style="color:var(--muted)">Você já tem ' + jaNaSacola + ' na sacola.</div>' : '') + '</div>';
+        (item && jaNaSacola > 0 ? '<div class="aviso-estoque" style="color:var(--muted)">Você já tem ' + jaNaSacola + ' na sacola.</div>' : '') + '</div>' +
+      (det.tecido ? '<div class="sec"><div class="sec-t"><span>Tecido</span></div><span class="tecido">' + esc(det.tecido) + '</span></div>' : '') +
+      (det.descricao ? '<div class="sec"><div class="sec-t"><span>Detalhes</span></div><div class="detalhe-txt">' + esc(det.descricao) + '</div></div>' : '') +
+      '<div class="sec"><a class="tecido" style="text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/' + WHATSAPP_LOJA + '?text=' + encodeURIComponent('Olá! Tenho uma dúvida sobre a peça ' + (fam.descricao || '') + (cor && cor.cor ? ' (' + cor.cor + ')' : '') + ' do catálogo.') + '">💬 Tirar dúvida sobre esta peça no WhatsApp</a></div>';
     const btn = $('p-add');
     if (!item) { btn.disabled = true; btn.textContent = 'Escolha o tamanho'; }
     else if (maxMais <= 0) { btn.disabled = true; btn.textContent = 'Todas as unidades já estão na sacola'; }
@@ -473,8 +568,8 @@
     gravar(CHAVE_SACOLA, sacola); atualizarBarra(); fecharTudo(); toast('Adicionada à sacola');
   };
   window.abrirMedidas = () => {
-    const linhas = GUIA_MEDIDAS; const cols = Object.keys(linhas[0] || {});
-    const nomes = { tam: 'Tam.', busto: 'Busto', cintura: 'Cintura', quadril: 'Quadril' };
+    const linhas = (pecaAtual && pecaAtual.medidas) || GUIA_MEDIDAS; const cols = ['tam', 'busto', 'cintura', 'quadril', 'comprimento'].filter(c => linhas.some(l => l[c]));
+    const nomes = { tam: 'Tam.', busto: 'Busto', cintura: 'Cintura', quadril: 'Quadril', comprimento: 'Compr.' };
     $('m-corpo').innerHTML = '<table class="medidas"><thead><tr>' + cols.map(c => '<th>' + esc(nomes[c] || c) + '</th>').join('') + '</tr></thead><tbody>' + linhas.map(l => '<tr>' + cols.map(c => '<td>' + esc(l[c]) + '</td>').join('') + '</tr>').join('') + '</tbody></table><p class="nota">Medidas em centímetros. Em caso de dúvida, chame a gente no WhatsApp.</p>';
     abrirFolha('folha-medidas');
   };
@@ -483,7 +578,10 @@
   const LOJAS = ['Loja Penha', 'Loja Recreio'];
   const saldoLoja = (p, n) => n === 'Loja Penha' ? (p.saldoPenha || 0) : (p.saldoRecreio || 0);
   let ident = ler(CHAVE_IDENT, { modo: '', nome: '', telefone: '', primeiraCompra: false, aniversario: false });
-  let ent = { tipo: '', loja: '', cep: '', endereco: '', cidade: '', numero: '', compl: '', opcoes: [], freteSel: null, calculando: false, erroCep: '', erroFrete: '' };
+  let ent = { tipo: '', loja: '', cep: '', endereco: '', cidade: '', numero: '', compl: '', cpf: '', opcoes: [], freteSel: null, calculando: false, erroCep: '', erroFrete: '' };
+  const maskCpf = v => { const d = v.replace(/\D/g, '').slice(0, 11); return d.replace(/^(\d{3})(\d)/, '$1.$2').replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3').replace(/\.(\d{3})(\d{1,2})$/, '.$1-$2'); };
+  function cpfValido(v) { const c = String(v || '').replace(/\D/g, ''); if (c.length !== 11 || /^(\d)\1{10}$/.test(c)) return false; for (let t = 9; t < 11; t++) { let s = 0; for (let i = 0; i < t; i++) s += Number(c[i]) * (t + 1 - i); if (((s * 10) % 11) % 10 !== Number(c[t])) return false; } return true; }
+  const precisaCpf = () => ent.tipo === 'correios' && !(ident.modo === 'cadastrada' && ident.temCpf);
   let cadAberto = false, enviando = false;
 
   const postApi = async (action, dados) => { const r = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: action, chave: '', dados: dados }) }); const j = await r.json(); if (!j || j.ok === false) throw new Error((j && j.erro) || 'Erro'); return j.data; };
@@ -520,7 +618,7 @@
   function totalSacola() { return sacola.reduce((t, s) => t + (porId[s.id] ? porId[s.id].preco * s.qtd : 0), 0); }
   function atualizarBarra() {
     const n = sacola.reduce((t, s) => t + s.qtd, 0);
-    $('barra-sacola').classList.toggle('oculto', n === 0);
+    $('barra-sacola').classList.toggle('oculto', n === 0); document.body.classList.toggle('sem-sacola', n === 0);
     $('sac-qtd').textContent = n; $('sac-total').textContent = brl(totalSacola());
   }
   window.abrirSacola = async () => {
@@ -530,7 +628,7 @@
   };
   async function reconferirIdent() {
     if (ident.modo !== 'cadastrada' || !ident.telefone) return;
-    try { const r = await getApi({ action: 'consultarClienteCatalogo', telefone: ident.telefone }); if (r.encontrada) { ident.primeiraCompra = r.primeiraCompra; ident.aniversario = r.aniversario; ident.nome = r.primeiroNome || ident.nome; gravar(CHAVE_IDENT, ident); desenharResumo(); } } catch (e) {}
+    try { const r = await getApi({ action: 'consultarClienteCatalogo', telefone: ident.telefone }); if (r.encontrada) { ident.primeiraCompra = r.primeiraCompra; ident.aniversario = r.aniversario; ident.temCpf = !!r.temCpf; ident.nome = r.primeiroNome || ident.nome; gravar(CHAVE_IDENT, ident); desenharResumo(); if (ent.tipo === 'correios') desenharEndereco(); } } catch (e) {}
   }
 
   function desenharSacola() {
@@ -580,7 +678,7 @@
       bt.disabled = true; msg.innerHTML = '<div class="msg-info">Conferindo...</div>';
       try {
         const r = await getApi({ action: 'consultarClienteCatalogo', telefone: tel });
-        if (r.encontrada) { ident = { modo: 'cadastrada', nome: r.primeiroNome, telefone: tel, primeiraCompra: r.primeiraCompra, aniversario: r.aniversario }; gravar(CHAVE_IDENT, ident); desenharIdent(); desenharResumo(); }
+        if (r.encontrada) { ident = { modo: 'cadastrada', nome: r.primeiroNome, telefone: tel, primeiraCompra: r.primeiraCompra, aniversario: r.aniversario, temCpf: !!r.temCpf }; gravar(CHAVE_IDENT, ident); desenharIdent(); desenharResumo(); if (ent.tipo === 'correios') desenharEndereco(); }
         else { ident.telefone = tel; msg.innerHTML = '<div class="msg-no">Não encontramos esse telefone no cadastro. Confira o número ou faça seu cadastro agora e ganhe ' + Math.round((cfg.primeiraCompraPercentual || 0.05) * 100) + '% na primeira compra.</div><button class="btn-sec" data-ident="cadastrar">Quero me cadastrar agora</button><button class="btn-sec claro" data-ident="sem">Continuar sem cadastro</button>'; bt.disabled = false; }
       } catch (err) { msg.innerHTML = '<div class="msg-no">Não consegui conferir agora. Tente de novo.</div>'; bt.disabled = false; }
     }
@@ -647,6 +745,8 @@
     let h = '<div class="msg-info">' + esc(ent.endereco) + '</div>';
     if (ent.tipo === 'correios') {
       h += '<div class="linha-campos"><div class="campo"><label for="e-num">Número</label><input id="e-num" type="text" value="' + esc(ent.numero) + '"></div><div class="campo"><label for="e-comp">Complemento</label><input id="e-comp" type="text" value="' + esc(ent.compl) + '"></div></div>';
+      if (precisaCpf()) h += '<div class="campo"><label for="e-cpf">CPF (os Correios exigem para o envio)</label><input id="e-cpf" type="text" inputmode="numeric" placeholder="000.000.000-00" value="' + esc(maskCpf(ent.cpf)) + '" autocomplete="off"></div>';
+      else if (ident.modo === 'cadastrada') h += '<div class="msg-ok">Seu CPF já está no cadastro. Ele vai junto no envio.</div>';
       h += '<div id="e-frete"></div>';
     } else {
       const ok = norm(ent.cidade) === norm(cfg.cidadeUber || 'Rio de Janeiro');
@@ -656,6 +756,7 @@
     box.innerHTML = h;
     const num = $('e-num'); if (num) num.addEventListener('input', () => { ent.numero = num.value; });
     const cp = $('e-comp'); if (cp) cp.addEventListener('input', () => { ent.compl = cp.value; });
+    const cf = $('e-cpf'); if (cf) cf.addEventListener('input', () => { cf.value = maskCpf(cf.value); ent.cpf = cf.value.replace(/\D/g, ''); desenharResumo(); });
     desenharFrete(); desenharResumo();
   }
   async function calcularFrete() {
@@ -686,6 +787,7 @@
     if (ident.modo === 'sem' && !(ident.nome || '').trim()) return 'Diga como podemos te chamar.';
     if (!ent.tipo) return 'Escolha como você quer receber.';
     if (ent.tipo === 'correios' && (ent.cep.length !== 8 || !ent.endereco || !(ent.numero || '').trim() || !ent.freteSel)) return 'Preencha o CEP, o número e escolha o frete.';
+    if (precisaCpf() && !cpfValido(ent.cpf)) return 'Informe um CPF válido: os Correios exigem para o envio.';
     if (ent.tipo === 'uber' && (ent.cep.length !== 8 || norm(ent.cidade) !== norm(cfg.cidadeUber || 'Rio de Janeiro'))) return 'Informe um CEP da cidade do Rio de Janeiro para o Uber Entrega.';
     return '';
   }
@@ -713,6 +815,9 @@
   });
   const ZAP = 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z';
 
+  $('zap-path').setAttribute('d', ZAP);
+  $('ajuda-zap').href = 'https://wa.me/' + WHATSAPP_LOJA + '?text=' + encodeURIComponent('Olá! Estou no catálogo da USE ELLBA e preciso de ajuda.');
+
   async function enviarPedido() {
     if (enviando) return;
     const falta = faltaAlgo(); if (falta) { toast(falta); return; }
@@ -727,7 +832,7 @@
         itens: sacola.map(s => ({ id: s.id, qtd: s.qtd, loja: lojaPref })), loja: lojaPref,
         telefone: ident.modo === 'cadastrada' ? ident.telefone : '', nome: ident.nome || '', entrega: ent.tipo,
         cep: ent.cep, endereco: endereco, servico: ent.freteSel ? ent.freteSel.nome : '', frete: freteAtual(), prazo: ent.freteSel ? ent.freteSel.prazo : '',
-        cupom: cupom, obs: obs
+        cupom: cupom, obs: obs, cpf: ent.tipo === 'correios' ? ent.cpf : ''
       });
       mostrarSucesso(r, obs);
       sacola = []; gravar(CHAVE_SACOLA, sacola); atualizarBarra();

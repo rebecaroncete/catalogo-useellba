@@ -215,6 +215,9 @@
   .ajuda-zap { position:fixed; right:14px; bottom:calc(86px + env(safe-area-inset-bottom)); z-index:45; display:flex; align-items:center; gap:8px; background:#fff; color:var(--ink); border:1px solid var(--linha); border-radius:999px; padding:9px 14px 9px 10px; font-weight:600; font-size:.85rem; box-shadow:0 8px 24px rgba(0,0,0,.12); text-decoration:none; }
   .ajuda-zap span.ic { width:28px; height:28px; border-radius:50%; background:var(--verde); display:flex; align-items:center; justify-content:center; }
   body.sem-sacola .ajuda-zap { bottom:calc(18px + env(safe-area-inset-bottom)); }
+  s.de { color: var(--muted, #8a7f78); font-weight: 400; font-size: .85em; margin-right: 4px; }
+  .selo.promo { background: #b3261e; color: #fff; }
+  .promo-aviso { font-size: .8rem; color: #b3261e; margin: 2px 0 8px; }
 </style>
 </head>
 <body>
@@ -352,6 +355,7 @@
   function montarFamilias() {
     const mapa = {};
     produtos.forEach(p => {
+      if (p.precoPromo && !p.precoDe) { p.precoDe = p.preco; p.preco = p.precoPromo; } // promoção com prazo
       if (String(p.familia).toUpperCase() === 'FAM001') return; // FAM001 = escondida do catálogo
       const f = mapa[p.familia] || (mapa[p.familia] = { id: p.familia, descricao: '', categoria: p.categoria, itens: [], cores: {}, ordem: 0, saldo: 0 });
       f.itens.push(p);
@@ -371,6 +375,8 @@
       f.listaCores.sort((a, b) => (b.tams.some(t => t.saldo > 0) ? 1 : 0) - (a.tams.some(t => t.saldo > 0) ? 1 : 0));
       const precos = f.itens.filter(i => i.saldo > 0).map(i => i.preco).filter(x => x > 0);
       f.preco = precos.length ? Math.min.apply(null, precos) : 0;
+      const emPromo = f.itens.filter(i => i.saldo > 0 && i.precoDe && i.preco === f.preco)[0];
+      f.precoDe = emPromo ? emPromo.precoDe : 0; f.promoFim = emPromo ? emPromo.promoFim : '';
       f.capa = (f.listaCores.find(c => c.foto && c.tams.some(t => t.saldo > 0)) || f.listaCores.find(c => c.foto) || {}).foto || '';
       f.itens.forEach(i => { if (!i.foto) i.foto = (f.cores[norm(i.cor) || 'unica'] || {}).foto || f.capa; });
       f.det = detFam[f.id] || null; f.colecoes = (f.det && f.det.colecoes) || [];
@@ -458,7 +464,7 @@
     const bol = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).slice(0, 6);
     const mais = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).length - bol.length;
     const poucas = f.saldo > 0 && f.saldo <= 2;
-    return '<button class="cartao" data-f="' + esc(f.id) + '"><div class="foto"><img ' + (n < 6 ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async" src="' + esc(thumb(f.capa) || PLACEHOLDER) + '" alt="' + esc(f.descricao) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'">' + (f.novo ? '<span class="selo novo">Novidade</span>' : '') + (poucas ? '<span class="selo">Últimas unidades</span>' : '') + '</div><div class="info"><div class="nome">' + esc(f.descricao || 'Peça') + '</div><div class="preco">' + (f.preco ? brl(f.preco) : 'Consulte') + '</div><div class="bolinhas">' + bol.map(c => '<span class="bolinha" title="' + esc(c.cor) + '" style="background:' + corCss(c.cor) + '"></span>').join('') + (mais > 0 ? '<small>+' + mais + '</small>' : '') + '</div></div></button>';
+    return '<button class="cartao" data-f="' + esc(f.id) + '"><div class="foto"><img ' + (n < 6 ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async" src="' + esc(thumb(f.capa) || PLACEHOLDER) + '" alt="' + esc(f.descricao) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'">' + (f.precoDe ? '<span class="selo promo">-' + Math.round((1 - f.preco / f.precoDe) * 100) + '%</span>' : f.novo ? '<span class="selo novo">Novidade</span>' : '') + (poucas ? '<span class="selo">Últimas unidades</span>' : '') + '</div><div class="info"><div class="nome">' + esc(f.descricao || 'Peça') + '</div><div class="preco">' + (f.precoDe ? '<s class="de">' + brl(f.precoDe) + '</s> ' : '') + (f.preco ? brl(f.preco) : 'Consulte') + '</div><div class="bolinhas">' + bol.map(c => '<span class="bolinha" title="' + esc(c.cor) + '" style="background:' + corCss(c.cor) + '"></span>').join('') + (mais > 0 ? '<small>+' + mais + '</small>' : '') + '</div></div></button>';
   }
   // ---------- vitrine: banners e destaques ----------
   function desenharVitrine() {
@@ -508,6 +514,7 @@
     const { fam, cor } = pecaAtual;
     const item = pecaAtual.itemId ? porId[pecaAtual.itemId] : null;
     const preco = item ? item.preco : fam.preco;
+    const precoDe = item ? (item.precoDe || 0) : (fam.precoDe || 0);
     const coresDisp = fam.listaCores;
     const det = fam.det || {};
     const fotos = coresDisp.filter(c => c.foto).concat((det.fotos || []).map(u => ({ foto: u, cor: '' })));
@@ -527,7 +534,8 @@
     const maxMais = Math.max(0, saldoItem - jaNaSacola);
     if (pecaAtual.qtd > Math.max(1, maxMais)) pecaAtual.qtd = Math.max(1, maxMais);
     $('p-info').innerHTML =
-      '<h1>' + esc(fam.descricao || 'Peça') + '</h1><div class="prod-preco">' + (preco ? brl(preco) : 'Consulte') + '</div>' +
+      '<h1>' + esc(fam.descricao || 'Peça') + '</h1><div class="prod-preco">' + (precoDe ? '<s class="de">' + brl(precoDe) + '</s> ' : '') + (preco ? brl(preco) : 'Consulte') + '</div>' +
+      (precoDe ? '<div class="promo-aviso">Promoção' + (fam.promoFim ? ' até ' + esc(fam.promoFim) : '') + '. Peça de promoção não tem troca.</div>' : '') +
       (coresDisp.length > 0 ? '<div class="sec"><div class="sec-t"><span>Cor: ' + esc(cor.cor) + '</span></div><div class="opcoes">' + coresDisp.map(c => { const tem = c.tams.some(t => t.saldo > 0); return '<button class="op op-cor' + (c === cor ? ' sel' : '') + (tem ? '' : ' esgotado') + '" data-cor="' + esc(norm(c.cor)) + '" ' + (tem ? '' : 'disabled') + '><span class="bolinha" style="background:' + corCss(c.cor) + '"></span>' + esc(c.cor) + '</button>'; }).join('') + '</div></div>' : '') +
       '<div class="sec"><div class="sec-t"><span>Tamanho</span>' + (temMedidas ? '<button class="lnk" onclick="abrirMedidas()">Guia de medidas</button>' : '') + '</div><div class="opcoes">' + cor.tams.map(t => '<button class="op' + (t.id === pecaAtual.itemId ? ' sel' : '') + (t.saldo > 0 ? '' : ' esgotado') + '" data-item="' + esc(t.id) + '" ' + (t.saldo > 0 ? '' : 'disabled aria-label="' + esc(t.tamanho) + ' esgotado"') + '>' + esc(t.tamanho || 'Único') + '</button>').join('') + '</div>' +
         (item && item.saldo > 0 && item.saldo <= 2 ? '<div class="aviso-estoque">Últimas ' + item.saldo + (item.saldo === 1 ? ' unidade' : ' unidades') + ' neste tamanho.</div>' : '') + '</div>' +

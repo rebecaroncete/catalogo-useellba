@@ -66,6 +66,26 @@
   .barra-sacola .qtd { background:var(--dourado); color:var(--bordo); border-radius:999px; min-width:24px; height:24px; padding:0 7px; display:inline-flex; align-items:center; justify-content:center; font-size:.85rem; margin-right:10px; }
   .barra-sacola .esq { display:flex; align-items:center; }
 
+  /* Minha conta */
+  header.topo { position:sticky; }
+  .btn-conta { position:absolute; right:12px; top:calc(14px + env(safe-area-inset-top)); display:flex; align-items:center; gap:6px; color:var(--dourado); font-size:.8rem; font-weight:600; padding:6px 10px; border-radius:999px; border:1px solid rgba(220,184,129,.5); }
+  @media (max-width:420px) { .btn-conta span { display:none; } .btn-conta { padding:7px; } }
+  .conta-caixa { background:#fff; border:1px solid var(--linha); border-radius:var(--raio); padding:16px; margin:12px 14px; max-width:640px; }
+  @media (min-width:700px) { .conta-caixa { margin:12px auto; } }
+  .conta-caixa h3 { margin:0 0 4px; font-family:"Cormorant Garamond",Georgia,serif; font-size:1.5rem; color:var(--bordo); }
+  .conta-caixa h4 { margin:0 0 8px; color:var(--bordo); font-size:1rem; }
+  .conta-ola { background:linear-gradient(135deg,var(--bordo2),var(--bordo)); border:0; } .conta-ola h3 { color:var(--dourado); } .conta-ola .conta-sub { color:#e9d9c0; }
+  .conta-sub { color:var(--muted); font-size:.88rem; margin:0 0 8px; }
+  .conta-nota { color:var(--muted); font-size:.8rem; margin:12px 0 0; }
+  .conta-grande { font-size:2rem; font-weight:800; color:var(--bordo); }
+  .conta-linha { display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-top:1px solid var(--linha); font-size:.9rem; } .conta-linha b { text-align:right; white-space:nowrap; } .conta-linha small { color:var(--muted); }
+  .conta-compra { border-top:1px solid var(--linha); padding:4px 0 10px; } .conta-compra .conta-linha { border:0; } .conta-compra small { color:var(--muted); display:block; }
+  .conta-troca { color:var(--verde) !important; margin-top:4px; }
+  .conta-codigo { font-size:1.6rem; font-weight:800; letter-spacing:2px; text-align:center; padding:12px; border:2px dashed var(--dourado); border-radius:12px; color:var(--bordo); }
+  .conta-caixa label { display:block; font-size:.85rem; font-weight:600; margin:10px 0 4px; }
+  .conta-caixa input:not([type=checkbox]), .conta-caixa textarea { width:100%; padding:12px 14px; border:1.5px solid var(--linha); border-radius:12px; font-size:16px; font-family:inherit; }
+  .conta-caixa label.conta-check { display:flex; gap:8px; align-items:flex-start; font-weight:500; }
+  .conta-link { color:var(--bordo); text-decoration:underline; font-size:.88rem; margin-top:10px; }
   /* Folhas (modais) */
   .fundo { position:fixed; inset:0; z-index:60; background:rgba(30,10,12,.55); display:none; }
   .fundo.aberto { display:block; }
@@ -224,6 +244,7 @@
 
 <header class="topo">
   <div class="topo-linha"><img src="logo.png" alt="USE ELLBA"><span class="marca">USE ELLBA</span></div>
+  <button class="btn-conta" onclick="abrirConta()" aria-label="Minha conta"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span>Minha conta</span></button>
 </header>
 
 <div class="barra-busca">
@@ -254,6 +275,12 @@
 <a class="ajuda-zap" id="ajuda-zap" target="_blank" rel="noopener" aria-label="Precisa de ajuda? Fale no WhatsApp"><span class="ic"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path id="zap-path"/></svg></span>Precisa de ajuda?</a>
 
 <div class="fundo" id="fundo" onclick="fecharTudo()"></div>
+
+<!-- Minha conta -->
+<section class="folha" id="folha-conta" role="dialog" aria-modal="true" aria-label="Minha conta">
+  <div class="folha-topo"><h2>Minha conta</h2><button class="fechar" onclick="fecharTudo()" aria-label="Fechar">&times;</button></div>
+  <div class="folha-corpo" id="conta-corpo"></div>
+</section>
 
 <!-- Produto -->
 <section class="folha" id="folha-produto" role="dialog" aria-modal="true" aria-label="Detalhe da peça">
@@ -494,7 +521,7 @@
   // ---------- folha da peça ----------
   function abrirFolha(id) { $('fundo').classList.add('aberto'); $(id).classList.add('aberta'); document.body.classList.add('travado'); }
   function fecharFolha(id) { $(id).classList.remove('aberta'); }
-  function fecharTudo() { ['folha-produto', 'folha-sacola', 'folha-medidas'].forEach(fecharFolha); $('fundo').classList.remove('aberto'); document.body.classList.remove('travado'); pecaAtual = null; history.replaceState(null, '', location.pathname + (cupom ? '?cupom=' + encodeURIComponent(cupom) : '')); }
+  function fecharTudo() { ['folha-produto', 'folha-sacola', 'folha-medidas', 'folha-conta'].forEach(fecharFolha); $('fundo').classList.remove('aberto'); document.body.classList.remove('travado'); pecaAtual = null; history.replaceState(null, '', location.pathname + (cupom ? '?cupom=' + encodeURIComponent(cupom) : '')); }
   window.fecharTudo = fecharTudo;
   function fecharMedidas() { fecharFolha('folha-medidas'); }
   window.fecharMedidas = fecharMedidas;
@@ -921,6 +948,72 @@
   window.carregarCatalogo = carregarCatalogo;
   carregarCatalogo(false);
   if ('serviceWorker' in navigator) window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+  // ---------- Minha conta (área da cliente: entra com código pelo WhatsApp) ----------
+  const CHAVE_CONTA = 'ellba_conta_v1';
+  let contaToken = ler(CHAVE_CONTA, '') || '', contaTel = '';
+  function abrirConta() { abrirFolha('folha-conta'); contaToken ? contaCarregar() : contaTelaEntrar(); }
+  window.abrirConta = abrirConta;
+  function contaTelaEntrar(msg) {
+    $('conta-corpo').innerHTML = '<div class="conta-caixa"><h3>Sua área de cliente</h3><p class="conta-sub">Veja seu cashback, suas compras, o vale-troca e o seu código de indicação.</p>' +
+      '<label for="conta-tel">Seu WhatsApp</label><input id="conta-tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="(21) 99999-9999" value="' + esc(contaTel) + '">' +
+      '<button class="btn-sec" id="conta-btn-cod" onclick="contaPedirCodigo()">Receber código no WhatsApp</button>' +
+      '<div id="conta-cod-box" class="oculto"><p class="conta-sub" id="conta-msg">' + esc(msg || '') + '</p><label for="conta-cod">Código de 6 números</label><input id="conta-cod" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000">' +
+      '<button class="btn-sec" onclick="contaEntrar()">Entrar</button><button class="conta-link" onclick="contaPedirCodigo()">Mandar outro código</button></div>' +
+      '<p class="conta-nota">Ainda não é cliente? Faça sua primeira compra pelo catálogo ou na loja, e o seu cadastro é criado.</p></div>';
+  }
+  window.contaPedirCodigo = async () => {
+    contaTel = ($('conta-tel').value || '').replace(/\D/g, '');
+    if (contaTel.length < 10) { toast('Digite o WhatsApp com DDD.'); return; }
+    const b = $('conta-btn-cod'); b.disabled = true; b.textContent = 'Enviando...';
+    try {
+      const r = await postApi('clientePedirCodigo', { telefone: contaTel });
+      $('conta-cod-box').classList.remove('oculto'); $('conta-msg').textContent = r.mensagem; b.classList.add('oculto'); $('conta-cod').focus();
+    } catch (e) { toast(e.message); b.disabled = false; b.textContent = 'Receber código no WhatsApp'; }
+  };
+  window.contaEntrar = async () => {
+    const cod = ($('conta-cod').value || '').replace(/\D/g, '');
+    if (cod.length !== 6) { toast('O código tem 6 números.'); return; }
+    try {
+      const r = await postApi('clienteEntrar', { telefone: contaTel, codigo: cod });
+      contaToken = r.token; gravar(CHAVE_CONTA, contaToken); contaCarregar();
+    } catch (e) { toast(e.message); }
+  };
+  async function contaCarregar() {
+    $('conta-corpo').innerHTML = '<div class="conta-caixa" style="text-align:center">Carregando...</div>';
+    try { contaDesenhar(await postApi('clienteMinhaConta', { token: contaToken })); }
+    catch (e) { if (/sess|Entre de novo/i.test(e.message)) { contaToken = ''; gravar(CHAVE_CONTA, ''); contaTelaEntrar(); } else $('conta-corpo').innerHTML = '<div class="conta-caixa">' + esc(e.message) + '<button class="btn-sec" onclick="abrirConta()">Tentar de novo</button></div>'; }
+  }
+  function contaDesenhar(c) {
+    const cb = c.cashback, ind = c.indicacao, link = location.origin + location.pathname + '?cupom=' + encodeURIComponent(ind.codigo || '');
+    const msgInd = 'Conheça a Use Ellba! Na sua primeira compra, informe o meu código ' + ind.codigo + ' e ganhe desconto. Veja o catálogo: ' + link;
+    const linha = (a, b) => '<div class="conta-linha"><span>' + a + '</span><b>' + b + '</b></div>';
+    let h = '<div class="conta-caixa conta-ola"><h3>Olá, ' + esc(c.primeiroNome) + '!</h3><p class="conta-sub">Cliente desde ' + esc(c.clienteDesde) + '</p></div>';
+    h += '<div class="conta-caixa"><h4>Cashback</h4><div class="conta-grande">' + brl(cb.disponivel) + '</div><p class="conta-sub">disponível para usar' + (cb.proximaValidade ? ' · o próximo vence em ' + esc(cb.proximaValidade) : '') + '</p>' +
+      (cb.restrito ? '<p class="conta-sub">+ ' + brl(cb.restrito) + ' de bônus em compras a partir de ' + brl(cb.restritoMinimo) + '</p>' : '') +
+      (cb.creditos.length ? cb.creditos.map(k => linha(esc(k.tipo) + '<br><small>' + esc(k.situacao) + (k.vence ? ' · vence ' + esc(k.vence) : '') + (k.minimo ? ' · compra a partir de ' + brl(k.minimo) : '') + '</small>', brl(k.restante))).join('') : '<p class="conta-sub">Você ganha cashback a cada compra. Ele libera alguns dias depois e pode ser usado na próxima.</p>') + '</div>';
+    if (c.vales.length) h += '<div class="conta-caixa"><h4>Vale-troca</h4>' + c.vales.map(v => linha('Vale ' + esc(v.id) + '<br><small>de ' + esc(v.em) + (v.vence ? ' · vence ' + esc(v.vence) : '') + '</small>', brl(v.restante))).join('') + '</div>';
+    if (ind.codigo) h += '<div class="conta-caixa"><h4>Indique uma amiga</h4><p class="conta-sub">Sua amiga ganha desconto na primeira compra e você ganha um bônus de cashback quando ela comprar.</p><div class="conta-codigo">' + esc(ind.codigo) + '</div>' +
+      '<a class="btn-zap" style="margin-top:10px" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(msgInd) + '">Mandar para uma amiga</a>' +
+      (ind.amigas.length ? '<p class="conta-sub" style="margin-top:10px">Amigas que você indicou:</p>' + ind.amigas.map(a => linha(esc(a.nome), a.bonus ? brl(a.bonus) + (a.liberaEm ? '<br><small>libera ' + esc(a.liberaEm) + '</small>' : '') : '<small>ainda sem compra</small>')).join('') : '') + '</div>';
+    if (c.condicionais.length) h += '<div class="conta-caixa"><h4>Peças com você (condicional)</h4>' + c.condicionais.map(x => linha(esc(x.tipo) + ' ' + esc(x.id), x.pecas + ' peça(s)<br><small>devolver até ' + esc(x.prazo) + '</small>')).join('') + '</div>';
+    h += '<div class="conta-caixa"><h4>Minhas compras</h4>' + (c.compras.length ? c.compras.map(v => '<div class="conta-compra"><div class="conta-linha"><span>' + esc(v.data) + '</span><b>' + brl(v.total) + '</b></div><small>' +
+      v.itens.map(i => i.qtd + 'x ' + esc(i.descricao)).join('<br>') + '</small>' + (v.podeTrocar ? '<small class="conta-troca">Troca até ' + esc(v.trocaAte) + '</small>' : '') + '</div>').join('') : '<p class="conta-sub">Nenhuma compra ainda.</p>') + '</div>';
+    const d = c.dados;
+    h += '<div class="conta-caixa"><h4>Meus dados</h4>' + linha('WhatsApp', esc(d.telefone)) + (d.nascimento ? linha('Aniversário', esc(d.nascimento)) : '') + (d.cpf ? linha('CPF', esc(d.cpf)) : '') +
+      '<label for="conta-email">E-mail</label><input id="conta-email" type="email" value="' + esc(d.email) + '" placeholder="seu@email.com">' +
+      '<label for="conta-end">Endereço para entrega</label><textarea id="conta-end" rows="2" placeholder="Rua, número, bairro, cidade, CEP">' + esc(d.endereco) + '</textarea>' +
+      '<label class="conta-check"><input type="checkbox" id="conta-aceita"' + (d.aceitaMensagens ? ' checked' : '') + '> Quero receber novidades e avisos da loja pelo WhatsApp</label>' +
+      '<button class="btn-sec" onclick="contaSalvar()">Salvar meus dados</button>' +
+      '<p class="conta-nota">Para mudar nome, WhatsApp, aniversário ou CPF, fale com a loja pelo WhatsApp.</p></div>' +
+      '<div style="text-align:center;padding:4px 0 24px"><button class="conta-link" onclick="contaSair()">Sair da minha área</button></div>';
+    $('conta-corpo').innerHTML = h;
+  }
+  window.contaSalvar = async () => {
+    try { await postApi('clienteSalvarDados', { token: contaToken, email: $('conta-email').value, endereco: $('conta-end').value, aceitaMensagens: $('conta-aceita').checked }); toast('Dados salvos. Deus abençoe!'); }
+    catch (e) { toast(e.message); }
+  };
+  window.contaSair = async () => { try { await postApi('clienteSair', { token: contaToken }); } catch (e) {} contaToken = ''; gravar(CHAVE_CONTA, ''); contaTelaEntrar(); };
+  if (/[?&]conta=1/.test(location.search)) setTimeout(abrirConta, 400);
 })();
 </script>
 </body>

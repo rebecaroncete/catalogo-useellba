@@ -947,7 +947,21 @@
   document.addEventListener('visibilitychange', () => { if (!document.hidden && (Date.now() - ultimaCarga > 120000 || (proxLib && Date.now() + offsetSrv >= proxLib))) carregarCatalogo(true); });
   window.carregarCatalogo = carregarCatalogo;
   carregarCatalogo(false);
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').then(reg => {
+      reg.update().catch(() => {}); setInterval(() => reg.update().catch(() => {}), 120000);
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg.update().catch(() => {}); });
+    }).catch(() => {}); });
+    // versão nova do catálogo: faixa com botão "Atualizar"
+    const tinha = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!tinha || $('faixa-versao')) return;
+      const f = document.createElement('div'); f.id = 'faixa-versao';
+      f.style.cssText = 'position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));z-index:200;background:var(--bordo);color:#fff;border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:.9rem';
+      f.innerHTML = '<span style="flex:1">Tem versão nova do catálogo.</span><button onclick="location.reload()" style="border-radius:999px;background:var(--dourado);color:var(--bordo);font-weight:700;padding:7px 14px">Atualizar</button>';
+      document.body.appendChild(f);
+    });
+  }
   // ---------- Minha conta (área da cliente: entra com código pelo WhatsApp) ----------
   const CHAVE_CONTA = 'ellba_conta_v1';
   let contaToken = ler(CHAVE_CONTA, '') || '', contaTel = '';

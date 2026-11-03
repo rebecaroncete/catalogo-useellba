@@ -238,31 +238,119 @@
   s.de { color: var(--muted, #8a7f78); font-weight: 400; font-size: .85em; margin-right: 4px; }
   .selo.promo { background: #b3261e; color: #fff; }
   .promo-aviso { font-size: .8rem; color: #b3261e; margin: 2px 0 8px; }
+
+  /* ===== Redesenho 11/2026: vitrine estilo loja de moda, pensado para o celular ===== */
+  .avisos-topo { background:var(--bordo); color:var(--dourado); font-size:.74rem; font-weight:600; letter-spacing:.06em; text-align:center; padding:7px 12px; text-transform:uppercase; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+  .avisos-topo span { display:inline-block; transition:opacity .4s; }
+  header.topo { padding:calc(8px + env(safe-area-inset-top)) 12px 10px; }
+  .topo-linha { justify-content:space-between; }
+  .topo-linha .logo-marca { display:flex; align-items:center; gap:8px; }
+  .icones-topo { display:flex; align-items:center; gap:4px; }
+  .icone-topo { position:relative; width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--bordo); }
+  .icone-topo:active { background:var(--suave); }
+  .icone-topo .n { position:absolute; top:4px; right:2px; min-width:18px; height:18px; padding:0 5px; border-radius:999px; background:var(--bordo); color:var(--dourado); font-size:.68rem; font-weight:800; display:flex; align-items:center; justify-content:center; }
+  .btn-conta { display:none; }
+  .topo-busca { max-width:1100px; margin:8px auto 0; }
+  .topo-busca .campo-busca input { padding:11px 16px 11px 42px; font-size:16px; }
+  .barra-busca { display:none; }
+  /* banner principal */
+  .vitrine { padding:0; margin-top:0; max-width:1100px; }
+  @media (min-width:1100px) { .vitrine { padding:12px 14px 0; } }
+  .banners, .banner { border-radius:0; }
+  @media (min-width:1100px) { .banners, .banner { border-radius:20px; } }
+  .banner { aspect-ratio:4/5; }
+  @media (min-width:600px) { .banner { aspect-ratio:16/7; } }
+  .banner .txt { padding:22px 20px 26px; }
+  .banner b { font-size:2rem; }
+  .banner .cta { display:inline-block; margin-top:12px; background:#fff; color:var(--bordo); font-weight:700; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase; padding:10px 18px; border-radius:999px; }
+  .heroi { position:relative; aspect-ratio:4/5; max-height:72vh; width:100%; overflow:hidden; background:linear-gradient(160deg,var(--bordo2),var(--bordo)); display:flex; align-items:flex-end; text-align:left; }
+  @media (min-width:600px) { .heroi { aspect-ratio:16/7; } }
+  @media (min-width:1100px) { .heroi { border-radius:20px; } }
+  .heroi .mosaico { position:absolute; inset:0; display:grid; grid-template-columns:1fr 1fr; gap:3px; opacity:.55; }
+  .heroi .mosaico img { width:100%; height:100%; object-fit:cover; }
+  .heroi .txt { position:relative; width:100%; padding:26px 20px 28px; background:linear-gradient(0deg,rgba(40,10,14,.9),rgba(40,10,14,0)); color:#fff; }
+  .heroi small { color:var(--dourado); font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:.72rem; }
+  .heroi b { display:block; font-family:'Cormorant Garamond',Georgia,serif; font-size:2.2rem; font-weight:600; line-height:1.05; margin:6px 0 4px; }
+  .heroi .cta { display:inline-block; margin-top:14px; background:var(--dourado); color:var(--bordo); font-weight:800; font-size:.82rem; letter-spacing:.08em; text-transform:uppercase; padding:12px 20px; border-radius:999px; }
+  /* categorias em círculos */
+  .titulo-sec { max-width:1100px; margin:22px auto 0; padding:0 16px; display:flex; justify-content:space-between; align-items:baseline; }
+  .titulo-sec h2 { margin:0; font-size:.95rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); }
+  .titulo-sec button { color:var(--bordo); font-size:.85rem; font-weight:600; text-decoration:underline; }
+  #pil-cat.circulos { gap:14px; padding:12px 16px 6px; }
+  .circ { flex:none; width:74px; display:flex; flex-direction:column; align-items:center; gap:6px; font-size:.78rem; font-weight:600; color:var(--ink); text-align:center; line-height:1.15; }
+  .circ .bola { width:70px; height:70px; border-radius:50%; overflow:hidden; background:var(--suave); border:2px solid transparent; padding:2px; display:flex; align-items:center; justify-content:center; color:var(--bordo); font-family:'Cormorant Garamond',Georgia,serif; font-size:1.3rem; font-weight:600; }
+  .circ .bola img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+  .circ.ativa .bola { border-color:var(--bordo); }
+  .circ.ativa { color:var(--bordo); font-weight:800; }
+  .circ.colecao .bola { border-color:var(--dourado); }
+  /* tamanhos compactos */
+  .rotulo-linha { margin-top:16px; padding:0 16px; font-weight:800; color:var(--ink); letter-spacing:.08em; font-size:.8rem; }
+  #pil-tam .pilula { min-width:44px; padding:8px 12px; border-radius:10px; text-align:center; font-size:.82rem; }
+  .contagem { padding:0 16px; margin-top:14px; display:flex; justify-content:space-between; align-items:center; }
+  .contagem b { color:var(--ink); font-size:.95rem; letter-spacing:.06em; text-transform:uppercase; }
+  .contagem button { color:var(--bordo); text-decoration:underline; font-size:.82rem; font-weight:600; }
+  /* cartões mais limpos, foto em destaque */
+  .grade { gap:18px 12px; padding:10px 12px 28px; }
+  .cartao { border:0; background:transparent; border-radius:0; }
+  .cartao .foto { aspect-ratio:2/3; border-radius:14px; overflow:hidden; }
+  .cartao .info { padding:9px 2px 0; }
+  .cartao .nome { min-height:0; font-size:.88rem; color:#3a2b2d; }
+  .cartao .preco { margin-top:3px; font-size:.98rem; font-weight:800; }
+  .bolinha { width:12px; height:12px; }
+  /* rodapé com atendimento */
+  footer.rodape { text-align:left; background:#fff; border-top:1px solid var(--linha); margin-top:20px; padding:26px 18px calc(110px + env(safe-area-inset-bottom)); color:var(--ink); font-size:.9rem; }
+  .rodape .col { max-width:1100px; margin:0 auto; display:grid; gap:20px; }
+  @media (min-width:700px) { .rodape .col { grid-template-columns:repeat(3,1fr); } }
+  .rodape h4 { margin:0 0 8px; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--bordo); }
+  .rodape p { margin:4px 0; color:#5b4a4d; line-height:1.45; }
+  .rodape a { color:var(--bordo); font-weight:600; }
+  .rodape .fim { max-width:1100px; margin:22px auto 0; color:var(--muted); font-size:.75rem; text-align:center; }
+  /* ajuda no WhatsApp: verde, bem visível */
+  .ajuda-zap { background:var(--verde); color:#fff; border:0; padding:10px 16px 10px 10px; box-shadow:0 8px 22px rgba(31,157,85,.4); }
+  .ajuda-zap span.ic { background:rgba(255,255,255,.2); }
+  .logo-marca .marca { white-space:nowrap; font-size:1.15rem; letter-spacing:3px; }
+  @media (min-width:600px) { .logo-marca .marca { font-size:1.35rem; letter-spacing:4px; } }
+  .heroi { max-height:62vh; }
+  footer.rodape { padding-bottom:30px; }
 </style>
 </head>
 <body>
 
+<div class="avisos-topo" id="avisos-topo"><span id="aviso-txt">Cashback em todas as compras</span></div>
 <header class="topo">
-  <div class="topo-linha"><img src="logo.png" alt="USE ELLBA"><span class="marca">USE ELLBA</span></div>
+  <div class="topo-linha">
+    <span class="icones-topo" style="width:84px"><button class="icone-topo" onclick="document.getElementById('busca').focus()" aria-label="Buscar"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button></span>
+    <span class="logo-marca"><img src="logo.png" alt="USE ELLBA"><span class="marca">USE ELLBA</span></span>
+    <span class="icones-topo">
+      <button class="icone-topo" onclick="abrirConta()" aria-label="Minha conta"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></button>
+      <button class="icone-topo" onclick="abrirSacola()" aria-label="Sacola"><svg class="i" viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><span class="n oculto" id="topo-sac-n">0</span></button>
+    </span>
+  </div>
+  <div class="topo-busca"><div class="campo-busca"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="busca" type="search" placeholder="O que você procura? (ex.: vestido azul)" autocomplete="off" aria-label="Buscar peça"></div></div>
   <button class="btn-conta" onclick="abrirConta()" aria-label="Minha conta"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span>Minha conta</span></button>
 </header>
 
 <div class="barra-busca">
   <div class="campo-busca">
     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-    <input id="busca" type="search" placeholder="Buscar peça (ex.: vestido, azul)" autocomplete="off" aria-label="Buscar peça">
+    <input id="busca-antiga" type="hidden">
   </div>
 </div>
 <section class="vitrine" id="vitrine"></section>
-<nav class="pilulas" id="pil-cat" aria-label="Categorias"></nav>
-<div class="rotulo-linha oculto" id="rot-tam">Tamanho</div>
+<div class="titulo-sec"><h2>Categorias</h2></div>
+<nav class="pilulas circulos" id="pil-cat" aria-label="Categorias"></nav>
+<div class="rotulo-linha oculto" id="rot-tam">Escolha por tamanho</div>
 <nav class="pilulas oculto" id="pil-tam" aria-label="Tamanhos" style="padding-top:6px"></nav>
 
 <div class="contagem" id="contagem"></div>
 <main class="grade" id="grade"></main>
 <div id="msg-vazio" class="vazio oculto">Nenhuma peça encontrada.<br>Tente outra busca ou limpe os filtros.</div>
 <div id="msg-erro" class="erro oculto">Não consegui carregar o catálogo agora.<br><br><button onclick="carregarCatalogo(true)">Tentar de novo</button></div>
-<footer>USE ELLBA &middot; Moda feminina</footer>
+<footer class="rodape"><div class="col">
+  <div><h4>Atendimento</h4><p>Fale com a gente pelo WhatsApp, de segunda a sábado.</p><p><a id="rod-zap" target="_blank" rel="noopener">💬 Chamar no WhatsApp</a></p><p><a href="https://instagram.com/use.ellba" target="_blank" rel="noopener">📷 @use.ellba no Instagram</a></p></div>
+  <div><h4>Nossas lojas</h4><p><b>ADVEC Recreio</b><br>Rua Sylvio da Rocha Pollis, 100</p><p><b>ADVEC Penha</b></p></div>
+  <div><h4>Vantagens</h4><p id="rod-vant">Cashback em todas as compras · Troca em até 30 dias · Retirada na loja ou entrega</p></div>
+</div><div class="fim">USE ELLBA · Moda feminina · Deus abençoe</div></footer>
 
 <!-- Barra da sacola -->
 <div class="barra-sacola oculto" id="barra-sacola">
@@ -451,8 +539,11 @@
     const pos = c => { const i = ordem.indexOf(norm(c)); return i === -1 ? 999 : i; };
     const cats = ['Todas'].concat(familias.some(f => f.novo) ? ['Novidades'] : []).concat(Object.keys(qtd).sort((a, b) => (pos(a) - pos(b)) || (qtd[b] - qtd[a]) || a.localeCompare(b)));
     const cols = (vitrine.colecoes || []).filter(c => familias.some(f => f.colecoes.indexOf(c.id) > -1));
-    $('pil-cat').innerHTML = cols.map(c => '<button class="pilula colecao' + (colAtiva === c.id ? ' ativa' : '') + '" data-col="' + esc(c.id) + '">' + esc(c.nome) + '</button>').join('') +
-      cats.map(c => '<button class="pilula' + (c === catAtiva && !colAtiva ? ' ativa' : '') + '" data-c="' + esc(c) + '">' + esc(c) + '</button>').join('');
+    // foto de capa de cada categoria (a peça mais recente que tem foto)
+    const capaDe = fn => { const f = familias.find(x => x.capa && fn(x)); return f ? thumb(f.capa) : ''; };
+    const bola = (img, txt) => '<span class="bola">' + (img ? '<img loading="lazy" src="' + esc(img) + '" alt="">' : esc(String(txt).slice(0, 1))) + '</span>';
+    $('pil-cat').innerHTML = cols.map(c => '<button class="circ colecao' + (colAtiva === c.id ? ' ativa' : '') + '" data-col="' + esc(c.id) + '">' + bola(capaDe(f => f.colecoes.indexOf(c.id) > -1), c.nome) + esc(c.nome) + '</button>').join('') +
+      cats.map(c => '<button class="circ' + (c === catAtiva && !colAtiva ? ' ativa' : '') + '" data-c="' + esc(c) + '">' + bola(c === 'Todas' ? capaDe(() => true) : c === 'Novidades' ? capaDe(f => f.novo) : capaDe(f => f.categoria === c), c) + esc(c === 'Todas' ? 'Ver tudo' : c) + '</button>').join('');
     const tams = Array.from(new Set(produtos.filter(p => p.saldo > 0 && p.tamanho).map(p => p.tamanho))).sort(ordenarTam);
     const mostrar = tams.length > 1;
     $('pil-tam').classList.toggle('oculto', !mostrar); $('rot-tam').classList.toggle('oculto', !mostrar);
@@ -483,7 +574,10 @@
       if (corLink && !f.listaCores.some(c => norm(c.cor) === corLink && c.tams.some(t => t.saldo > 0))) return false;
       return true;
     });
-    $('contagem').textContent = lista.length + (lista.length === 1 ? ' peça' : ' peças');
+    const col = colAtiva && (vitrine.colecoes || []).find(c => c.id === colAtiva);
+    const titulo = termo ? 'Resultado da busca' : col ? col.nome : catAtiva === 'Todas' ? 'Todas as peças' : catAtiva;
+    const filtrado = colAtiva || catAtiva !== 'Todas' || tamAtivo || termo || corLink;
+    $('contagem').innerHTML = '<span><b>' + esc(titulo) + '</b> <small>· ' + lista.length + (lista.length === 1 ? ' peça' : ' peças') + '</small></span>' + (filtrado ? '<button type="button" id="limpar-filtros">Limpar filtros</button>' : '');
     $('msg-vazio').classList.toggle('oculto', lista.length > 0);
     $('grade').innerHTML = lista.map(cartaoHtml).join('');
   }
@@ -497,7 +591,12 @@
   function desenharVitrine() {
     let h = '';
     const bs = vitrine.banners || [];
-    if (bs.length) h += '<div class="banners" id="banners">' + bs.map(b => '<button class="banner" data-link="' + esc(b.link || '') + '"><img src="' + esc(grande(b.imagem)) + '" alt="' + esc(b.titulo || '') + '">' + (b.titulo || b.subtitulo ? '<div class="txt">' + (b.titulo ? '<b>' + esc(b.titulo) + '</b>' : '') + (b.subtitulo ? '<small>' + esc(b.subtitulo) + '</small>' : '') + '</div>' : '') + '</button>').join('') + '</div>';
+    if (bs.length) h += '<div class="banners" id="banners">' + bs.map(b => '<button class="banner" data-link="' + esc(b.link || '') + '"><img src="' + esc(grande(b.imagem)) + '" alt="' + esc(b.titulo || '') + '">' + (b.titulo || b.subtitulo ? '<div class="txt">' + (b.titulo ? '<b>' + esc(b.titulo) + '</b>' : '') + (b.subtitulo ? '<small>' + esc(b.subtitulo) + '</small>' : '') + (b.link ? '<br><span class="cta">Conferir</span>' : '') + '</div>' : '') + '</button>').join('') + '</div>';
+    else if (familias.length) {
+      const fotos = familias.filter(f => f.capa && f.novo).concat(familias.filter(f => f.capa && !f.novo)).slice(0, 4).map(f => grande(f.capa));
+      h += '<button class="heroi banner" data-link="novidades"><div class="mosaico">' + fotos.map(u => '<img src="' + esc(u) + '" alt="">').join('') + '</div>' +
+        '<div class="txt"><small>Nova coleção</small><b>Elegância para todos os momentos</b><span>Peças escolhidas com carinho para você.</span><br><span class="cta">Ver novidades</span></div></button>';
+    }
     const dest = (vitrine.destaques || []).map(id => familias.find(f => f.id === id)).filter(Boolean);
     if (dest.length) h += '<div class="linha-destaques"><h3>Destaques</h3><div class="destaques">' + dest.map((f, i) => cartaoHtml(f, i)).join('') + '</div></div>';
     $('vitrine').innerHTML = h;
@@ -515,6 +614,11 @@
     if (col) { colAtiva = col.id; catAtiva = 'Todas'; }
     else { const cat = familias.map(x => x.categoria).find(x => norm(x) === norm(l)); if (cat) { catAtiva = cat; colAtiva = ''; } else if (norm(l) === 'novidades') { catAtiva = 'Novidades'; colAtiva = ''; } }
     desenharFiltros(); desenharGrade(); $('pil-cat').scrollIntoView({ behavior: 'smooth' });
+  });
+  $('contagem').addEventListener('click', e => {
+    if (!e.target.closest('#limpar-filtros')) return;
+    colAtiva = ''; catAtiva = 'Todas'; tamAtivo = ''; termo = ''; corLink = ''; $('busca').value = '';
+    desenharFiltros(); desenharGrade();
   });
   $('grade').addEventListener('click', e => { const b = e.target.closest('.cartao'); if (b) abrirPeca(b.dataset.f); });
 
@@ -655,6 +759,7 @@
     const n = sacola.reduce((t, s) => t + s.qtd, 0);
     $('barra-sacola').classList.toggle('oculto', n === 0); document.body.classList.toggle('sem-sacola', n === 0);
     $('sac-qtd').textContent = n; $('sac-total').textContent = brl(totalSacola());
+    $('topo-sac-n').textContent = n; $('topo-sac-n').classList.toggle('oculto', n === 0);
   }
   window.abrirSacola = async () => {
     abrirFolha('folha-sacola'); desenharSacola();
@@ -851,6 +956,14 @@
   const ZAP = 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z';
 
   $('zap-path').setAttribute('d', ZAP);
+  $('rod-zap').href = 'https://wa.me/' + WHATSAPP_LOJA + '?text=' + encodeURIComponent('Olá! Vim pelo catálogo da USE ELLBA.');
+  (function avisosTopo() {
+    const cb = Math.round((cfg.cashbackPercentual || 0.05) * 100), pc = Math.round((cfg.primeiraCompraPercentual || 0.05) * 100);
+    const l = [cb + '% de cashback em todas as compras', pc + '% de desconto na primeira compra', 'Troca em até 30 dias', 'Retire na loja ou receba em casa'];
+    $('rod-vant').textContent = l.join(' · ');
+    let i = 0; const el = $('aviso-txt'); el.textContent = l[0];
+    setInterval(() => { if (document.hidden) return; el.style.opacity = 0; setTimeout(() => { i = (i + 1) % l.length; el.textContent = l[i]; el.style.opacity = 1; }, 400); }, 4000);
+  })();
   $('ajuda-zap').href = 'https://wa.me/' + WHATSAPP_LOJA + '?text=' + encodeURIComponent('Olá! Estou no catálogo da USE ELLBA e preciso de ajuda.');
 
   async function enviarPedido() {

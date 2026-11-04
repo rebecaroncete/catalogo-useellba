@@ -6,9 +6,11 @@
 <title>USE ELLBA | Catálogo</title>
 <meta name="description" content="Catálogo USE ELLBA: moda feminina. Escolha suas peças e finalize pelo WhatsApp.">
 <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
-<link rel="preconnect" href="https://script.google.com" crossorigin>
+<link rel="preconnect" href="https://gfxlvsyondbnmpdfwplp.supabase.co" crossorigin>
 <link rel="dns-prefetch" href="https://script.googleusercontent.com">
-<meta name="theme-color" content="#4a151b">
+<meta name="theme-color" content="#faf7f4">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="icon-180.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <style>
@@ -64,6 +66,26 @@
   .barra-sacola .qtd { background:var(--dourado); color:var(--bordo); border-radius:999px; min-width:24px; height:24px; padding:0 7px; display:inline-flex; align-items:center; justify-content:center; font-size:.85rem; margin-right:10px; }
   .barra-sacola .esq { display:flex; align-items:center; }
 
+  /* Minha conta */
+  header.topo { position:sticky; }
+  .btn-conta { position:absolute; right:12px; top:calc(14px + env(safe-area-inset-top)); display:flex; align-items:center; gap:6px; color:var(--dourado); font-size:.8rem; font-weight:600; padding:6px 10px; border-radius:999px; border:1px solid rgba(220,184,129,.5); }
+  @media (max-width:420px) { .btn-conta span { display:none; } .btn-conta { padding:7px; } }
+  .conta-caixa { background:#fff; border:1px solid var(--linha); border-radius:var(--raio); padding:16px; margin:12px 14px; max-width:640px; }
+  @media (min-width:700px) { .conta-caixa { margin:12px auto; } }
+  .conta-caixa h3 { margin:0 0 4px; font-family:"Cormorant Garamond",Georgia,serif; font-size:1.5rem; color:var(--bordo); }
+  .conta-caixa h4 { margin:0 0 8px; color:var(--bordo); font-size:1rem; }
+  .conta-ola { background:linear-gradient(135deg,var(--bordo2),var(--bordo)); border:0; } .conta-ola h3 { color:var(--dourado); } .conta-ola .conta-sub { color:#e9d9c0; }
+  .conta-sub { color:var(--muted); font-size:.88rem; margin:0 0 8px; }
+  .conta-nota { color:var(--muted); font-size:.8rem; margin:12px 0 0; }
+  .conta-grande { font-size:2rem; font-weight:800; color:var(--bordo); }
+  .conta-linha { display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-top:1px solid var(--linha); font-size:.9rem; } .conta-linha b { text-align:right; white-space:nowrap; } .conta-linha small { color:var(--muted); }
+  .conta-compra { border-top:1px solid var(--linha); padding:4px 0 10px; } .conta-compra .conta-linha { border:0; } .conta-compra small { color:var(--muted); display:block; }
+  .conta-troca { color:var(--verde) !important; margin-top:4px; }
+  .conta-codigo { font-size:1.6rem; font-weight:800; letter-spacing:2px; text-align:center; padding:12px; border:2px dashed var(--dourado); border-radius:12px; color:var(--bordo); }
+  .conta-caixa label { display:block; font-size:.85rem; font-weight:600; margin:10px 0 4px; }
+  .conta-caixa input:not([type=checkbox]), .conta-caixa textarea { width:100%; padding:12px 14px; border:1.5px solid var(--linha); border-radius:12px; font-size:16px; font-family:inherit; }
+  .conta-caixa label.conta-check { display:flex; gap:8px; align-items:flex-start; font-weight:500; }
+  .conta-link { color:var(--bordo); text-decoration:underline; font-size:.88rem; margin-top:10px; }
   /* Folhas (modais) */
   .fundo { position:fixed; inset:0; z-index:60; background:rgba(30,10,12,.55); display:none; }
   .fundo.aberto { display:block; }
@@ -165,29 +187,170 @@
   a.btn-zap { text-decoration:none; }
   footer { text-align:center; color:var(--muted); font-size:.78rem; padding:6px 20px 26px; }
   svg.i { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+
+  /* ===== Visual novo (limpo e moderno, mesmas cores da marca) ===== */
+  :root { --bg:#faf7f4; --suave:#f4ede7; --sombra:0 1px 2px rgba(74,21,27,.04),0 6px 20px rgba(74,21,27,.05); }
+  body { font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; letter-spacing:-.005em; }
+  header.topo { background:rgba(250,247,244,.92); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); box-shadow:none; border-bottom:1px solid var(--linha); }
+  .topo-linha img { width:32px; height:32px; }
+  .marca { font-family:'Cormorant Garamond',Georgia,serif; color:var(--bordo); font-weight:600; font-size:1.35rem; letter-spacing:4px; }
+  .campo-busca input { background:var(--suave); border-color:transparent; border-radius:999px; }
+  .campo-busca input:focus { background:#fff; border-color:var(--dourado2); box-shadow:0 0 0 4px rgba(220,184,129,.25); }
+  .pilula { border-width:1px; font-weight:600; font-size:.86rem; color:var(--ink); }
+  .pilula.ativa { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .pilula.colecao { background:rgba(220,184,129,.22); border-color:transparent; color:var(--bordo); }
+  .pilula.colecao.ativa { background:var(--bordo); color:var(--dourado); }
+  .cartao { box-shadow:none; border:1px solid var(--linha); border-radius:18px; }
+  .cartao .foto { aspect-ratio:3/4; }
+  .cartao .nome { font-weight:500; font-size:.9rem; }
+  .cartao .preco { font-weight:700; font-size:1rem; color:var(--ink); }
+  .selo { background:rgba(255,255,255,.92); color:var(--bordo); font-weight:700; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
+  .selo.novo { background:var(--bordo); color:var(--dourado); }
+  .selo + .selo { top:36px; }
+  .barra-sacola button { border-radius:999px; }
+  .btn-add, .btn-zap, .btn-sec { border-radius:999px; }
+  .item, .bloco { box-shadow:none; border:1px solid var(--linha); }
+  .op { border-width:1px; }
+  .op.sel { background:var(--ink); border-color:var(--ink); color:#fff; }
+  .prod-info h1 { font-size:1.3rem; font-weight:700; letter-spacing:-.02em; }
+  .prod-preco { color:var(--ink); }
+  .detalhe-txt { color:#4d3d40; line-height:1.55; font-size:.95rem; white-space:pre-line; }
+  .tecido { display:inline-flex; gap:6px; align-items:center; background:var(--suave); border-radius:999px; padding:6px 12px; font-size:.85rem; color:var(--ink); }
+  /* Vitrine */
+  .vitrine { max-width:1100px; margin:12px auto 0; padding:0 14px; }
+  .banners { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:10px; scrollbar-width:none; border-radius:20px; }
+  .banners::-webkit-scrollbar { display:none; }
+  .banner { flex:none; width:100%; scroll-snap-align:center; position:relative; border-radius:20px; overflow:hidden; aspect-ratio:16/8; background:var(--suave); text-align:left; }
+  @media (min-width:800px) { .banner { aspect-ratio:16/5; } }
+  .banner img { width:100%; height:100%; object-fit:cover; }
+  .banner .txt { position:absolute; left:0; right:0; bottom:0; padding:18px 18px 16px; background:linear-gradient(0deg,rgba(30,10,12,.65),rgba(30,10,12,0)); color:#fff; }
+  .banner b { display:block; font-family:'Cormorant Garamond',Georgia,serif; font-size:1.6rem; font-weight:600; line-height:1.1; }
+  .banner small { opacity:.9; }
+  .linha-destaques { margin-top:16px; }
+  .linha-destaques h3 { font-size:1rem; margin:0 0 8px 4px; color:var(--ink); }
+  .destaques { display:flex; gap:10px; overflow-x:auto; scrollbar-width:none; padding-bottom:4px; }
+  .destaques::-webkit-scrollbar { display:none; }
+  .destaques .cartao { flex:none; width:150px; }
+  /* Ajuda no WhatsApp */
+  .ajuda-zap { position:fixed; right:14px; bottom:calc(86px + env(safe-area-inset-bottom)); z-index:45; display:flex; align-items:center; gap:8px; background:#fff; color:var(--ink); border:1px solid var(--linha); border-radius:999px; padding:9px 14px 9px 10px; font-weight:600; font-size:.85rem; box-shadow:0 8px 24px rgba(0,0,0,.12); text-decoration:none; }
+  .ajuda-zap span.ic { width:28px; height:28px; border-radius:50%; background:var(--verde); display:flex; align-items:center; justify-content:center; }
+  body.sem-sacola .ajuda-zap { bottom:calc(18px + env(safe-area-inset-bottom)); }
+  s.de { color: var(--muted, #8a7f78); font-weight: 400; font-size: .85em; margin-right: 4px; }
+  .selo.promo { background: #b3261e; color: #fff; }
+  .promo-aviso { font-size: .8rem; color: #b3261e; margin: 2px 0 8px; }
+
+  /* ===== Redesenho 11/2026: vitrine estilo loja de moda, pensado para o celular ===== */
+  .avisos-topo { background:var(--bordo); color:var(--dourado); font-size:.74rem; font-weight:600; letter-spacing:.06em; text-align:center; padding:7px 12px; text-transform:uppercase; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+  .avisos-topo span { display:inline-block; transition:opacity .4s; }
+  header.topo { padding:calc(8px + env(safe-area-inset-top)) 12px 10px; }
+  .topo-linha { justify-content:space-between; }
+  .topo-linha .logo-marca { display:flex; align-items:center; gap:8px; }
+  .icones-topo { display:flex; align-items:center; gap:4px; }
+  .icone-topo { position:relative; width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--bordo); }
+  .icone-topo:active { background:var(--suave); }
+  .icone-topo .n { position:absolute; top:4px; right:2px; min-width:18px; height:18px; padding:0 5px; border-radius:999px; background:var(--bordo); color:var(--dourado); font-size:.68rem; font-weight:800; display:flex; align-items:center; justify-content:center; }
+  .btn-conta { display:none; }
+  .topo-busca { max-width:1100px; margin:8px auto 0; }
+  .topo-busca .campo-busca input { padding:11px 16px 11px 42px; font-size:16px; }
+  .barra-busca { display:none; }
+  /* banner principal */
+  .vitrine { padding:0; margin-top:0; max-width:1100px; }
+  @media (min-width:1100px) { .vitrine { padding:12px 14px 0; } }
+  .banners, .banner { border-radius:0; }
+  @media (min-width:1100px) { .banners, .banner { border-radius:20px; } }
+  .banner { aspect-ratio:4/5; }
+  @media (min-width:600px) { .banner { aspect-ratio:16/7; } }
+  .banner .txt { padding:22px 20px 26px; }
+  .banner b { font-size:2rem; }
+  .banner .cta { display:inline-block; margin-top:12px; background:#fff; color:var(--bordo); font-weight:700; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase; padding:10px 18px; border-radius:999px; }
+  .heroi { position:relative; aspect-ratio:4/5; max-height:72vh; width:100%; overflow:hidden; background:linear-gradient(160deg,var(--bordo2),var(--bordo)); display:flex; align-items:flex-end; text-align:left; }
+  @media (min-width:600px) { .heroi { aspect-ratio:16/7; } }
+  @media (min-width:1100px) { .heroi { border-radius:20px; } }
+  .heroi .mosaico { position:absolute; inset:0; display:grid; grid-template-columns:1fr 1fr; gap:3px; opacity:.55; }
+  .heroi .mosaico img { width:100%; height:100%; object-fit:cover; }
+  .heroi .txt { position:relative; width:100%; padding:26px 20px 28px; background:linear-gradient(0deg,rgba(40,10,14,.9),rgba(40,10,14,0)); color:#fff; }
+  .heroi small { color:var(--dourado); font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:.72rem; }
+  .heroi b { display:block; font-family:'Cormorant Garamond',Georgia,serif; font-size:2.2rem; font-weight:600; line-height:1.05; margin:6px 0 4px; }
+  .heroi .cta { display:inline-block; margin-top:14px; background:var(--dourado); color:var(--bordo); font-weight:800; font-size:.82rem; letter-spacing:.08em; text-transform:uppercase; padding:12px 20px; border-radius:999px; }
+  /* categorias em círculos */
+  .titulo-sec { max-width:1100px; margin:22px auto 0; padding:0 16px; display:flex; justify-content:space-between; align-items:baseline; }
+  .titulo-sec h2 { margin:0; font-size:.95rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); }
+  .titulo-sec button { color:var(--bordo); font-size:.85rem; font-weight:600; text-decoration:underline; }
+  #pil-cat.circulos { gap:14px; padding:12px 16px 6px; }
+  .circ { flex:none; width:74px; display:flex; flex-direction:column; align-items:center; gap:6px; font-size:.78rem; font-weight:600; color:var(--ink); text-align:center; line-height:1.15; }
+  .circ .bola { width:70px; height:70px; border-radius:50%; overflow:hidden; background:var(--suave); border:2px solid transparent; padding:2px; display:flex; align-items:center; justify-content:center; color:var(--bordo); font-family:'Cormorant Garamond',Georgia,serif; font-size:1.3rem; font-weight:600; }
+  .circ .bola img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+  .circ.ativa .bola { border-color:var(--bordo); }
+  .circ.ativa { color:var(--bordo); font-weight:800; }
+  .circ.colecao .bola { border-color:var(--dourado); }
+  /* tamanhos compactos */
+  .rotulo-linha { margin-top:16px; padding:0 16px; font-weight:800; color:var(--ink); letter-spacing:.08em; font-size:.8rem; }
+  #pil-tam .pilula { min-width:44px; padding:8px 12px; border-radius:10px; text-align:center; font-size:.82rem; }
+  .contagem { padding:0 16px; margin-top:14px; display:flex; justify-content:space-between; align-items:center; }
+  .contagem b { color:var(--ink); font-size:.95rem; letter-spacing:.06em; text-transform:uppercase; }
+  .contagem button { color:var(--bordo); text-decoration:underline; font-size:.82rem; font-weight:600; }
+  /* cartões mais limpos, foto em destaque */
+  .grade { gap:18px 12px; padding:10px 12px 28px; }
+  .cartao { border:0; background:transparent; border-radius:0; }
+  .cartao .foto { aspect-ratio:2/3; border-radius:14px; overflow:hidden; }
+  .cartao .info { padding:9px 2px 0; }
+  .cartao .nome { min-height:0; font-size:.88rem; color:#3a2b2d; }
+  .cartao .preco { margin-top:3px; font-size:.98rem; font-weight:800; }
+  .bolinha { width:12px; height:12px; }
+  /* rodapé com atendimento */
+  footer.rodape { text-align:left; background:#fff; border-top:1px solid var(--linha); margin-top:20px; padding:26px 18px calc(110px + env(safe-area-inset-bottom)); color:var(--ink); font-size:.9rem; }
+  .rodape .col { max-width:1100px; margin:0 auto; display:grid; gap:20px; }
+  @media (min-width:700px) { .rodape .col { grid-template-columns:repeat(3,1fr); } }
+  .rodape h4 { margin:0 0 8px; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--bordo); }
+  .rodape p { margin:4px 0; color:#5b4a4d; line-height:1.45; }
+  .rodape a { color:var(--bordo); font-weight:600; }
+  .rodape .fim { max-width:1100px; margin:22px auto 0; color:var(--muted); font-size:.75rem; text-align:center; }
+  /* ajuda no WhatsApp: verde, bem visível */
+  .ajuda-zap { background:var(--verde); color:#fff; border:0; padding:10px 16px 10px 10px; box-shadow:0 8px 22px rgba(31,157,85,.4); }
+  .ajuda-zap span.ic { background:rgba(255,255,255,.2); }
+  .logo-marca .marca { white-space:nowrap; font-size:1.15rem; letter-spacing:3px; }
+  @media (min-width:600px) { .logo-marca .marca { font-size:1.35rem; letter-spacing:4px; } }
+  .heroi { max-height:62vh; }
+  footer.rodape { padding-bottom:30px; }
 </style>
 </head>
 <body>
 
+<div class="avisos-topo" id="avisos-topo"><span id="aviso-txt">Cashback em todas as compras</span></div>
 <header class="topo">
-  <div class="topo-linha"><img src="logo.png" alt="USE ELLBA"><span class="marca">USE ELLBA</span></div>
+  <div class="topo-linha">
+    <span class="icones-topo" style="width:84px"><button class="icone-topo" onclick="document.getElementById('busca').focus()" aria-label="Buscar"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button></span>
+    <span class="logo-marca"><img src="logo.png" alt="USE ELLBA"><span class="marca">USE ELLBA</span></span>
+    <span class="icones-topo">
+      <button class="icone-topo" onclick="abrirConta()" aria-label="Minha conta"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></button>
+      <button class="icone-topo" onclick="abrirSacola()" aria-label="Sacola"><svg class="i" viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><span class="n oculto" id="topo-sac-n">0</span></button>
+    </span>
+  </div>
+  <div class="topo-busca"><div class="campo-busca"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="busca" type="search" placeholder="O que você procura? (ex.: vestido azul)" autocomplete="off" aria-label="Buscar peça"></div></div>
+  <button class="btn-conta" onclick="abrirConta()" aria-label="Minha conta"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span>Minha conta</span></button>
 </header>
 
 <div class="barra-busca">
   <div class="campo-busca">
     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-    <input id="busca" type="search" placeholder="Buscar peça (ex.: vestido, azul)" autocomplete="off" aria-label="Buscar peça">
+    <input id="busca-antiga" type="hidden">
   </div>
 </div>
-<nav class="pilulas" id="pil-cat" aria-label="Categorias"></nav>
-<div class="rotulo-linha oculto" id="rot-tam">Tamanho</div>
+<section class="vitrine" id="vitrine"></section>
+<div class="titulo-sec"><h2>Categorias</h2></div>
+<nav class="pilulas circulos" id="pil-cat" aria-label="Categorias"></nav>
+<div class="rotulo-linha oculto" id="rot-tam">Escolha por tamanho</div>
 <nav class="pilulas oculto" id="pil-tam" aria-label="Tamanhos" style="padding-top:6px"></nav>
 
 <div class="contagem" id="contagem"></div>
 <main class="grade" id="grade"></main>
 <div id="msg-vazio" class="vazio oculto">Nenhuma peça encontrada.<br>Tente outra busca ou limpe os filtros.</div>
 <div id="msg-erro" class="erro oculto">Não consegui carregar o catálogo agora.<br><br><button onclick="carregarCatalogo(true)">Tentar de novo</button></div>
-<footer>USE ELLBA &middot; Moda feminina</footer>
+<footer class="rodape"><div class="col">
+  <div><h4>Atendimento</h4><p>Fale com a gente pelo WhatsApp, de segunda a sábado.</p><p><a id="rod-zap" target="_blank" rel="noopener">💬 Chamar no WhatsApp</a></p><p><a href="https://instagram.com/use.ellba" target="_blank" rel="noopener">📷 @use.ellba no Instagram</a></p></div>
+  <div><h4>Nossas lojas</h4><p><b>ADVEC Recreio</b><br>Rua Sylvio da Rocha Pollis, 100 · Recreio dos Bandeirantes, Rio de Janeiro – RJ</p><p><b>ADVEC Penha</b><br>Rua Montevidéu, 900 · Penha, Rio de Janeiro – RJ</p></div>
+  <div><h4>Vantagens</h4><p id="rod-vant">Cashback em todas as compras · Troca em até 30 dias · Retirada na loja ou entrega</p></div>
+</div><div class="fim">USE ELLBA · Moda feminina · Deus abençoe</div></footer>
 
 <!-- Barra da sacola -->
 <div class="barra-sacola oculto" id="barra-sacola">
@@ -197,7 +360,15 @@
   </button>
 </div>
 
+<a class="ajuda-zap" id="ajuda-zap" target="_blank" rel="noopener" aria-label="Precisa de ajuda? Fale no WhatsApp"><span class="ic"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path id="zap-path"/></svg></span>Precisa de ajuda?</a>
+
 <div class="fundo" id="fundo" onclick="fecharTudo()"></div>
+
+<!-- Minha conta -->
+<section class="folha" id="folha-conta" role="dialog" aria-modal="true" aria-label="Minha conta">
+  <div class="folha-topo"><h2>Minha conta</h2><button class="fechar" onclick="fecharTudo()" aria-label="Fechar">&times;</button></div>
+  <div class="folha-corpo" id="conta-corpo"></div>
+</section>
 
 <!-- Produto -->
 <section class="folha" id="folha-produto" role="dialog" aria-modal="true" aria-label="Detalhe da peça">
@@ -232,6 +403,7 @@
   const CHAVE_SACOLA = 'ellba_sacola_v1', CHAVE_CUPOM = 'ellba_cupom_v1', CHAVE_DADOS = 'ellba_dados_v1', CHAVE_IDENT = 'ellba_ident_v1';
   const ORDEM_TAM = ['PP','P','M','G','GG','XG','XGG','EG','EGG','UNICO','UNICA','U'];
   let produtos = [], familias = [], porId = {};
+  let detFam = {}, vitrine = { banners: [], destaques: [], ordemCategorias: [], colecoes: [] }, colAtiva = '';
   let catAtiva = 'Todas', tamAtivo = '', termo = '', corLink = '';
   let sacola = [];            // [{id, qtd}]
   let cupom = '';
@@ -283,6 +455,7 @@
         if (!j || j.ok === false) throw new Error((j && j.erro) || 'Erro ao carregar');
         const d = j.data !== undefined ? j.data : j;
         if (d.config) cfg = d.config;
+        if (d.familias) detFam = d.familias; if (d.vitrine) vitrine = d.vitrine;
         proxLib = d.proximaLiberacao || 0; if (d.agora) offsetSrv = d.agora - Date.now();
         clearTimeout(to);
         return d.produtos || [];
@@ -297,12 +470,14 @@
   function montarFamilias() {
     const mapa = {};
     produtos.forEach(p => {
+      if (p.precoPromo && !p.precoDe) { p.precoDe = p.preco; p.preco = p.precoPromo; } // promoção com prazo
       if (String(p.familia).toUpperCase() === 'FAM001') return; // FAM001 = escondida do catálogo
       const f = mapa[p.familia] || (mapa[p.familia] = { id: p.familia, descricao: '', categoria: p.categoria, itens: [], cores: {}, ordem: 0, saldo: 0 });
       f.itens.push(p);
       if (!f.descricao && p.descricao) f.descricao = p.descricao;
       f.ordem = Math.max(f.ordem, p.ordem || 0);
       f.saldo += p.saldo;
+      if (p.novo && p.saldo > 0) f.novo = true;
       const chaveCor = norm(p.cor) || 'unica';
       const c = f.cores[chaveCor] || (f.cores[chaveCor] = { cor: p.cor || 'Única', foto: '', tams: [] });
       if (!c.foto && p.foto) c.foto = p.foto;
@@ -315,8 +490,12 @@
       f.listaCores.sort((a, b) => (b.tams.some(t => t.saldo > 0) ? 1 : 0) - (a.tams.some(t => t.saldo > 0) ? 1 : 0));
       const precos = f.itens.filter(i => i.saldo > 0).map(i => i.preco).filter(x => x > 0);
       f.preco = precos.length ? Math.min.apply(null, precos) : 0;
+      const emPromo = f.itens.filter(i => i.saldo > 0 && i.precoDe && i.preco === f.preco)[0];
+      f.precoDe = emPromo ? emPromo.precoDe : 0; f.promoFim = emPromo ? emPromo.promoFim : '';
       f.capa = (f.listaCores.find(c => c.foto && c.tams.some(t => t.saldo > 0)) || f.listaCores.find(c => c.foto) || {}).foto || '';
       f.itens.forEach(i => { if (!i.foto) i.foto = (f.cores[norm(i.cor) || 'unica'] || {}).foto || f.capa; });
+      f.det = detFam[f.id] || null; f.colecoes = (f.det && f.det.colecoes) || [];
+      if (!f.capa && f.det && f.det.fotos && f.det.fotos.length) f.capa = f.det.fotos[0];
       return f;
     }).sort((a, b) => (ehAcessorio(a.categoria) - ehAcessorio(b.categoria)) || (b.ordem - a.ordem));
     porId = {}; produtos.forEach(p => porId[p.id] = p);
@@ -327,6 +506,7 @@
     produtos = lista;
     montarFamilias();
     revalidarSacola(true);
+    desenharVitrine();
     desenharFiltros();
     desenharGrade();
     atualizarBarra();
@@ -337,14 +517,14 @@
     let usouCache = false;
     if (!produtos.length && !forcar) {
       const c = ler(CHAVE_CACHE, null);
-      if (c && c.produtos && c.produtos.length) { if (c.config) cfg = c.config; try { aplicar(c.produtos); usouCache = true; } catch (e) { produtos = []; } }
+      if (c && c.produtos && c.produtos.length) { if (c.config) cfg = c.config; if (c.familias) detFam = c.familias; if (c.vitrine) vitrine = c.vitrine; try { aplicar(c.produtos); usouCache = true; } catch (e) { produtos = []; } }
     }
     if (!produtos.length) { $('grade').innerHTML = '<div class="esqueleto"></div>'.repeat(6); }
     try {
       const novos = await pegarCatalogo(forcar);
       if (!novos.length) throw new Error('lista vazia'); // lista vazia = problema temporário: mantém o que já está na tela
       ultimaCarga = Date.now();
-      gravar(CHAVE_CACHE, { produtos: novos, config: cfg });
+      gravar(CHAVE_CACHE, { produtos: novos, config: cfg, familias: detFam, vitrine: vitrine });
       aplicar(novos);
       agendarLiberacao();
     } catch (e) {
@@ -355,14 +535,21 @@
   // ---------- filtros / grade ----------
   function desenharFiltros() {
     const qtd = {}; familias.forEach(f => { if (f.categoria) qtd[f.categoria] = (qtd[f.categoria] || 0) + 1; });
-    const cats = ['Todas'].concat(Object.keys(qtd).sort((a, b) => (qtd[b] - qtd[a]) || a.localeCompare(b)));
-    $('pil-cat').innerHTML = cats.map(c => '<button class="pilula' + (c === catAtiva ? ' ativa' : '') + '" data-c="' + esc(c) + '">' + esc(c) + '</button>').join('');
+    const ordem = (vitrine.ordemCategorias || []).map(norm);
+    const pos = c => { const i = ordem.indexOf(norm(c)); return i === -1 ? 999 : i; };
+    const cats = ['Todas'].concat(familias.some(f => f.novo) ? ['Novidades'] : []).concat(Object.keys(qtd).sort((a, b) => (pos(a) - pos(b)) || (qtd[b] - qtd[a]) || a.localeCompare(b)));
+    const cols = (vitrine.colecoes || []).filter(c => familias.some(f => f.colecoes.indexOf(c.id) > -1));
+    // foto de capa de cada categoria (a peça mais recente que tem foto)
+    const capaDe = fn => { const f = familias.find(x => x.capa && fn(x)); return f ? thumb(f.capa) : ''; };
+    const bola = (img, txt) => '<span class="bola">' + (img ? '<img loading="lazy" src="' + esc(img) + '" alt="">' : esc(String(txt).slice(0, 1))) + '</span>';
+    $('pil-cat').innerHTML = cols.map(c => '<button class="circ colecao' + (colAtiva === c.id ? ' ativa' : '') + '" data-col="' + esc(c.id) + '">' + bola(capaDe(f => f.colecoes.indexOf(c.id) > -1), c.nome) + esc(c.nome) + '</button>').join('') +
+      cats.map(c => '<button class="circ' + (c === catAtiva && !colAtiva ? ' ativa' : '') + '" data-c="' + esc(c) + '">' + bola(c === 'Todas' ? capaDe(() => true) : c === 'Novidades' ? capaDe(f => f.novo) : capaDe(f => f.categoria === c), c) + esc(c === 'Todas' ? 'Ver tudo' : c) + '</button>').join('');
     const tams = Array.from(new Set(produtos.filter(p => p.saldo > 0 && p.tamanho).map(p => p.tamanho))).sort(ordenarTam);
     const mostrar = tams.length > 1;
     $('pil-tam').classList.toggle('oculto', !mostrar); $('rot-tam').classList.toggle('oculto', !mostrar);
     $('pil-tam').innerHTML = ['Todos'].concat(tams).map(t => '<button class="pilula' + ((t === 'Todos' ? '' : t) === tamAtivo ? ' ativa' : '') + '" data-t="' + esc(t === 'Todos' ? '' : t) + '">' + esc(t) + '</button>').join('');
   }
-  $('pil-cat').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; catAtiva = b.dataset.c; desenharFiltros(); desenharGrade(); });
+  $('pil-cat').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.col) { colAtiva = colAtiva === b.dataset.col ? '' : b.dataset.col; catAtiva = 'Todas'; } else { catAtiva = b.dataset.c; colAtiva = ''; } desenharFiltros(); desenharGrade(); });
   $('pil-tam').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; tamAtivo = b.dataset.t; desenharFiltros(); desenharGrade(); });
   let tBusca; $('busca').addEventListener('input', e => { clearTimeout(tBusca); tBusca = setTimeout(() => { termo = e.target.value; desenharGrade(); }, 150); });
 
@@ -379,27 +566,66 @@
   function desenharGrade() {
     const tokens = norm(termo).split(' ').filter(Boolean);
     const lista = familias.filter(f => {
-      if (catAtiva !== 'Todas' && f.categoria !== catAtiva) return false;
+      if (colAtiva && f.colecoes.indexOf(colAtiva) === -1) return false;
+      if (catAtiva === 'Novidades') { if (!f.novo) return false; }
+      else if (catAtiva !== 'Todas' && f.categoria !== catAtiva) return false;
       if (tamAtivo && !f.itens.some(i => i.saldo > 0 && i.tamanho === tamAtivo)) return false;
       if (tokens.length && !casaBusca(f, tokens)) return false;
       if (corLink && !f.listaCores.some(c => norm(c.cor) === corLink && c.tams.some(t => t.saldo > 0))) return false;
       return true;
     });
-    $('contagem').textContent = lista.length + (lista.length === 1 ? ' peça' : ' peças');
+    const col = colAtiva && (vitrine.colecoes || []).find(c => c.id === colAtiva);
+    const titulo = termo ? 'Resultado da busca' : col ? col.nome : catAtiva === 'Todas' ? 'Todas as peças' : catAtiva;
+    const filtrado = colAtiva || catAtiva !== 'Todas' || tamAtivo || termo || corLink;
+    $('contagem').innerHTML = '<span><b>' + esc(titulo) + '</b> <small>· ' + lista.length + (lista.length === 1 ? ' peça' : ' peças') + '</small></span>' + (filtrado ? '<button type="button" id="limpar-filtros">Limpar filtros</button>' : '');
     $('msg-vazio').classList.toggle('oculto', lista.length > 0);
-    $('grade').innerHTML = lista.map((f, n) => {
-      const bol = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).slice(0, 6);
-      const mais = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).length - bol.length;
-      const poucas = f.saldo > 0 && f.saldo <= 2;
-      return '<button class="cartao" data-f="' + esc(f.id) + '"><div class="foto"><img ' + (n < 6 ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async" src="' + esc(thumb(f.capa) || PLACEHOLDER) + '" alt="' + esc(f.descricao) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'">' + (poucas ? '<span class="selo">Últimas unidades</span>' : '') + '</div><div class="info"><div class="nome">' + esc(f.descricao || 'Peça') + '</div><div class="preco">' + (f.preco ? brl(f.preco) : 'Consulte') + '</div><div class="bolinhas">' + bol.map(c => '<span class="bolinha" title="' + esc(c.cor) + '" style="background:' + corCss(c.cor) + '"></span>').join('') + (mais > 0 ? '<small>+' + mais + '</small>' : '') + '</div></div></button>';
-    }).join('');
+    $('grade').innerHTML = lista.map(cartaoHtml).join('');
   }
+  function cartaoHtml(f, n) {
+    const bol = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).slice(0, 6);
+    const mais = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).length - bol.length;
+    const poucas = f.saldo > 0 && f.saldo <= 2;
+    return '<button class="cartao" data-f="' + esc(f.id) + '"><div class="foto"><img ' + (n < 6 ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async" src="' + esc(thumb(f.capa) || PLACEHOLDER) + '" alt="' + esc(f.descricao) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'">' + (f.precoDe ? '<span class="selo promo">-' + Math.round((1 - f.preco / f.precoDe) * 100) + '%</span>' : f.novo ? '<span class="selo novo">Novidade</span>' : '') + (poucas ? '<span class="selo">Últimas unidades</span>' : '') + '</div><div class="info"><div class="nome">' + esc(f.descricao || 'Peça') + '</div><div class="preco">' + (f.precoDe ? '<s class="de">' + brl(f.precoDe) + '</s> ' : '') + (f.preco ? brl(f.preco) : 'Consulte') + '</div><div class="bolinhas">' + bol.map(c => '<span class="bolinha" title="' + esc(c.cor) + '" style="background:' + corCss(c.cor) + '"></span>').join('') + (mais > 0 ? '<small>+' + mais + '</small>' : '') + '</div></div></button>';
+  }
+  // ---------- vitrine: banners e destaques ----------
+  function desenharVitrine() {
+    let h = '';
+    const bs = vitrine.banners || [];
+    if (bs.length) h += '<div class="banners" id="banners">' + bs.map(b => '<button class="banner" data-link="' + esc(b.link || '') + '"><img src="' + esc(grande(b.imagem)) + '" alt="' + esc(b.titulo || '') + '">' + (b.titulo || b.subtitulo ? '<div class="txt">' + (b.titulo ? '<b>' + esc(b.titulo) + '</b>' : '') + (b.subtitulo ? '<small>' + esc(b.subtitulo) + '</small>' : '') + (b.link ? '<br><span class="cta">Conferir</span>' : '') + '</div>' : '') + '</button>').join('') + '</div>';
+    else if (familias.length) {
+      const fotos = familias.filter(f => f.capa && f.novo).concat(familias.filter(f => f.capa && !f.novo)).slice(0, 4).map(f => grande(f.capa));
+      h += '<button class="heroi banner" data-link="novidades"><div class="mosaico">' + fotos.map(u => '<img src="' + esc(u) + '" alt="">').join('') + '</div>' +
+        '<div class="txt"><small>Nova coleção</small><b>Elegância para todos os momentos</b><span>Peças escolhidas com carinho para você.</span><br><span class="cta">Ver novidades</span></div></button>';
+    }
+    const dest = (vitrine.destaques || []).map(id => familias.find(f => f.id === id)).filter(Boolean);
+    if (dest.length) h += '<div class="linha-destaques"><h3>Destaques</h3><div class="destaques">' + dest.map((f, i) => cartaoHtml(f, i)).join('') + '</div></div>';
+    $('vitrine').innerHTML = h;
+    clearInterval(desenharVitrine._t);
+    if (bs.length > 1) desenharVitrine._t = setInterval(() => { const el = $('banners'); if (!el || document.hidden) return; const i = Math.round(el.scrollLeft / el.clientWidth); el.scrollTo({ left: ((i + 1) % bs.length) * el.clientWidth, behavior: 'smooth' }); }, 5000);
+  }
+  $('vitrine').addEventListener('click', e => {
+    const c = e.target.closest('.cartao'); if (c) { abrirPeca(c.dataset.f); return; }
+    const b = e.target.closest('.banner'); if (!b || !b.dataset.link) return;
+    const l = b.dataset.link; // link do banner: FAM..., PRD..., uma coleção, uma categoria ou um endereço
+    if (/^https?:\/\//i.test(l)) { window.open(l, '_blank', 'noopener'); return; }
+    const f = familias.find(x => x.id.toUpperCase() === l.toUpperCase()) || (porId[l.toUpperCase()] && familias.find(x => x.id === porId[l.toUpperCase()].familia));
+    if (f) { abrirPeca(f.id); return; }
+    const col = (vitrine.colecoes || []).find(x => x.id === l || norm(x.nome) === norm(l));
+    if (col) { colAtiva = col.id; catAtiva = 'Todas'; }
+    else { const cat = familias.map(x => x.categoria).find(x => norm(x) === norm(l)); if (cat) { catAtiva = cat; colAtiva = ''; } else if (norm(l) === 'novidades') { catAtiva = 'Novidades'; colAtiva = ''; } }
+    desenharFiltros(); desenharGrade(); $('pil-cat').scrollIntoView({ behavior: 'smooth' });
+  });
+  $('contagem').addEventListener('click', e => {
+    if (!e.target.closest('#limpar-filtros')) return;
+    colAtiva = ''; catAtiva = 'Todas'; tamAtivo = ''; termo = ''; corLink = ''; $('busca').value = '';
+    desenharFiltros(); desenharGrade();
+  });
   $('grade').addEventListener('click', e => { const b = e.target.closest('.cartao'); if (b) abrirPeca(b.dataset.f); });
 
   // ---------- folha da peça ----------
   function abrirFolha(id) { $('fundo').classList.add('aberto'); $(id).classList.add('aberta'); document.body.classList.add('travado'); }
   function fecharFolha(id) { $(id).classList.remove('aberta'); }
-  function fecharTudo() { ['folha-produto', 'folha-sacola', 'folha-medidas'].forEach(fecharFolha); $('fundo').classList.remove('aberto'); document.body.classList.remove('travado'); pecaAtual = null; history.replaceState(null, '', location.pathname + (cupom ? '?cupom=' + encodeURIComponent(cupom) : '')); }
+  function fecharTudo() { ['folha-produto', 'folha-sacola', 'folha-medidas', 'folha-conta'].forEach(fecharFolha); $('fundo').classList.remove('aberto'); document.body.classList.remove('travado'); pecaAtual = null; history.replaceState(null, '', location.pathname + (cupom ? '?cupom=' + encodeURIComponent(cupom) : '')); }
   window.fecharTudo = fecharTudo;
   function fecharMedidas() { fecharFolha('folha-medidas'); }
   window.fecharMedidas = fecharMedidas;
@@ -419,28 +645,36 @@
     const { fam, cor } = pecaAtual;
     const item = pecaAtual.itemId ? porId[pecaAtual.itemId] : null;
     const preco = item ? item.preco : fam.preco;
+    const precoDe = item ? (item.precoDe || 0) : (fam.precoDe || 0);
     const coresDisp = fam.listaCores;
-    const fotos = coresDisp.filter(c => c.foto);
+    const det = fam.det || {};
+    const fotos = coresDisp.filter(c => c.foto).concat((det.fotos || []).map(u => ({ foto: u, cor: '' })));
     let html = '';
     if (refazerFotos || !$('p-faixa')) {
-      html += '<div class="carrossel"><div class="faixa" id="p-faixa">' + (fotos.length ? fotos.map(c => '<div class="slide" data-cor="' + esc(norm(c.cor)) + '"><img src="' + esc(grande(c.foto)) + '" alt="' + esc(fam.descricao + ' ' + c.cor) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'"></div>').join('') : '<div class="slide"><img src="' + PLACEHOLDER + '" alt=""></div>') + '</div>' +
+      html += '<div class="carrossel"><div class="faixa" id="p-faixa">' + (fotos.length ? fotos.map(c => '<div class="slide"' + (c.cor ? ' data-cor="' + esc(norm(c.cor)) + '"' : '') + '><img src="' + esc(grande(c.foto)) + '" alt="' + esc(fam.descricao + ' ' + c.cor) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'"></div>').join('') : '<div class="slide"><img src="' + PLACEHOLDER + '" alt=""></div>') + '</div>' +
         (fotos.length > 1 ? '<button class="seta e" onclick="rolarFoto(-1)" aria-label="Foto anterior">&#8249;</button><button class="seta d" onclick="rolarFoto(1)" aria-label="Próxima foto">&#8250;</button><div class="pontos" id="p-pontos">' + fotos.map((_, i) => '<span class="ponto' + (i === 0 ? ' ativo' : '') + '"></span>').join('') + '</div>' : '') + '</div><div class="prod-info" id="p-info"></div>';
       $('p-corpo').innerHTML = html;
       const faixa = $('p-faixa');
       faixa.addEventListener('scroll', () => { const i = Math.round(faixa.scrollLeft / faixa.clientWidth); document.querySelectorAll('#p-pontos .ponto').forEach((p, k) => p.classList.toggle('ativo', k === i)); const s = faixa.children[i]; if (s && s.dataset.cor && pecaAtual) { const nova = pecaAtual.fam.listaCores.find(c => norm(c.cor) === s.dataset.cor); if (nova && nova !== pecaAtual.cor) { pecaAtual.cor = nova; pecaAtual.itemId = ''; const un = nova.tams.filter(t => t.saldo > 0); if (un.length === 1) pecaAtual.itemId = un[0].id; pecaAtual.qtd = 1; desenharPeca(false); } } }, { passive: true });
     }
-    const temMedidas = Array.isArray(GUIA_MEDIDAS) && GUIA_MEDIDAS.length > 0;
+    const medidasFam = (det.medidas && det.medidas.length) ? det.medidas : GUIA_MEDIDAS;
+    const temMedidas = Array.isArray(medidasFam) && medidasFam.length > 0;
+    pecaAtual.medidas = medidasFam;
     const saldoItem = item ? item.saldo : 0;
     const jaNaSacola = item ? (sacola.find(s => s.id === item.id) || { qtd: 0 }).qtd : 0;
     const maxMais = Math.max(0, saldoItem - jaNaSacola);
     if (pecaAtual.qtd > Math.max(1, maxMais)) pecaAtual.qtd = Math.max(1, maxMais);
     $('p-info').innerHTML =
-      '<h1>' + esc(fam.descricao || 'Peça') + '</h1><div class="prod-preco">' + (preco ? brl(preco) : 'Consulte') + '</div>' +
+      '<h1>' + esc(fam.descricao || 'Peça') + '</h1><div class="prod-preco">' + (precoDe ? '<s class="de">' + brl(precoDe) + '</s> ' : '') + (preco ? brl(preco) : 'Consulte') + '</div>' +
+      (precoDe ? '<div class="promo-aviso">Promoção' + (fam.promoFim ? ' até ' + esc(fam.promoFim) : '') + '. Peça de promoção não tem troca.</div>' : '') +
       (coresDisp.length > 0 ? '<div class="sec"><div class="sec-t"><span>Cor: ' + esc(cor.cor) + '</span></div><div class="opcoes">' + coresDisp.map(c => { const tem = c.tams.some(t => t.saldo > 0); return '<button class="op op-cor' + (c === cor ? ' sel' : '') + (tem ? '' : ' esgotado') + '" data-cor="' + esc(norm(c.cor)) + '" ' + (tem ? '' : 'disabled') + '><span class="bolinha" style="background:' + corCss(c.cor) + '"></span>' + esc(c.cor) + '</button>'; }).join('') + '</div></div>' : '') +
       '<div class="sec"><div class="sec-t"><span>Tamanho</span>' + (temMedidas ? '<button class="lnk" onclick="abrirMedidas()">Guia de medidas</button>' : '') + '</div><div class="opcoes">' + cor.tams.map(t => '<button class="op' + (t.id === pecaAtual.itemId ? ' sel' : '') + (t.saldo > 0 ? '' : ' esgotado') + '" data-item="' + esc(t.id) + '" ' + (t.saldo > 0 ? '' : 'disabled aria-label="' + esc(t.tamanho) + ' esgotado"') + '>' + esc(t.tamanho || 'Único') + '</button>').join('') + '</div>' +
         (item && item.saldo > 0 && item.saldo <= 2 ? '<div class="aviso-estoque">Últimas ' + item.saldo + (item.saldo === 1 ? ' unidade' : ' unidades') + ' neste tamanho.</div>' : '') + '</div>' +
       '<div class="sec"><div class="sec-t"><span>Quantidade</span></div><div class="qtd-box"><button onclick="mudarQtdPeca(-1)" aria-label="Menos">&minus;</button><span id="p-qtd">' + pecaAtual.qtd + '</span><button onclick="mudarQtdPeca(1)" aria-label="Mais">+</button></div>' +
-        (item && jaNaSacola > 0 ? '<div class="aviso-estoque" style="color:var(--muted)">Você já tem ' + jaNaSacola + ' na sacola.</div>' : '') + '</div>';
+        (item && jaNaSacola > 0 ? '<div class="aviso-estoque" style="color:var(--muted)">Você já tem ' + jaNaSacola + ' na sacola.</div>' : '') + '</div>' +
+      (det.tecido ? '<div class="sec"><div class="sec-t"><span>Tecido</span></div><span class="tecido">' + esc(det.tecido) + '</span></div>' : '') +
+      (det.descricao ? '<div class="sec"><div class="sec-t"><span>Detalhes</span></div><div class="detalhe-txt">' + esc(det.descricao) + '</div></div>' : '') +
+      '<div class="sec"><a class="tecido" style="text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/' + WHATSAPP_LOJA + '?text=' + encodeURIComponent('Olá! Tenho uma dúvida sobre a peça ' + (fam.descricao || '') + (cor && cor.cor ? ' (' + cor.cor + ')' : '') + ' do catálogo.') + '">💬 Tirar dúvida sobre esta peça no WhatsApp</a></div>';
     const btn = $('p-add');
     if (!item) { btn.disabled = true; btn.textContent = 'Escolha o tamanho'; }
     else if (maxMais <= 0) { btn.disabled = true; btn.textContent = 'Todas as unidades já estão na sacola'; }
@@ -473,8 +707,8 @@
     gravar(CHAVE_SACOLA, sacola); atualizarBarra(); fecharTudo(); toast('Adicionada à sacola');
   };
   window.abrirMedidas = () => {
-    const linhas = GUIA_MEDIDAS; const cols = Object.keys(linhas[0] || {});
-    const nomes = { tam: 'Tam.', busto: 'Busto', cintura: 'Cintura', quadril: 'Quadril' };
+    const linhas = (pecaAtual && pecaAtual.medidas) || GUIA_MEDIDAS; const cols = ['tam', 'busto', 'cintura', 'quadril', 'comprimento'].filter(c => linhas.some(l => l[c]));
+    const nomes = { tam: 'Tam.', busto: 'Busto', cintura: 'Cintura', quadril: 'Quadril', comprimento: 'Compr.' };
     $('m-corpo').innerHTML = '<table class="medidas"><thead><tr>' + cols.map(c => '<th>' + esc(nomes[c] || c) + '</th>').join('') + '</tr></thead><tbody>' + linhas.map(l => '<tr>' + cols.map(c => '<td>' + esc(l[c]) + '</td>').join('') + '</tr>').join('') + '</tbody></table><p class="nota">Medidas em centímetros. Em caso de dúvida, chame a gente no WhatsApp.</p>';
     abrirFolha('folha-medidas');
   };
@@ -483,7 +717,10 @@
   const LOJAS = ['Loja Penha', 'Loja Recreio'];
   const saldoLoja = (p, n) => n === 'Loja Penha' ? (p.saldoPenha || 0) : (p.saldoRecreio || 0);
   let ident = ler(CHAVE_IDENT, { modo: '', nome: '', telefone: '', primeiraCompra: false, aniversario: false });
-  let ent = { tipo: '', loja: '', cep: '', endereco: '', cidade: '', numero: '', compl: '', opcoes: [], freteSel: null, calculando: false, erroCep: '', erroFrete: '' };
+  let ent = { tipo: '', loja: '', cep: '', endereco: '', cidade: '', numero: '', compl: '', cpf: '', opcoes: [], freteSel: null, calculando: false, erroCep: '', erroFrete: '' };
+  const maskCpf = v => { const d = v.replace(/\D/g, '').slice(0, 11); return d.replace(/^(\d{3})(\d)/, '$1.$2').replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3').replace(/\.(\d{3})(\d{1,2})$/, '.$1-$2'); };
+  function cpfValido(v) { const c = String(v || '').replace(/\D/g, ''); if (c.length !== 11 || /^(\d)\1{10}$/.test(c)) return false; for (let t = 9; t < 11; t++) { let s = 0; for (let i = 0; i < t; i++) s += Number(c[i]) * (t + 1 - i); if (((s * 10) % 11) % 10 !== Number(c[t])) return false; } return true; }
+  const precisaCpf = () => ent.tipo === 'correios' && !(ident.modo === 'cadastrada' && ident.temCpf);
   let cadAberto = false, enviando = false;
 
   const postApi = async (action, dados) => { const r = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: action, chave: '', dados: dados }) }); const j = await r.json(); if (!j || j.ok === false) throw new Error((j && j.erro) || 'Erro'); return j.data; };
@@ -520,8 +757,9 @@
   function totalSacola() { return sacola.reduce((t, s) => t + (porId[s.id] ? porId[s.id].preco * s.qtd : 0), 0); }
   function atualizarBarra() {
     const n = sacola.reduce((t, s) => t + s.qtd, 0);
-    $('barra-sacola').classList.toggle('oculto', n === 0);
+    $('barra-sacola').classList.toggle('oculto', n === 0); document.body.classList.toggle('sem-sacola', n === 0);
     $('sac-qtd').textContent = n; $('sac-total').textContent = brl(totalSacola());
+    $('topo-sac-n').textContent = n; $('topo-sac-n').classList.toggle('oculto', n === 0);
   }
   window.abrirSacola = async () => {
     abrirFolha('folha-sacola'); desenharSacola();
@@ -530,7 +768,7 @@
   };
   async function reconferirIdent() {
     if (ident.modo !== 'cadastrada' || !ident.telefone) return;
-    try { const r = await getApi({ action: 'consultarClienteCatalogo', telefone: ident.telefone }); if (r.encontrada) { ident.primeiraCompra = r.primeiraCompra; ident.aniversario = r.aniversario; ident.nome = r.primeiroNome || ident.nome; gravar(CHAVE_IDENT, ident); desenharResumo(); } } catch (e) {}
+    try { const r = await getApi({ action: 'consultarClienteCatalogo', telefone: ident.telefone }); if (r.encontrada) { ident.primeiraCompra = r.primeiraCompra; ident.aniversario = r.aniversario; ident.temCpf = !!r.temCpf; ident.nome = r.primeiroNome || ident.nome; gravar(CHAVE_IDENT, ident); desenharResumo(); if (ent.tipo === 'correios') desenharEndereco(); } } catch (e) {}
   }
 
   function desenharSacola() {
@@ -580,7 +818,7 @@
       bt.disabled = true; msg.innerHTML = '<div class="msg-info">Conferindo...</div>';
       try {
         const r = await getApi({ action: 'consultarClienteCatalogo', telefone: tel });
-        if (r.encontrada) { ident = { modo: 'cadastrada', nome: r.primeiroNome, telefone: tel, primeiraCompra: r.primeiraCompra, aniversario: r.aniversario }; gravar(CHAVE_IDENT, ident); desenharIdent(); desenharResumo(); }
+        if (r.encontrada) { ident = { modo: 'cadastrada', nome: r.primeiroNome, telefone: tel, primeiraCompra: r.primeiraCompra, aniversario: r.aniversario, temCpf: !!r.temCpf }; gravar(CHAVE_IDENT, ident); desenharIdent(); desenharResumo(); if (ent.tipo === 'correios') desenharEndereco(); }
         else { ident.telefone = tel; msg.innerHTML = '<div class="msg-no">Não encontramos esse telefone no cadastro. Confira o número ou faça seu cadastro agora e ganhe ' + Math.round((cfg.primeiraCompraPercentual || 0.05) * 100) + '% na primeira compra.</div><button class="btn-sec" data-ident="cadastrar">Quero me cadastrar agora</button><button class="btn-sec claro" data-ident="sem">Continuar sem cadastro</button>'; bt.disabled = false; }
       } catch (err) { msg.innerHTML = '<div class="msg-no">Não consegui conferir agora. Tente de novo.</div>'; bt.disabled = false; }
     }
@@ -647,6 +885,8 @@
     let h = '<div class="msg-info">' + esc(ent.endereco) + '</div>';
     if (ent.tipo === 'correios') {
       h += '<div class="linha-campos"><div class="campo"><label for="e-num">Número</label><input id="e-num" type="text" value="' + esc(ent.numero) + '"></div><div class="campo"><label for="e-comp">Complemento</label><input id="e-comp" type="text" value="' + esc(ent.compl) + '"></div></div>';
+      if (precisaCpf()) h += '<div class="campo"><label for="e-cpf">CPF (os Correios exigem para o envio)</label><input id="e-cpf" type="text" inputmode="numeric" placeholder="000.000.000-00" value="' + esc(maskCpf(ent.cpf)) + '" autocomplete="off"></div>';
+      else if (ident.modo === 'cadastrada') h += '<div class="msg-ok">Seu CPF já está no cadastro. Ele vai junto no envio.</div>';
       h += '<div id="e-frete"></div>';
     } else {
       const ok = norm(ent.cidade) === norm(cfg.cidadeUber || 'Rio de Janeiro');
@@ -656,6 +896,7 @@
     box.innerHTML = h;
     const num = $('e-num'); if (num) num.addEventListener('input', () => { ent.numero = num.value; });
     const cp = $('e-comp'); if (cp) cp.addEventListener('input', () => { ent.compl = cp.value; });
+    const cf = $('e-cpf'); if (cf) cf.addEventListener('input', () => { cf.value = maskCpf(cf.value); ent.cpf = cf.value.replace(/\D/g, ''); desenharResumo(); });
     desenharFrete(); desenharResumo();
   }
   async function calcularFrete() {
@@ -686,6 +927,7 @@
     if (ident.modo === 'sem' && !(ident.nome || '').trim()) return 'Diga como podemos te chamar.';
     if (!ent.tipo) return 'Escolha como você quer receber.';
     if (ent.tipo === 'correios' && (ent.cep.length !== 8 || !ent.endereco || !(ent.numero || '').trim() || !ent.freteSel)) return 'Preencha o CEP, o número e escolha o frete.';
+    if (precisaCpf() && !cpfValido(ent.cpf)) return 'Informe um CPF válido: os Correios exigem para o envio.';
     if (ent.tipo === 'uber' && (ent.cep.length !== 8 || norm(ent.cidade) !== norm(cfg.cidadeUber || 'Rio de Janeiro'))) return 'Informe um CEP da cidade do Rio de Janeiro para o Uber Entrega.';
     return '';
   }
@@ -713,6 +955,17 @@
   });
   const ZAP = 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z';
 
+  $('zap-path').setAttribute('d', ZAP);
+  $('rod-zap').href = 'https://wa.me/' + WHATSAPP_LOJA + '?text=' + encodeURIComponent('Olá! Vim pelo catálogo da USE ELLBA.');
+  (function avisosTopo() {
+    const cb = Math.round((cfg.cashbackPercentual || 0.05) * 100), pc = Math.round((cfg.primeiraCompraPercentual || 0.05) * 100);
+    const l = [cb + '% de cashback em todas as compras', pc + '% de desconto na primeira compra', 'Troca em até 30 dias', 'Retire na loja ou receba em casa'];
+    $('rod-vant').textContent = l.join(' · ');
+    let i = 0; const el = $('aviso-txt'); el.textContent = l[0];
+    setInterval(() => { if (document.hidden) return; el.style.opacity = 0; setTimeout(() => { i = (i + 1) % l.length; el.textContent = l[i]; el.style.opacity = 1; }, 400); }, 4000);
+  })();
+  $('ajuda-zap').href = 'https://wa.me/' + WHATSAPP_LOJA + '?text=' + encodeURIComponent('Olá! Estou no catálogo da USE ELLBA e preciso de ajuda.');
+
   async function enviarPedido() {
     if (enviando) return;
     const falta = faltaAlgo(); if (falta) { toast(falta); return; }
@@ -727,7 +980,7 @@
         itens: sacola.map(s => ({ id: s.id, qtd: s.qtd, loja: lojaPref })), loja: lojaPref,
         telefone: ident.modo === 'cadastrada' ? ident.telefone : '', nome: ident.nome || '', entrega: ent.tipo,
         cep: ent.cep, endereco: endereco, servico: ent.freteSel ? ent.freteSel.nome : '', frete: freteAtual(), prazo: ent.freteSel ? ent.freteSel.prazo : '',
-        cupom: cupom, obs: obs
+        cupom: cupom, obs: obs, cpf: ent.tipo === 'correios' ? ent.cpf : ''
       });
       mostrarSucesso(r, obs);
       sacola = []; gravar(CHAVE_SACOLA, sacola); atualizarBarra();
@@ -807,7 +1060,87 @@
   document.addEventListener('visibilitychange', () => { if (!document.hidden && (Date.now() - ultimaCarga > 120000 || (proxLib && Date.now() + offsetSrv >= proxLib))) carregarCatalogo(true); });
   window.carregarCatalogo = carregarCatalogo;
   carregarCatalogo(false);
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').then(reg => {
+      reg.update().catch(() => {}); setInterval(() => reg.update().catch(() => {}), 120000);
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg.update().catch(() => {}); });
+    }).catch(() => {}); });
+    // versão nova do catálogo: faixa com botão "Atualizar"
+    const tinha = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!tinha || $('faixa-versao')) return;
+      const f = document.createElement('div'); f.id = 'faixa-versao';
+      f.style.cssText = 'position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));z-index:200;background:var(--bordo);color:#fff;border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:.9rem';
+      f.innerHTML = '<span style="flex:1">Tem versão nova do catálogo.</span><button onclick="location.reload()" style="border-radius:999px;background:var(--dourado);color:var(--bordo);font-weight:700;padding:7px 14px">Atualizar</button>';
+      document.body.appendChild(f);
+    });
+  }
+  // ---------- Minha conta (área da cliente: entra com código pelo WhatsApp) ----------
+  const CHAVE_CONTA = 'ellba_conta_v1';
+  let contaToken = ler(CHAVE_CONTA, '') || '', contaTel = '';
+  function abrirConta() { abrirFolha('folha-conta'); contaToken ? contaCarregar() : contaTelaEntrar(); }
+  window.abrirConta = abrirConta;
+  function contaTelaEntrar(msg) {
+    $('conta-corpo').innerHTML = '<div class="conta-caixa"><h3>Sua área de cliente</h3><p class="conta-sub">Veja seu cashback, suas compras, o vale-troca e o seu código de indicação.</p>' +
+      '<label for="conta-tel">Seu WhatsApp</label><input id="conta-tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="(21) 99999-9999" value="' + esc(contaTel) + '">' +
+      '<button class="btn-sec" id="conta-btn-cod" onclick="contaPedirCodigo()">Receber código no WhatsApp</button>' +
+      '<div id="conta-cod-box" class="oculto"><p class="conta-sub" id="conta-msg">' + esc(msg || '') + '</p><label for="conta-cod">Código de 6 números</label><input id="conta-cod" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000">' +
+      '<button class="btn-sec" onclick="contaEntrar()">Entrar</button><button class="conta-link" onclick="contaPedirCodigo()">Mandar outro código</button></div>' +
+      '<p class="conta-nota">Ainda não é cliente? Faça sua primeira compra pelo catálogo ou na loja, e o seu cadastro é criado.</p></div>';
+  }
+  window.contaPedirCodigo = async () => {
+    contaTel = ($('conta-tel').value || '').replace(/\D/g, '');
+    if (contaTel.length < 10) { toast('Digite o WhatsApp com DDD.'); return; }
+    const b = $('conta-btn-cod'); b.disabled = true; b.textContent = 'Enviando...';
+    try {
+      const r = await postApi('clientePedirCodigo', { telefone: contaTel });
+      $('conta-cod-box').classList.remove('oculto'); $('conta-msg').textContent = r.mensagem; b.classList.add('oculto'); $('conta-cod').focus();
+    } catch (e) { toast(e.message); b.disabled = false; b.textContent = 'Receber código no WhatsApp'; }
+  };
+  window.contaEntrar = async () => {
+    const cod = ($('conta-cod').value || '').replace(/\D/g, '');
+    if (cod.length !== 6) { toast('O código tem 6 números.'); return; }
+    try {
+      const r = await postApi('clienteEntrar', { telefone: contaTel, codigo: cod });
+      contaToken = r.token; gravar(CHAVE_CONTA, contaToken); contaCarregar();
+    } catch (e) { toast(e.message); }
+  };
+  async function contaCarregar() {
+    $('conta-corpo').innerHTML = '<div class="conta-caixa" style="text-align:center">Carregando...</div>';
+    try { contaDesenhar(await postApi('clienteMinhaConta', { token: contaToken })); }
+    catch (e) { if (/sess|Entre de novo/i.test(e.message)) { contaToken = ''; gravar(CHAVE_CONTA, ''); contaTelaEntrar(); } else $('conta-corpo').innerHTML = '<div class="conta-caixa">' + esc(e.message) + '<button class="btn-sec" onclick="abrirConta()">Tentar de novo</button></div>'; }
+  }
+  function contaDesenhar(c) {
+    const cb = c.cashback, ind = c.indicacao, link = location.origin + location.pathname + '?cupom=' + encodeURIComponent(ind.codigo || '');
+    const msgInd = 'Conheça a Use Ellba! Na sua primeira compra, informe o meu código ' + ind.codigo + ' e ganhe desconto. Veja o catálogo: ' + link;
+    const linha = (a, b) => '<div class="conta-linha"><span>' + a + '</span><b>' + b + '</b></div>';
+    let h = '<div class="conta-caixa conta-ola"><h3>Olá, ' + esc(c.primeiroNome) + '!</h3><p class="conta-sub">Cliente desde ' + esc(c.clienteDesde) + '</p></div>';
+    h += '<div class="conta-caixa"><h4>Cashback</h4><div class="conta-grande">' + brl(cb.disponivel) + '</div><p class="conta-sub">disponível para usar' + (cb.proximaValidade ? ' · o próximo vence em ' + esc(cb.proximaValidade) : '') + '</p>' +
+      (cb.restrito ? '<p class="conta-sub">+ ' + brl(cb.restrito) + ' de bônus em compras a partir de ' + brl(cb.restritoMinimo) + '</p>' : '') +
+      (cb.creditos.length ? cb.creditos.map(k => linha(esc(k.tipo) + '<br><small>' + esc(k.situacao) + (k.vence ? ' · vence ' + esc(k.vence) : '') + (k.minimo ? ' · compra a partir de ' + brl(k.minimo) : '') + '</small>', brl(k.restante))).join('') : '<p class="conta-sub">Você ganha cashback a cada compra. Ele libera alguns dias depois e pode ser usado na próxima.</p>') + '</div>';
+    if (c.vales.length) h += '<div class="conta-caixa"><h4>Vale-troca</h4>' + c.vales.map(v => linha('Vale ' + esc(v.id) + '<br><small>de ' + esc(v.em) + (v.vence ? ' · vence ' + esc(v.vence) : '') + '</small>', brl(v.restante))).join('') + '</div>';
+    if (ind.codigo) h += '<div class="conta-caixa"><h4>Indique uma amiga</h4><p class="conta-sub">Sua amiga ganha desconto na primeira compra e você ganha um bônus de cashback quando ela comprar.</p><div class="conta-codigo">' + esc(ind.codigo) + '</div>' +
+      '<a class="btn-zap" style="margin-top:10px" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(msgInd) + '">Mandar para uma amiga</a>' +
+      (ind.amigas.length ? '<p class="conta-sub" style="margin-top:10px">Amigas que você indicou:</p>' + ind.amigas.map(a => linha(esc(a.nome), a.bonus ? brl(a.bonus) + (a.liberaEm ? '<br><small>libera ' + esc(a.liberaEm) + '</small>' : '') : '<small>ainda sem compra</small>')).join('') : '') + '</div>';
+    if (c.condicionais.length) h += '<div class="conta-caixa"><h4>Peças com você (condicional)</h4>' + c.condicionais.map(x => linha(esc(x.tipo) + ' ' + esc(x.id), x.pecas + ' peça(s)<br><small>devolver até ' + esc(x.prazo) + '</small>')).join('') + '</div>';
+    h += '<div class="conta-caixa"><h4>Minhas compras</h4>' + (c.compras.length ? c.compras.map(v => '<div class="conta-compra"><div class="conta-linha"><span>' + esc(v.data) + '</span><b>' + brl(v.total) + '</b></div><small>' +
+      v.itens.map(i => i.qtd + 'x ' + esc(i.descricao)).join('<br>') + '</small>' + (v.podeTrocar ? '<small class="conta-troca">Troca até ' + esc(v.trocaAte) + '</small>' : '') + '</div>').join('') : '<p class="conta-sub">Nenhuma compra ainda.</p>') + '</div>';
+    const d = c.dados;
+    h += '<div class="conta-caixa"><h4>Meus dados</h4>' + linha('WhatsApp', esc(d.telefone)) + (d.nascimento ? linha('Aniversário', esc(d.nascimento)) : '') + (d.cpf ? linha('CPF', esc(d.cpf)) : '') +
+      '<label for="conta-email">E-mail</label><input id="conta-email" type="email" value="' + esc(d.email) + '" placeholder="seu@email.com">' +
+      '<label for="conta-end">Endereço para entrega</label><textarea id="conta-end" rows="2" placeholder="Rua, número, bairro, cidade, CEP">' + esc(d.endereco) + '</textarea>' +
+      '<label class="conta-check"><input type="checkbox" id="conta-aceita"' + (d.aceitaMensagens ? ' checked' : '') + '> Quero receber novidades e avisos da loja pelo WhatsApp</label>' +
+      '<button class="btn-sec" onclick="contaSalvar()">Salvar meus dados</button>' +
+      '<p class="conta-nota">Para mudar nome, WhatsApp, aniversário ou CPF, fale com a loja pelo WhatsApp.</p></div>' +
+      '<div style="text-align:center;padding:4px 0 24px"><button class="conta-link" onclick="contaSair()">Sair da minha área</button></div>';
+    $('conta-corpo').innerHTML = h;
+  }
+  window.contaSalvar = async () => {
+    try { await postApi('clienteSalvarDados', { token: contaToken, email: $('conta-email').value, endereco: $('conta-end').value, aceitaMensagens: $('conta-aceita').checked }); toast('Dados salvos. Deus abençoe!'); }
+    catch (e) { toast(e.message); }
+  };
+  window.contaSair = async () => { try { await postApi('clienteSair', { token: contaToken }); } catch (e) {} contaToken = ''; gravar(CHAVE_CONTA, ''); contaTelaEntrar(); };
+  if (/[?&]conta=1/.test(location.search)) setTimeout(abrirConta, 400);
 })();
 </script>
 </body>

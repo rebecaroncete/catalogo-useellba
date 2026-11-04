@@ -2,8 +2,8 @@
 // CONFIGURAÇÃO DO CATÁLOGO USE ELLBA
 // ======================================================================
 
-// Link "…/exec" do Apps Script (o mesmo do app das vendedoras).
-const API_URL = "https://script.google.com/macros/s/AKfycbz1YUga8xpmd-FOB3zcmKk1Es5YrnxgxjF3yes6bpL6J8T-sUP-_eE1LXYOJ3PbbqP3/exec";
+// Servidor da loja no Supabase (o mesmo do app das vendedoras).
+const API_URL = "https://gfxlvsyondbnmpdfwplp.supabase.co/functions/v1/api";
 
 // WhatsApp da loja (só números, com 55 + DDD).
 const WHATSAPP_LOJA = "5521999985303";

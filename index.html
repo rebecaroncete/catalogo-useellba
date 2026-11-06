@@ -237,6 +237,19 @@
   body.sem-sacola .ajuda-zap { bottom:calc(18px + env(safe-area-inset-bottom)); }
   s.de { color: var(--muted, #8a7f78); font-weight: 400; font-size: .85em; margin-right: 4px; }
   .selo.promo { background: #b3261e; color: #fff; }
+  /* destaque da live */
+  .live-box { margin-top:16px; padding:14px 12px 12px; border-radius:18px; background:linear-gradient(135deg,var(--bordo),var(--bordo2)); color:#fff; }
+  .live-box + .live-box { margin-top:10px; }
+  .live-box h3 { margin:0 4px; font-size:1.05rem; color:var(--dourado); }
+  .live-box .live-sub { margin:3px 4px 10px; font-size:.82rem; color:#f3e6d8; }
+  .live-box .destaques .cartao .nome { color:#fff; } .live-box .destaques .cartao .preco { color:var(--dourado); }
+  .live-item { flex:none; width:150px; display:flex; flex-direction:column; gap:6px; }
+  .live-item .cartao { width:100%; }
+  .selo.esgotada { background:#3a2b2d; color:#fff; }
+  .cartao.sem-estoque .foto img { filter:grayscale(.55); opacity:.8; }
+  .btn-espera { width:100%; padding:8px 6px; border-radius:999px; background:var(--dourado); color:var(--bordo); font-weight:700; font-size:.78rem; }
+  .aviso-esgotada { margin-top:10px; padding:10px 12px; border-radius:12px; background:#f6f1ed; color:var(--ink); font-size:.88rem; }
+  .espera-sel { width:100%; padding:12px 13px; border:1.5px solid var(--linha); border-radius:12px; font-size:16px; font-family:inherit; background:#fff; }
   .promo-aviso { font-size: .8rem; color: #b3261e; margin: 2px 0 8px; }
 
   /* ===== Redesenho 11/2026: vitrine estilo loja de moda, pensado para o celular ===== */
@@ -390,6 +403,11 @@
   <div class="folha-corpo" style="padding:16px" id="m-corpo"></div>
 </section>
 
+<section class="folha" id="folha-espera" role="dialog" aria-modal="true" aria-label="Lista de espera" style="z-index:80">
+  <div class="folha-topo"><h2>Lista de espera</h2><button class="fechar" onclick="fecharEspera()" aria-label="Fechar">&times;</button></div>
+  <div class="folha-corpo" style="padding:16px" id="e-corpo"></div>
+</section>
+
 <div class="toast" id="toast"></div>
 
 <script src="config.js"></script>
@@ -402,7 +420,7 @@
   'use strict';
   const CHAVE_SACOLA = 'ellba_sacola_v1', CHAVE_CUPOM = 'ellba_cupom_v1', CHAVE_DADOS = 'ellba_dados_v1', CHAVE_IDENT = 'ellba_ident_v1';
   const ORDEM_TAM = ['PP','P','M','G','GG','XG','XGG','EG','EGG','UNICO','UNICA','U'];
-  let produtos = [], familias = [], porId = {};
+  let produtos = [], familias = [], porId = {}, famTodas = {};
   let detFam = {}, vitrine = { banners: [], destaques: [], ordemCategorias: [], colecoes: [] }, colAtiva = '';
   let catAtiva = 'Todas', tamAtivo = '', termo = '', corLink = '';
   let sacola = [];            // [{id, qtd}]
@@ -483,12 +501,13 @@
       if (!c.foto && p.foto) c.foto = p.foto;
       c.tams.push(p);
     });
-    familias = Object.keys(mapa).filter(k => mapa[k].saldo > 0).map(k => {
+    famTodas = {};
+    familias = Object.keys(mapa).map(k => {
       const f = mapa[k];
       f.listaCores = Object.keys(f.cores).map(kk => f.cores[kk]);
       f.listaCores.forEach(c => c.tams.sort((a, b) => ordenarTam(a.tamanho, b.tamanho)));
       f.listaCores.sort((a, b) => (b.tams.some(t => t.saldo > 0) ? 1 : 0) - (a.tams.some(t => t.saldo > 0) ? 1 : 0));
-      const precos = f.itens.filter(i => i.saldo > 0).map(i => i.preco).filter(x => x > 0);
+      const precos = f.itens.filter(i => i.saldo > 0 || f.saldo <= 0).map(i => i.preco).filter(x => x > 0);
       f.preco = precos.length ? Math.min.apply(null, precos) : 0;
       const emPromo = f.itens.filter(i => i.saldo > 0 && i.precoDe && i.preco === f.preco)[0];
       f.precoDe = emPromo ? emPromo.precoDe : 0; f.promoFim = emPromo ? emPromo.promoFim : '';
@@ -496,8 +515,9 @@
       f.itens.forEach(i => { if (!i.foto) i.foto = (f.cores[norm(i.cor) || 'unica'] || {}).foto || f.capa; });
       f.det = detFam[f.id] || null; f.colecoes = (f.det && f.det.colecoes) || [];
       if (!f.capa && f.det && f.det.fotos && f.det.fotos.length) f.capa = f.det.fotos[0];
+      famTodas[f.id] = f;
       return f;
-    }).sort((a, b) => (ehAcessorio(a.categoria) - ehAcessorio(b.categoria)) || (b.ordem - a.ordem));
+    }).filter(f => f.saldo > 0).sort((a, b) => (ehAcessorio(a.categoria) - ehAcessorio(b.categoria)) || (b.ordem - a.ordem));
     porId = {}; produtos.forEach(p => porId[p.id] = p);
   }
 
@@ -584,12 +604,31 @@
   function cartaoHtml(f, n) {
     const bol = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).slice(0, 6);
     const mais = f.listaCores.filter(c => c.tams.some(t => t.saldo > 0)).length - bol.length;
-    const poucas = f.saldo > 0 && f.saldo <= 2;
-    return '<button class="cartao" data-f="' + esc(f.id) + '"><div class="foto"><img ' + (n < 6 ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async" src="' + esc(thumb(f.capa) || PLACEHOLDER) + '" alt="' + esc(f.descricao) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'">' + (f.precoDe ? '<span class="selo promo">-' + Math.round((1 - f.preco / f.precoDe) * 100) + '%</span>' : f.novo ? '<span class="selo novo">Novidade</span>' : '') + (poucas ? '<span class="selo">Últimas unidades</span>' : '') + '</div><div class="info"><div class="nome">' + esc(f.descricao || 'Peça') + '</div><div class="preco">' + (f.precoDe ? '<s class="de">' + brl(f.precoDe) + '</s> ' : '') + (f.preco ? brl(f.preco) : 'Consulte') + '</div><div class="bolinhas">' + bol.map(c => '<span class="bolinha" title="' + esc(c.cor) + '" style="background:' + corCss(c.cor) + '"></span>').join('') + (mais > 0 ? '<small>+' + mais + '</small>' : '') + '</div></div></button>';
+    const poucas = f.saldo > 0 && f.saldo <= 2, esg = f.saldo <= 0;
+    return '<button class="cartao' + (esg ? ' sem-estoque' : '') + '" data-f="' + esc(f.id) + '"><div class="foto"><img ' + (n < 6 ? 'fetchpriority="high"' : 'loading="lazy"') + ' decoding="async" src="' + esc(thumb(f.capa) || PLACEHOLDER) + '" alt="' + esc(f.descricao) + '" onerror="this.onerror=null;this.src=\'' + PLACEHOLDER.replace(/'/g, "\\'") + '\'">' + (esg ? '' : f.precoDe ? '<span class="selo promo">-' + Math.round((1 - f.preco / f.precoDe) * 100) + '%</span>' : f.novo ? '<span class="selo novo">Novidade</span>' : '') + (poucas ? '<span class="selo">Últimas unidades</span>' : '') + (esg ? '<span class="selo esgotada">Esgotada</span>' : '') + '</div><div class="info"><div class="nome">' + esc(f.descricao || 'Peça') + '</div><div class="preco">' + (f.precoDe ? '<s class="de">' + brl(f.precoDe) + '</s> ' : '') + (f.preco ? brl(f.preco) : 'Consulte') + '</div><div class="bolinhas">' + bol.map(c => '<span class="bolinha" title="' + esc(c.cor) + '" style="background:' + corCss(c.cor) + '"></span>').join('') + (mais > 0 ? '<small>+' + mais + '</small>' : '') + '</div></div></button>';
   }
   // ---------- vitrine: banners e destaques ----------
+  // ---------- destaque da live (no dia da live até 3h depois do término) ----------
+  const famPorId = id => famTodas[id] || familias.find(f => f.id === id);
+  function hojeBR() { try { return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo' }).format(new Date(Date.now() + offsetSrv)); } catch (e) { return new Date().toISOString().slice(0, 10); } }
+  const horaTxt = h => h ? h.replace(/^0/, '').replace(':00', 'h').replace(':', 'h') : '';
+  function livesHtml() {
+    const agora = Date.now() + offsetSrv, hoje = hojeBR();
+    const lives = (vitrine.lives || []).filter(l => l.ate > agora).sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
+    clearTimeout(livesHtml._t);
+    const prox = lives.map(l => l.ate).sort((a, b) => a - b)[0];
+    if (prox) livesHtml._t = setTimeout(desenharVitrine, Math.min(prox - agora + 1000, 2147483000));
+    return lives.map(l => {
+      const fs = (l.pecas || []).map(famPorId).filter(Boolean);
+      if (!fs.length) return '';
+      const p = l.data.split('-'), dia = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'][new Date(l.data + 'T12:00:00Z').getUTCDay()];
+      const quando = (l.data === hoje ? 'Hoje' : dia.charAt(0).toUpperCase() + dia.slice(1)) + ', ' + p[2] + '/' + p[1] + (l.hora ? ' · ' + horaTxt(l.hora) + (l.horaFim ? ' às ' + horaTxt(l.horaFim) : '') : '');
+      return '<div class="live-box"><h3>📺 ' + esc(l.titulo && l.titulo !== 'Live' ? l.titulo : 'Live da Use Ellba') + '</h3><div class="live-sub">' + esc(quando) + ' · @use.ellba</div>' +
+        '<div class="destaques">' + fs.map((f, i) => '<div class="live-item">' + cartaoHtml(f, i) + (f.saldo <= 0 ? '<button class="btn-espera" data-espera="' + esc(f.id) + '">Avise-me quando chegar</button>' : '') + '</div>').join('') + '</div></div>';
+    }).join('');
+  }
   function desenharVitrine() {
-    let h = '';
+    let h = livesHtml();
     const bs = vitrine.banners || [];
     if (bs.length) h += '<div class="banners" id="banners">' + bs.map(b => '<button class="banner" data-link="' + esc(b.link || '') + '"><img src="' + esc(grande(b.imagem)) + '" alt="' + esc(b.titulo || '') + '">' + (b.titulo || b.subtitulo ? '<div class="txt">' + (b.titulo ? '<b>' + esc(b.titulo) + '</b>' : '') + (b.subtitulo ? '<small>' + esc(b.subtitulo) + '</small>' : '') + (b.link ? '<br><span class="cta">Conferir</span>' : '') + '</div>' : '') + '</button>').join('') + '</div>';
     else if (familias.length) {
@@ -604,6 +643,7 @@
     if (bs.length > 1) desenharVitrine._t = setInterval(() => { const el = $('banners'); if (!el || document.hidden) return; const i = Math.round(el.scrollLeft / el.clientWidth); el.scrollTo({ left: ((i + 1) % bs.length) * el.clientWidth, behavior: 'smooth' }); }, 5000);
   }
   $('vitrine').addEventListener('click', e => {
+    const w = e.target.closest('[data-espera]'); if (w) { abrirEspera(w.dataset.espera, true); return; }
     const c = e.target.closest('.cartao'); if (c) { abrirPeca(c.dataset.f); return; }
     const b = e.target.closest('.banner'); if (!b || !b.dataset.link) return;
     const l = b.dataset.link; // link do banner: FAM..., PRD..., uma coleção, uma categoria ou um endereço
@@ -625,13 +665,13 @@
   // ---------- folha da peça ----------
   function abrirFolha(id) { $('fundo').classList.add('aberto'); $(id).classList.add('aberta'); document.body.classList.add('travado'); }
   function fecharFolha(id) { $(id).classList.remove('aberta'); }
-  function fecharTudo() { ['folha-produto', 'folha-sacola', 'folha-medidas', 'folha-conta'].forEach(fecharFolha); $('fundo').classList.remove('aberto'); document.body.classList.remove('travado'); pecaAtual = null; history.replaceState(null, '', location.pathname + (cupom ? '?cupom=' + encodeURIComponent(cupom) : '')); }
+  function fecharTudo() { ['folha-produto', 'folha-sacola', 'folha-medidas', 'folha-conta', 'folha-espera'].forEach(fecharFolha); $('fundo').classList.remove('aberto'); document.body.classList.remove('travado'); pecaAtual = null; history.replaceState(null, '', location.pathname + (cupom ? '?cupom=' + encodeURIComponent(cupom) : '')); }
   window.fecharTudo = fecharTudo;
   function fecharMedidas() { fecharFolha('folha-medidas'); }
   window.fecharMedidas = fecharMedidas;
 
   function abrirPeca(famId, corPre, itemPre) {
-    const f = familias.find(x => x.id === famId); if (!f) return;
+    const f = famPorId(famId); if (!f) return;
     const corInicial = corPre || (f.listaCores.find(c => c.tams.some(t => t.saldo > 0)) || f.listaCores[0]);
     pecaAtual = { fam: f, cor: corInicial, itemId: itemPre || '', qtd: 1 };
     if (!pecaAtual.itemId) { const unico = corInicial.tams.filter(t => t.saldo > 0); if (unico.length === 1) pecaAtual.itemId = unico[0].id; }
@@ -672,11 +712,13 @@
         (item && item.saldo > 0 && item.saldo <= 2 ? '<div class="aviso-estoque">Últimas ' + item.saldo + (item.saldo === 1 ? ' unidade' : ' unidades') + ' neste tamanho.</div>' : '') + '</div>' +
       '<div class="sec"><div class="sec-t"><span>Quantidade</span></div><div class="qtd-box"><button onclick="mudarQtdPeca(-1)" aria-label="Menos">&minus;</button><span id="p-qtd">' + pecaAtual.qtd + '</span><button onclick="mudarQtdPeca(1)" aria-label="Mais">+</button></div>' +
         (item && jaNaSacola > 0 ? '<div class="aviso-estoque" style="color:var(--muted)">Você já tem ' + jaNaSacola + ' na sacola.</div>' : '') + '</div>' +
+      (fam.saldo <= 0 ? '<div class="aviso-esgotada"><b>Esgotada no momento.</b> Entre na lista de espera e a loja te avisa no WhatsApp quando chegar.</div>' : '') +
       (det.tecido ? '<div class="sec"><div class="sec-t"><span>Tecido</span></div><span class="tecido">' + esc(det.tecido) + '</span></div>' : '') +
       (det.descricao ? '<div class="sec"><div class="sec-t"><span>Detalhes</span></div><div class="detalhe-txt">' + esc(det.descricao) + '</div></div>' : '') +
       '<div class="sec"><a class="tecido" style="text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/' + WHATSAPP_LOJA + '?text=' + encodeURIComponent('Olá! Tenho uma dúvida sobre a peça ' + (fam.descricao || '') + (cor && cor.cor ? ' (' + cor.cor + ')' : '') + ' do catálogo.') + '">💬 Tirar dúvida sobre esta peça no WhatsApp</a></div>';
     const btn = $('p-add');
-    if (!item) { btn.disabled = true; btn.textContent = 'Escolha o tamanho'; }
+    if (fam.saldo <= 0) { btn.disabled = false; btn.textContent = 'Avise-me quando chegar'; }
+    else if (!item) { btn.disabled = true; btn.textContent = 'Escolha o tamanho'; }
     else if (maxMais <= 0) { btn.disabled = true; btn.textContent = 'Todas as unidades já estão na sacola'; }
     else { btn.disabled = false; btn.textContent = 'Adicionar à sacola · ' + brl(item.preco * pecaAtual.qtd); }
   }
@@ -699,6 +741,7 @@
     pecaAtual.qtd = Math.min(max, Math.max(1, pecaAtual.qtd + d)); desenharPeca(false);
   };
   window.adicionarDaPeca = () => {
+    if (pecaAtual && pecaAtual.fam.saldo <= 0) { abrirEspera(pecaAtual.fam.id, (vitrine.lives || []).some(l => (l.pecas || []).indexOf(pecaAtual.fam.id) > -1)); return; }
     if (!pecaAtual || !pecaAtual.itemId) return;
     const item = porId[pecaAtual.itemId]; if (!item || item.saldo <= 0) return;
     const ex = sacola.find(s => s.id === item.id);
@@ -1041,7 +1084,7 @@
     }
     const fid = (q.get('familia') || '').trim().toUpperCase().replace(/\s+/g, '');
     if (fid) {
-      const f = familias.find(x => x.id.toUpperCase() === fid) || (function() { const it = produtos.find(p => p.id.toUpperCase() === fid); return it ? familias.find(x => x.id === it.familia) : null; })();
+      const f = famTodas[fid] || Object.values(famTodas).find(x => x.id.toUpperCase() === fid) || (function() { const it = produtos.find(p => p.id.toUpperCase() === fid); return it ? famPorId(it.familia) : null; })();
       if (f) abrirPeca(f.id); else toast('Essa peça não está mais disponível');
     }
     const pid = (q.get('produto') || '').trim().toUpperCase().replace(/\s+/g, '');
@@ -1051,6 +1094,37 @@
       else { toast('Essa peça não está mais disponível'); }
     }
   }
+
+  // ---------- lista de espera (peça esgotada) ----------
+  let espera = null;
+  function abrirEspera(famId, daLive) {
+    const f = famPorId(famId); if (!f) return;
+    espera = { fam: f, live: !!daLive };
+    const tams = []; f.itens.forEach(i => { if (i.tamanho && tams.indexOf(i.tamanho) === -1) tams.push(i.tamanho); }); tams.sort(ordenarTam);
+    const cores = f.listaCores.map(c => c.cor).filter(c => c && c !== 'Única');
+    const sel = (id, ops, txt) => '<div class="campo"><label for="' + id + '">' + txt + '</label><select id="' + id + '" class="espera-sel">' + ops.map(o => '<option value="' + esc(o[0]) + '">' + esc(o[1]) + '</option>').join('') + '</select></div>';
+    const conta = ler(CHAVE_IDENT, {}) || {};
+    $('e-corpo').innerHTML = '<div style="display:flex;gap:12px;align-items:center"><img src="' + esc(thumb(f.capa) || PLACEHOLDER) + '" alt="" style="width:56px;height:74px;object-fit:cover;border-radius:10px"><div><b>' + esc(f.descricao || 'Peça') + '</b><div class="conta-sub" style="margin:2px 0 0">A loja te avisa no WhatsApp quando chegar.</div></div></div>' +
+      (tams.length > 1 ? sel('e-tam', [['', 'Qualquer tamanho']].concat(tams.map(t => [t, t])), 'Tamanho') : '') +
+      (cores.length > 1 ? sel('e-cor', [['', 'Qualquer cor']].concat(cores.map(c => [c, c])), 'Cor') : '') +
+      '<div class="campo"><label for="e-nome">Seu nome</label><input id="e-nome" autocomplete="name" maxlength="80" value="' + esc(conta.nome || '') + '"></div>' +
+      '<div class="campo"><label for="e-tel">WhatsApp com DDD</label><input id="e-tel" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="(21) 99999-9999" value="' + esc(conta.telefone || '') + '"></div>' +
+      '<input id="e-site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0">' +
+      '<div id="e-msg" class="conta-sub" style="margin-top:10px"></div><button class="btn-add" id="e-enviar" style="margin-top:12px">Entrar na lista de espera</button>';
+    $('e-enviar').onclick = enviarEspera;
+    abrirFolha('folha-espera');
+  }
+  async function enviarEspera() {
+    const b = $('e-enviar'), msg = $('e-msg'), nome = $('e-nome').value.trim(), tel = $('e-tel').value.replace(/\D/g, '');
+    if (nome.length < 3) { msg.textContent = 'Escreva o seu nome.'; return; }
+    if (tel.length < 10 || tel.length > 13) { msg.textContent = 'Confira o WhatsApp com DDD.'; return; }
+    b.disabled = true; b.textContent = 'Enviando...'; msg.textContent = '';
+    try {
+      const r = await postApi('entrarListaEsperaCatalogo', { familia: espera.fam.id, tamanho: ($('e-tam') || {}).value || '', cor: ($('e-cor') || {}).value || '', nome: nome, telefone: tel, live: espera.live, site: $('e-site').value });
+      $('e-corpo').innerHTML = '<div style="text-align:center;padding:24px 8px"><div style="font-size:2rem">✓</div><b>' + (r && r.jaEstava ? 'Você já está na lista desta peça.' : 'Pronto! Você está na lista de espera.') + '</b><p class="conta-sub" style="margin-top:6px">Quando a peça chegar, a loja te chama no WhatsApp. Deus abençoe!</p><button class="btn-add" style="margin-top:12px" onclick="fecharEspera()">Fechar</button></div>';
+    } catch (e) { b.disabled = false; b.textContent = 'Entrar na lista de espera'; msg.textContent = (e && e.message) || 'Não consegui enviar. Tente de novo.'; }
+  }
+  window.fecharEspera = () => { fecharFolha('folha-espera'); if (!document.querySelector('.folha.aberta')) fecharTudo(); };
 
   // ---------- início ----------
   sacola = ler(CHAVE_SACOLA, []); if (!Array.isArray(sacola)) sacola = [];

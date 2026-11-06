@@ -1,5 +1,5 @@
 // Service worker do catálogo USE ELLBA: abre o site e mostra fotos já vistas sem esperar a rede.
-const V = 'cat-v9', FOTOS = 'cat-fotos-v1';
+const V = 'cat-v10', FOTOS = 'cat-fotos-v1';
 self.addEventListener('install', e => { self.skipWaiting(); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V && k !== FOTOS).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
